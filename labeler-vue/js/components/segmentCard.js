@@ -15,7 +15,7 @@ window.SegmentCard = {
       </div>
 
       <!-- 2) Notes: single line, read-only, no label -->
-      <div class="mb-2" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+      <div class="mb-2" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
         <div class="text-muted" :title="segment.media_notes">{{ segment.media_notes }}</div>
       </div>
 
