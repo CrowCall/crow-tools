@@ -1,0 +1,5 @@
+birdnetlib
+librosa
+tensorflow
+tqdm
+resampy
