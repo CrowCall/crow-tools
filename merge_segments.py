@@ -67,7 +67,7 @@ def main():
     merged_segments = {}
     for catalog_number in tqdm(segments, desc="Merging segments"):
         detections = segments[catalog_number]
-        merged = merge_segments(detections, gap_threshold=1.0, conf_threshold=0.15, max_length=15.0)
+        merged = merge_segments(detections, gap_threshold=1.0, conf_threshold=0.35, max_length=15.0)
         merged_segments[catalog_number] = merged
 
     # Save the merged segments back to segments.json
