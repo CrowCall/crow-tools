@@ -1,1 +1,858 @@
-{}
+{
+  "13116-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13116-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": "",
+    "rattle": false
+  },
+  "13116-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13116-24-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13116-27-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13116-30-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13116-33-36": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13116-36-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13116-39-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-6-9": {
+    "crowCount": "multiple",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": true,
+    "notes": "",
+    "human": true
+  },
+  "13118-9-12": {
+    "crowCount": "single",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": true,
+    "notes": "",
+    "human": true
+  },
+  "13118-12-15": {
+    "crowCount": "single",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": true,
+    "notes": "",
+    "human": true
+  },
+  "13118-18-21": {
+    "crowCount": "single",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": true,
+    "notes": "",
+    "human": true
+  },
+  "13118-36-39": {
+    "crowCount": "single",
+    "crowAge": "juvenile",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-39-42": {
+    "crowCount": "single",
+    "crowAge": "juvenile",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-45-48": {
+    "crowCount": "single",
+    "crowAge": "juvenile",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-48-51": {
+    "crowCount": "single",
+    "crowAge": "juvenile",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-51-54": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": "",
+    "human": false
+  },
+  "13118-54-57": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-57-60": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-60-63": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-63-66": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-66-69": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-69-72": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-72-75": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-75-78": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-78-81": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-81-84": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-84-87": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-87-90": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-93-96": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-96-99": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-99-102": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-102-105": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-105-108": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-108-111": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-111-114": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-114-117": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-117-120": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-120-123": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-123-126": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-126-129": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-129-132": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-132-135": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-135-138": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-138-141": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-141-144": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-144-147": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-147-150": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-150-153": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "notes": ""
+  },
+  "13118-312-315": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-309-312": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-306-309": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-303-306": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-294-297": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-291-294": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-288-291": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-285-288": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-282-285": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-276-279": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-273-276": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-270-273": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-267-270": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-264-267": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-261-264": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-258-261": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-255-258": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-252-255": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-249-252": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-246-249": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-243-246": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-240-243": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-237-240": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-234-237": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-231-234": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-228-231": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-225-228": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-222-225": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-219-222": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-216-219": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-213-216": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-210-213": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-207-210": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-204-207": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-201-204": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-198-201": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-195-198": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-192-195": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-189-192": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-186-189": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-183-186": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-180-183": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-174-177": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-171-174": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-168-171": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-165-168": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-162-165": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-159-162": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-156-159": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "13118-153-156": {
+    "crowCount": "",
+    "crowAge": "",
+    "begging": false,
+    "softSong": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  }
+}
