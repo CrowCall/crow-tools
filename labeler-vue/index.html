@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>Crow Audio Labeler</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         .segment-card {
             margin-bottom: 1rem;
@@ -26,7 +26,7 @@
 <div id="app" class="container my-4">
     <h1 class="mb-4">Crow Audio Labeler</h1>
 
-    <!-- Stats Row (3 columns, each with a small card) -->
+    <!-- Stats Row (3 columns) -->
     <div class="row mb-3">
         <!-- Files Card -->
         <div class="col-md-4">
@@ -34,49 +34,38 @@
                 <div class="card-body p-1">
                     <h6 class="card-title mb-1">Files</h6>
                     <p class="m-0">
-                        {{ stats.labeledFiles }}/{{ stats.totalFiles }}
-                        ({{ stats.filesPct }}%)
+                        {{ stats.labeledFiles }}/{{ stats.totalFiles }} ({{ stats.filesPct }}%)
                     </p>
                     <div class="progress" style="height:6px;">
-                        <div class="progress-bar" role="progressbar"
-                             :style="{ width: stats.filesPct + '%' }">
-                        </div>
+                        <div class="progress-bar" role="progressbar" :style="{ width: stats.filesPct + '%' }"></div>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Segments Card -->
         <div class="col-md-4">
             <div class="card bg-light text-dark mb-2">
                 <div class="card-body p-1">
                     <h6 class="card-title mb-1">Segments</h6>
                     <p class="m-0">
-                        {{ stats.labeledSegments }}/{{ stats.totalSegments }}
-                        ({{ stats.segmentsPct }}%)
+                        {{ stats.labeledSegments }}/{{ stats.totalSegments }} ({{ stats.segmentsPct }}%)
                     </p>
                     <div class="progress" style="height:6px;">
-                        <div class="progress-bar" role="progressbar"
-                             :style="{ width: stats.segmentsPct + '%' }">
-                        </div>
+                        <div class="progress-bar" role="progressbar" :style="{ width: stats.segmentsPct + '%' }"></div>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Hours Card -->
         <div class="col-md-4">
             <div class="card bg-light text-dark mb-2">
                 <div class="card-body p-1">
                     <h6 class="card-title mb-1">Hours</h6>
                     <p class="m-0">
-                        {{ stats.labeledHours.toFixed(2) }}/{{ stats.totalHours.toFixed(2) }}
-                        ({{ stats.hoursPct }}%)
+                        {{ stats.labeledHours.toFixed(2) }}/{{ stats.totalHours.toFixed(2) }} ({{ stats.hoursPct }}%)
                     </p>
                     <div class="progress" style="height:6px;">
-                        <div class="progress-bar" role="progressbar"
-                             :style="{ width: stats.hoursPct + '%' }">
-                        </div>
+                        <div class="progress-bar" role="progressbar" :style="{ width: stats.hoursPct + '%' }"></div>
                     </div>
                 </div>
             </div>
@@ -92,12 +81,32 @@
             @goto="handleGotoPage"
     ></pagination>
 
-    <!-- 2-Column Layout on Large Screens -->
+    <!-- Playback Speed Button Group -->
+    <div class="d-flex align-items-center mb-3" style="gap: 1rem;">
+        <span>Playback Speed:</span>
+        <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn"
+                    :class="{'btn-primary': playbackSpeed === 1, 'btn-outline-primary': playbackSpeed !== 1}"
+                    @click="setPlaybackSpeed(1)">1X</button>
+            <button type="button" class="btn"
+                    :class="{'btn-primary': playbackSpeed === 2, 'btn-outline-primary': playbackSpeed !== 2}"
+                    @click="setPlaybackSpeed(2)">2X</button>
+            <button type="button" class="btn"
+                    :class="{'btn-primary': playbackSpeed === 3, 'btn-outline-primary': playbackSpeed !== 3}"
+                    @click="setPlaybackSpeed(3)">3X</button>
+            <button type="button" class="btn"
+                    :class="{'btn-primary': playbackSpeed === 4, 'btn-outline-primary': playbackSpeed !== 4}"
+                    @click="setPlaybackSpeed(4)">4X</button>
+        </div>
+    </div>
+
+    <!-- 2-Column Layout for Segment Cards -->
     <div class="row row-cols-1 row-cols-lg-2 g-2">
         <div v-for="segment in paginatedSegments" :key="segmentKey(segment)" class="col">
             <segment-card
                     :segment="segment"
                     :labels="labels"
+                    :playback-speed="playbackSpeed"
                     @labels-changed="saveLabelsToServer">
             </segment-card>
         </div>
@@ -106,7 +115,7 @@
 
 <!-- Vue 3 global build -->
 <script src="node_modules/vue/dist/vue.global.js"></script>
-<!-- Papa Parse for CSV parsing (CDN) -->
+<!-- Papa Parse for CSV parsing (if needed) -->
 <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
 <!-- Components -->
 <script src="js/components/pagination.js"></script>

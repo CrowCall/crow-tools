@@ -1,6 +1,6 @@
 // js/components/segmentCard.js
 window.SegmentCard = {
-  props: ['segment', 'labels'],
+  props: ['segment', 'labels', 'playbackSpeed'],
   template: `
     <div :class="['card', 'mb-2', 'p-2', cardBorderClass]">
       <!-- 1) Title Row: Recorder + ID, Time, Confidence -->
@@ -158,13 +158,13 @@ window.SegmentCard = {
           rattle: false,
           badQuality: false,
           human: false,
-          notes: '' // in case you store notes
+          notes: ''
         };
       }
       return this.labels[this.segmentKey];
     },
     cardBorderClass() {
-      // Consider the segment "bad" if either badQuality or human is true.
+      // Red border if either badQuality or human is true.
       const lbl = this.currentLabels;
       if (lbl.badQuality || lbl.human) {
         return 'border border-danger';
@@ -229,7 +229,15 @@ window.SegmentCard = {
     this.audio = this.$refs.audio;
     this.audio.src = `/library/${this.segment.id}.mp3`;
     this.audio.currentTime = this.segment.start_time;
+    this.audio.playbackRate = this.playbackSpeed;
     this.audio.addEventListener('timeupdate', this.updateProgress);
+  },
+  watch: {
+    playbackSpeed(newSpeed) {
+      if (this.audio) {
+        this.audio.playbackRate = newSpeed;
+      }
+    }
   },
   beforeUnmount() {
     if (this.audio) {
