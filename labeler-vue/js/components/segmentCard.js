@@ -119,7 +119,7 @@ window.SegmentCard = {
                  :id="'human_'+segmentKey"
                  v-model="currentLabels.human"
                  @change="onLabelsChanged">
-          <label class="btn btn-outline-primary" :for="'human_'+segmentKey">
+          <label class="btn btn-outline-danger" :for="'human_'+segmentKey">
             Human
           </label>
 
@@ -127,7 +127,7 @@ window.SegmentCard = {
                  :id="'badQuality_'+segmentKey"
                  v-model="currentLabels.badQuality"
                  @change="onLabelsChanged">
-          <label class="btn btn-outline-primary" :for="'badQuality_'+segmentKey">
+          <label class="btn btn-outline-danger" :for="'badQuality_'+segmentKey">
             Bad
           </label>
         </div>
