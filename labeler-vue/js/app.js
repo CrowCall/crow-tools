@@ -6,12 +6,13 @@ const app = Vue.createApp({
             csvData: {},
             currentPage: 1,
             segmentsPerPage: 50,
-            playbackSpeed: 1
+            playbackSpeed: 1,
+            totalPagesCached: 0,
         };
     },
     computed: {
         totalPages() {
-            return Math.ceil(this.segments.length / this.segmentsPerPage);
+            return this.totalPagesCached;
         },
         paginatedSegments() {
             const start = (this.currentPage - 1) * this.segmentsPerPage;
@@ -115,6 +116,7 @@ const app = Vue.createApp({
                     }
                     this.segments = segArray;
                     this.loadCrowsCSV();
+                    this.totalPagesCached = Math.ceil(this.segments.length / this.segmentsPerPage);
                 })
                 .catch(err => console.error('Error loading segments:', err));
         },
@@ -169,7 +171,25 @@ const app = Vue.createApp({
             this.playbackSpeed = speed;
         }
     },
+    watch: {
+        currentPage(newVal) {
+            localStorage.setItem('currentPage', newVal);
+        },
+        playbackSpeed(newVal) {
+            localStorage.setItem('playbackSpeed', newVal);
+        }
+    },
     mounted() {
+        // Retrieve saved current page and playback speed from localStorage
+        const savedPage = localStorage.getItem('currentPage');
+        if (savedPage) {
+            this.currentPage = parseInt(savedPage, 10);
+        }
+        const savedSpeed = localStorage.getItem('playbackSpeed');
+        if (savedSpeed) {
+            this.playbackSpeed = parseInt(savedSpeed, 10);
+        }
+        // Then load segments and labels as before
         this.loadSegments();
         this.loadLabels();
     }
