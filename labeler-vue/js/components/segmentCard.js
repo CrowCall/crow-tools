@@ -2,7 +2,7 @@
 window.SegmentCard = {
   props: ['segment', 'labels', 'playbackSpeed', 'prevLabels'],
   template: `
-    <div :class="['card', 'mb-2', 'p-2', cardBorderClass]">
+    <div :class="['card', 'mb-2', 'p-2', cardBorderClass]" :style="leftBorderStyle">
       <!-- 1) Title Row: Recorder + ID, Time, Confidence -->
       <div class="d-flex flex-wrap align-items-center mb-1">
         <strong class="me-2">
@@ -36,7 +36,7 @@ window.SegmentCard = {
           {{ formattedTime(currentTime - segment.start_time) }} /
           {{ formattedTime(segment.end_time - segment.start_time) }}
         </small>
-        <!-- New Copy Button -->
+        <!-- Copy Button -->
         <button class="btn btn-sm btn-outline-secondary" style="width: 40px;" @click="copyPrevious" :disabled="!prevLabels">
           📋
         </button>
@@ -55,7 +55,6 @@ window.SegmentCard = {
           <label class="btn btn-outline-primary" :for="'crowCountSingle_'+segmentKey">
             Single
           </label>
-
           <input type="radio" class="btn-check"
                  :name="'crowCount' + segmentKey"
                  :id="'crowCountMultiple_'+segmentKey"
@@ -78,7 +77,6 @@ window.SegmentCard = {
           <label class="btn btn-outline-primary" :for="'crowAgeJuvenile_'+segmentKey">
             Juvenile
           </label>
-
           <input type="radio" class="btn-check"
                  :name="'crowAge' + segmentKey"
                  :id="'crowAgeAdult_'+segmentKey"
@@ -99,7 +97,6 @@ window.SegmentCard = {
           <label class="btn btn-outline-primary" :for="'begging_'+segmentKey">
             Beg
           </label>
-
           <input type="checkbox" class="btn-check"
                  :id="'softSong_'+segmentKey"
                  v-model="currentLabels.softSong"
@@ -107,7 +104,6 @@ window.SegmentCard = {
           <label class="btn btn-outline-primary" :for="'softSong_'+segmentKey">
             Soft
           </label>
-
           <input type="checkbox" class="btn-check"
                  :id="'rattle_'+segmentKey"
                  v-model="currentLabels.rattle"
@@ -171,7 +167,7 @@ window.SegmentCard = {
       // Red border if either badQuality or human is true.
       const lbl = this.currentLabels;
       if (lbl.badQuality || lbl.human) {
-        return 'border border-danger';
+        return 'border-top border-right border-bottom border-danger';
       }
       if (
           lbl.crowCount !== '' ||
@@ -181,12 +177,22 @@ window.SegmentCard = {
           lbl.rattle ||
           (lbl.notes && lbl.notes.trim() !== '')
       ) {
-        return 'border border-primary';
+        return 'border-top border-right border-bottom border-primary';
       }
-      return 'border border-secondary';
+      return 'border-top border-right border-bottom border-secondary';
     },
     playButtonClass() {
       return this.isPlaying ? 'btn-primary' : 'btn-secondary';
+    },
+    leftBorderStyle() {
+      // Use only the file id (segment.id) to generate a deterministic color.
+      const colors = ["#007bff", "#28a745", "#ffc107", "#17a2b8", "#6610f2", "#fd7e14", "#6f42c1", "#20c997"];
+      let fileId = String(this.segment.id);
+      let hash = 0;
+      for (let i = 0; i < fileId.length; i++) {
+        hash = (hash * 31 + fileId.charCodeAt(i)) % colors.length;
+      }
+      return { borderLeft: `4px solid ${colors[hash]} !important` };
     }
   },
   methods: {
