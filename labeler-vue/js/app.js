@@ -168,14 +168,21 @@ const app = Vue.createApp({
                 });
         },
         prevPage() {
-            if (this.currentPage > 1) this.currentPage--;
+            if (this.currentPage > 1) {
+                this.currentPage--;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         },
         nextPage() {
-            if (this.currentPage < this.totalPages) this.currentPage++;
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         },
         handleGotoPage(pageNum) {
             if (pageNum >= 1 && pageNum <= this.totalPages) {
                 this.currentPage = pageNum;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         },
         setPlaybackSpeed(speed) {

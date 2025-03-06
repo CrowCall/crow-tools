@@ -115,6 +115,16 @@
             </segment-card>
         </div>
     </div>
+
+    <!-- Pagination Controls -->
+    <pagination
+            :current-page="currentPage"
+            :total-pages="totalPages"
+            @prev="prevPage"
+            @next="nextPage"
+            @goto="handleGotoPage"
+    ></pagination>
+
 </div>
 
 <!-- Vue 3 global build -->
