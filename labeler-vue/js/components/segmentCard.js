@@ -1,6 +1,6 @@
 // js/components/segmentCard.js
 window.SegmentCard = {
-  props: ['segment', 'labels', 'playbackSpeed'],
+  props: ['segment', 'labels', 'playbackSpeed', 'prevLabels'],
   template: `
     <div :class="['card', 'mb-2', 'p-2', cardBorderClass]">
       <!-- 1) Title Row: Recorder + ID, Time, Confidence -->
@@ -19,7 +19,7 @@ window.SegmentCard = {
         <div class="text-muted" :title="segment.media_notes">{{ segment.media_notes }}</div>
       </div>
 
-      <!-- 3) Play button and slider -->
+      <!-- 3) Play button, slider, and copy button -->
       <div class="d-flex align-items-center flex-wrap mb-2" style="gap: 0.5rem;">
         <button :class="['btn', 'btn-sm', playButtonClass]" style="width: 60px;" @click="togglePlayback">
           <span v-if="!isPlaying">Play</span>
@@ -36,6 +36,10 @@ window.SegmentCard = {
           {{ formattedTime(currentTime - segment.start_time) }} /
           {{ formattedTime(segment.end_time - segment.start_time) }}
         </small>
+        <!-- New Copy Button -->
+        <button class="btn btn-sm btn-outline-secondary" style="width: 40px;" @click="copyPrevious" :disabled="!prevLabels">
+          📋
+        </button>
       </div>
 
       <!-- 4) Label Buttons -->
@@ -222,6 +226,16 @@ window.SegmentCard = {
           this.currentTime = this.segment.start_time;
           this.isPlaying = false;
         }
+      }
+    },
+    copyPrevious() {
+      if (this.prevLabels) {
+        // Copy each property from prevLabels into currentLabels, except those we don't want to override.
+        const fields = ['crowCount', 'crowAge', 'begging', 'softSong', 'rattle', 'badQuality', 'human'];
+        fields.forEach(field => {
+          this.currentLabels[field] = this.prevLabels[field];
+        });
+        this.onLabelsChanged();
       }
     }
   },

@@ -106,11 +106,14 @@
 
     <!-- 2-Column Layout for Segment Cards -->
     <div class="row row-cols-1 row-cols-lg-2 g-2">
-        <div v-for="segment in paginatedSegments" :key="segmentKey(segment)" class="col">
+        <div v-for="(segment, index) in paginatedSegments" :key="segment.id + '-' + segment.start_time + '-' + segment.end_time" class="col">
             <segment-card
                     :segment="segment"
                     :labels="labels"
                     :playback-speed="playbackSpeed"
+                    :prev-labels="index > 0
+        ? labels[paginatedSegments[index - 1].id + '-' + paginatedSegments[index - 1].start_time + '-' + paginatedSegments[index - 1].end_time]
+        : null"
                     @labels-changed="saveLabelsToServer">
             </segment-card>
         </div>
