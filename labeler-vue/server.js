@@ -4,7 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-app.use(express.json());
+app.use(express.json({
+    limit: '200mb',
+}));
 
 // Serve static files from "public" and the project root
 app.use(express.static('public'));
@@ -26,4 +28,12 @@ app.post('/updateLabels', (req, res) => {
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
+});
+
+// Generic error-handling middleware
+app.use((err, req, res, next) => {
+    console.error("Error occurred:", err);
+    res.status(err.status || 500).json({
+        error: err.message || "Internal Server Error"
+    });
 });

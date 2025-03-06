@@ -8,6 +8,7 @@ const app = Vue.createApp({
             segmentsPerPage: 50,
             playbackSpeed: 1,
             totalPagesCached: 0,
+            errorMessage: ""
         };
     },
     computed: {
@@ -148,13 +149,23 @@ const app = Vue.createApp({
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.labels)
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(data => { throw new Error(data.error || "Server error"); });
+                    }
+                    return res.json();
+                })
                 .then(data => {
                     if (!data.success) {
-                        console.error('Failed to update labels on server.');
+                        throw new Error("Failed to update labels on server.");
                     }
+                    // Clear any previous error message on success.
+                    this.errorMessage = "";
                 })
-                .catch(err => console.error('Error updating labels on server:', err));
+                .catch(err => {
+                    console.error('Error updating labels on server:', err);
+                    this.errorMessage = "Error: " + err.message;
+                });
         },
         prevPage() {
             if (this.currentPage > 1) this.currentPage--;

@@ -26,6 +26,10 @@
 <div id="app" class="container my-4">
     <h1 class="mb-4">Crow Audio Labeler</h1>
 
+    <div v-if="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+    </div>
+
     <!-- Stats Row (3 columns) -->
     <div class="row mb-3">
         <!-- Files Card -->
