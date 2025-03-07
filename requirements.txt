@@ -3,3 +3,5 @@ librosa
 tensorflow
 tqdm
 resampy
+biodenoising
+norbert
