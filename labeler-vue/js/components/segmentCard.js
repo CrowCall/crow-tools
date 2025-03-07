@@ -221,7 +221,7 @@ window.SegmentCard = {
       }
     },
     onLabelsChanged() {
-      this.$emit('labels-changed');
+      this.$emit('labels-changed', { segmentKey: this.segmentKey, labels: this.currentLabels });
     },
     updateProgress() {
       if (this.audio) {
@@ -236,12 +236,21 @@ window.SegmentCard = {
     },
     copyPrevious() {
       if (this.prevLabels) {
-        // Copy each property from prevLabels into currentLabels, except those we don't want to override.
+        // Stop current playback if playing.
+        if (this.audio && this.isPlaying) {
+          this.audio.pause();
+          this.isPlaying = false;
+        }
+        // Copy label fields from prevLabels.
         const fields = ['crowCount', 'crowAge', 'begging', 'softSong', 'rattle', 'badQuality', 'human'];
         fields.forEach(field => {
           this.currentLabels[field] = this.prevLabels[field];
         });
         this.onLabelsChanged();
+        // Start playback for the current segment.
+        this.audio.currentTime = this.segment.start_time;
+        this.audio.play();
+        this.isPlaying = true;
       }
     }
   },

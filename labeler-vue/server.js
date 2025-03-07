@@ -14,15 +14,25 @@ app.use(express.static('.'));
 
 // Endpoint to update labels.json on disk
 app.post('/updateLabels', (req, res) => {
-    const labels = req.body;
-    const labelsFile = path.join(__dirname, 'public', 'labels.json');
-    fs.writeFile(labelsFile, JSON.stringify(labels, null, 2), (err) => {
-        if (err) {
-            console.error('Error writing labels.json:', err);
-            return res.status(500).json({ success: false, error: 'Failed to update labels.' });
-        }
-        res.json({ success: true });
-    });
+  const update = req.body; // Expecting: { segmentKey, labels }
+  const labelsFile = path.join(__dirname, 'public', 'labels.json');
+  let allLabels = {};
+  try {
+    if (fs.existsSync(labelsFile)) {
+      const data = fs.readFileSync(labelsFile, 'utf8');
+      allLabels = JSON.parse(data);
+    }
+  } catch (e) {
+    console.error("Error reading existing labels.json:", e);
+  }
+  allLabels[update.segmentKey] = update.labels;
+  try {
+    fs.writeFileSync(labelsFile, JSON.stringify(allLabels, null, 2));
+    res.json({ success: true });
+  } catch (e) {
+    console.error("Error writing labels.json:", e);
+    res.status(500).json({ success: false, error: 'Failed to update labels.' });
+  }
 });
 
 const PORT = process.env.PORT || 8080;

@@ -143,29 +143,28 @@ const app = Vue.createApp({
                     this.labels = {};
                 });
         },
-        saveLabelsToServer() {
-            fetch('/updateLabels', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(this.labels)
-            })
-                .then(res => {
-                    if (!res.ok) {
-                        return res.json().then(data => { throw new Error(data.error || "Server error"); });
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    if (!data.success) {
-                        throw new Error("Failed to update labels on server.");
-                    }
-                    // Clear any previous error message on success.
-                    this.errorMessage = "";
-                })
-                .catch(err => {
-                    console.error('Error updating labels on server:', err);
-                    this.errorMessage = "Error: " + err.message;
-                });
+        saveLabelsToServer(payload) {
+          // payload is expected to be: { segmentKey, labels }
+          fetch('/updateLabels', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
+          .then(res => {
+            if (!res.ok) {
+              return res.json().then(data => { throw new Error(data.error || "Server error"); });
+            }
+            return res.json();
+          })
+          .then(data => {
+            if (!data.success) {
+              throw new Error("Failed to update labels on server.");
+            }
+          })
+          .catch(err => {
+            console.error('Error updating labels on server:', err);
+            // Optionally, set a global error message.
+          });
         },
         prevPage() {
             if (this.currentPage > 1) {
