@@ -12,7 +12,7 @@ model = pretrained.biodenoising16k_dns48().to(device)
 
 # Define directories
 library_dir = 'labeler-vue/public/library'
-output_dir = 'labeler-vue/public/denoised'
+output_dir = 'labeler-vue/public/library-denoised'
 os.makedirs(output_dir, exist_ok=True)
 
 # Get sorted list of files from the library directory
