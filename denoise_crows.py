@@ -33,17 +33,29 @@ for filename in files:
 
         # Load the MP3 file
         wav, sr = torchaudio.load(input_file)
-        wav_minutes = len(wav[0])/sr/60.0
-        if wav_minutes > 10:
-            print(f"Skipping {input_file} (too long)")
-            continue
 
-        # Convert audio to model's expected sample rate and channel configuration
+        # Convert audio to the model's expected sample rate and channel configuration
         wav = convert_audio(wav, sr, model.sample_rate, model.chin).to(device)
 
-        # Denoise the audio
-        with torch.no_grad():
-            denoised = model(wav[None])[0]
+        # Determine if we need to split the file (if longer than 1 minute)
+        total_samples = wav.size(1)
+        chunk_size = model.sample_rate * 60  # samples in 60 seconds
+        if total_samples > chunk_size:
+            print(f"Splitting {filename} into chunks...")
+            denoised_chunks = []
+            # Process each chunk individually
+            for start in range(0, total_samples, chunk_size):
+                end = min(start + chunk_size, total_samples)
+                chunk = wav[:, start:end]
+                with torch.no_grad():
+                    chunk_denoised = model(chunk[None])[0]
+                denoised_chunks.append(chunk_denoised)
+            # Reassemble the denoised chunks along the time dimension
+            denoised = torch.cat(denoised_chunks, dim=1)
+        else:
+            # Process the whole file if it is 1 minute or shorter
+            with torch.no_grad():
+                denoised = model(wav[None])[0]
 
         # Save the denoised audio as a WAV file
         torchaudio.save(output_file, denoised.cpu(), model.sample_rate)
