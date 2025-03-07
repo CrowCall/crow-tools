@@ -9500,8 +9500,8 @@
     "notes": ""
   },
   "74897231-3-6": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9510,8 +9510,8 @@
     "notes": ""
   },
   "73836941-0-6": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9520,8 +9520,8 @@
     "notes": ""
   },
   "73344221-21-27": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9530,8 +9530,8 @@
     "notes": ""
   },
   "73344221-3-15": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "multiple",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9540,8 +9540,8 @@
     "notes": ""
   },
   "73344201-3-6": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9550,8 +9550,8 @@
     "notes": ""
   },
   "72550301-0-15": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9560,8 +9560,8 @@
     "notes": ""
   },
   "72456501-0-9": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9570,28 +9570,28 @@
     "notes": ""
   },
   "72284141-18-21": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
-    "badQuality": false,
+    "badQuality": true,
     "human": false,
     "notes": ""
   },
   "72284141-12-15": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
-    "badQuality": false,
+    "badQuality": true,
     "human": false,
     "notes": ""
   },
   "72284141-3-9": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9600,8 +9600,8 @@
     "notes": ""
   },
   "72212741-3-12": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "multiple",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9610,8 +9610,8 @@
     "notes": ""
   },
   "72027591-6-9": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9620,8 +9620,8 @@
     "notes": ""
   },
   "71994051-6-9": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9630,8 +9630,8 @@
     "notes": ""
   },
   "71994051-0-3": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9640,8 +9640,8 @@
     "notes": ""
   },
   "71080321-6-15": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9650,8 +9650,8 @@
     "notes": ""
   },
   "71080321-0-3": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9660,18 +9660,18 @@
     "notes": ""
   },
   "71078131-3-15": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "multiple",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
-    "badQuality": false,
+    "badQuality": true,
     "human": false,
     "notes": ""
   },
   "70069421-3-6": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9680,8 +9680,8 @@
     "notes": ""
   },
   "70069401-6-9": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9690,8 +9690,8 @@
     "notes": ""
   },
   "70069401-0-3": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9700,8 +9700,8 @@
     "notes": ""
   },
   "69500651-27-33": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9710,8 +9710,8 @@
     "notes": ""
   },
   "69500651-15-18": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9720,8 +9720,8 @@
     "notes": ""
   },
   "69500651-6-9": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9730,8 +9730,8 @@
     "notes": ""
   },
   "68970241-27-30": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9740,18 +9740,18 @@
     "notes": ""
   },
   "68970241-15-24": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "multiple",
+    "crowAge": "adult",
     "begging": false,
-    "softSong": false,
-    "rattle": false,
+    "softSong": true,
+    "rattle": true,
     "badQuality": false,
     "human": false,
     "notes": ""
   },
   "68970241-3-15": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "multiple",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9760,8 +9760,8 @@
     "notes": ""
   },
   "68970151-21-27": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "multiple",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9770,8 +9770,8 @@
     "notes": ""
   },
   "68970151-3-18": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "multiple",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9780,8 +9780,8 @@
     "notes": ""
   },
   "68970151-0-3": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "multiple",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9790,8 +9790,8 @@
     "notes": ""
   },
   "67710011-0-12": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9800,8 +9800,8 @@
     "notes": ""
   },
   "67685611-0-3": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
@@ -9810,22 +9810,22 @@
     "notes": ""
   },
   "67552791-9-12": {
-    "crowCount": "",
-    "crowAge": "",
+    "crowCount": "multiple",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
-    "badQuality": false,
+    "badQuality": true,
     "human": false,
     "notes": ""
   },
   "67552791-0-3": {
-    "crowCount": "multiple",
-    "crowAge": "",
+    "crowCount": "single",
+    "crowAge": "adult",
     "begging": false,
     "softSong": false,
     "rattle": false,
-    "badQuality": false,
+    "badQuality": true,
     "human": false,
     "notes": ""
   },
@@ -9940,7 +9940,7 @@
     "notes": ""
   },
   "64930341-3-6": {
-    "crowCount": "multiple",
+    "crowCount": "single",
     "crowAge": "adult",
     "begging": false,
     "softSong": false,
@@ -9955,7 +9955,7 @@
     "begging": false,
     "softSong": false,
     "rattle": false,
-    "badQuality": false,
+    "badQuality": true,
     "human": false,
     "notes": ""
   },
@@ -9990,6 +9990,7996 @@
     "notes": ""
   },
   "62410011-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "74897231-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "74897231-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "75193141-0-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "75193141-9-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "75754801-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "75754801-6-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "75754801-21-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "75962391-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "76170691-6-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "76885771-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "77556411-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "77556411-18-21": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "77556411-36-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "78028891-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "78028891-12-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "78028891-21-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": true,
+    "rattle": true,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "78028891-30-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "78028891-42-45": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "78028891-60-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "79796081-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "79796081-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "79796081-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "79796081-33-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "79796081-45-48": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "80123421-0-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "80123421-12-21": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "80643771-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "80644041-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "80644361-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "81497401-9-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "81864791-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "81864791-15-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82049331-3-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82049331-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82049331-18-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82049331-30-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82049351-3-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82049351-21-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82049351-36-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82049351-42-51": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82224121-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82224121-36-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82251801-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82251801-15-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82251801-21-36": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82527511-0-3": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "82527511-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-24-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-39-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-45-48": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-51-54": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-60-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-66-69": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-72-78": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-81-84": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-108-111": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-120-123": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-162-168": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83103681-174-180": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-18-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-27-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-33-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-48-51": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-63-66": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-72-75": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-81-84": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-93-96": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-114-117": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-123-126": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-144-150": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-153-156": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-162-165": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-168-171": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-186-195": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-201-204": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-234-237": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-279-282": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-288-291": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-294-297": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-306-309": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-315-318": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-321-324": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-333-336": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-339-342": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-345-351": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-354-357": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-369-375": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83108171-429-432": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83426451-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83426451-24-27": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": true,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83426451-36-42": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-27-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-33-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-45-48": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-51-54": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-60-66": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-72-87": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "83794431-87-102": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "84021071-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "85879411-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87099061-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87099061-15-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-12-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-24-27": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-30-33": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-39-42": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-57-60": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-63-66": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-69-72": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-75-78": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-81-84": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-90-96": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-99-102": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-105-108": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-117-120": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-153-156": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-159-165": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-171-174": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-180-192": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-195-204": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-207-210": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-216-222": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-225-228": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-231-234": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-261-267": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-270-276": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-279-282": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-285-288": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-297-300": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-306-309": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-312-315": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-321-324": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-330-333": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-336-342": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-351-357": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-363-366": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-369-372": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-375-381": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-384-387": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-393-396": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-399-402": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-408-411": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-414-420": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-426-432": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-447-450": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-453-456": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-465-468": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87647421-474-480": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "87707581-0-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "88384631-3-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "88384631-15-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "88384631-24-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "88757491-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "89195051-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "89376711-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "89528281-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "90010711-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "90010711-24-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90049331-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90049331-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90049331-30-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90173851-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90332271-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90332271-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90332271-21-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90332271-36-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90332271-45-60": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "90332271-66-75": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "91500411-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "91500411-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "91500411-12-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "91500411-21-27": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "91826481-0-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "91826481-9-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "91826481-24-27": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "91826481-78-90": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "92223231-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "92223231-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "92223231-21-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "92223231-33-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "92223231-42-45": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "92223231-51-57": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "92523301-3-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "92523301-15-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "92851731-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "93588791-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "93588791-18-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "95017781-18-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "95017781-33-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "95017781-45-54": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "95332831-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "96536321-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "96536321-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "96962911-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "97454921-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "97454921-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "97666551-0-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "97909331-9-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "97909331-27-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "97909331-39-48": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "97909331-51-60": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "97909331-63-69": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "97909331-75-87": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "97909331-87-99": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-27-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-42-51": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-54-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-69-72": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-81-84": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-87-90": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99755991-93-99": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "99996631-3-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "100446741-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "100446741-15-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "102495831-0-3": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "102495841-0-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "102495861-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "102495871-6-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "102719961-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "103798961-3-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "103798961-18-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "103798961-27-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "104247941-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "104279451-6-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "104279451-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "104365511-0-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "104365511-15-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "104365511-30-45": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "104365511-45-48": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105198111-3-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105198111-18-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105198111-33-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105198111-45-51": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105313241-0-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105313241-18-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105313241-27-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105313241-36-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105313241-42-57": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105313241-57-66": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105313241-72-75": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105313241-81-84": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105526851-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105526851-15-21": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105526851-24-36": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105658541-0-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105743711-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105743711-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105743711-60-66": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105743711-75-78": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "105755291-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "105844621-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "105844621-99-102": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "107102581-24-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107102581-39-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107102581-51-54": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "107102581-60-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107102581-81-87": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107307361-3-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107376911-48-51": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "107568491-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107568491-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107692671-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107763761-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107782541-3-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107782541-42-45": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107782541-51-54": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "107782541-57-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "109347731-0-9": {
+    "crowCount": "single",
+    "crowAge": "juvenile",
+    "begging": false,
+    "softSong": true,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "109347731-12-24": {
+    "crowCount": "single",
+    "crowAge": "juvenile",
+    "begging": false,
+    "softSong": true,
+    "rattle": true,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "109545441-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "109545441-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "109545441-27-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "110846101-42-45": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "110846101-51-54": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "110846101-63-66": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "110856411-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "110856411-57-60": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "110976961-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "111019201-3-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "111019201-18-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "111234031-12-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "111234031-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "111241431-12-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "111241431-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "111234031-24-33": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "111241431-18-33": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "111234031-36-42": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "111241431-33-36": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "111968981-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "111968981-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "112960681-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "113095231-3-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "113381981-3-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "113381981-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "113381981-30-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "113381981-48-54": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "113381981-57-72": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "113381981-75-90": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "113381981-105-111": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "113381981-123-126": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114373321-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114373321-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114828051-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114828051-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114969951-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114969951-138-141": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114969951-150-153": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114969951-156-159": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114969951-165-168": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114969951-225-228": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114969951-237-240": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114969951-255-258": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "114969951-267-270": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "115216411-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "115353301-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "115450561-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "115450561-27-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "116148111-3-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "116148111-9-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "116148111-21-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "116148111-27-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "116148111-51-57": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "116154911-3-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "116154911-9-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "116154911-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "116590241-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "117507221-3-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "117507221-12-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "117507221-30-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "117507221-39-45": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "119322271-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "119322271-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "119739731-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "119876001-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "119876001-15-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121113601-0-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121113601-15-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121113601-27-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121416131-6-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121416131-24-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121416131-42-45": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121416131-60-69": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121416131-69-78": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121432161-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121432161-18-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121432161-27-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "121432161-39-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "122518661-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "122518661-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "122518661-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "122518661-27-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "122850261-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "122850261-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "122850261-12-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "123887601-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "123887601-12-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124148051-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124148051-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124148051-21-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124148051-36-45": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124148051-51-54": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124568031-0-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": true,
+    "rattle": true,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124756701-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "124756701-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124756701-39-42": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124756701-48-54": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "124756701-66-69": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "124756701-75-78": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "124756701-81-84": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "124756701-93-99": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "124759601-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "124759621-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "126597341-3-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "127671281-3-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "129126261-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "129126261-6-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "129126261-15-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "129126261-21-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "129774151-0-3": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "130460641-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "131355101-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "132606961-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "132606961-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "133458141-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "133458141-18-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "133458141-27-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "133465131-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "133465131-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "133598221-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "133917061-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "134410041-0-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "134410041-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "134410041-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "135047471-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "135047471-24-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "136224381-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "136224381-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "136224381-24-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "136224381-33-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "136457881-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "136562701-9-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "136562701-24-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "136562701-36-42": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "136562701-54-60": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "137999961-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "137999961-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "137999961-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "137999961-27-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "137999961-36-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "137999961-45-51": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138515541-3-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138515541-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138515541-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "138515541-30-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138694281-0-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138694281-15-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138694281-27-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138794051-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138794051-33-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138794051-60-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138794051-69-72": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138794051-78-81": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138794051-87-90": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138794051-99-102": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138844851-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "138844851-15-21": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "139796961-0-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "139796961-15-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "139850191-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "139996981-0-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "139996981-15-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140049041-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140049041-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140049041-18-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140049041-36-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140049041-42-45": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140049041-48-54": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140081881-0-3": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140081881-6-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140081881-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140552141-3-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140552141-12-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140552141-36-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140552141-51-57": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140552141-60-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140552141-75-78": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140552141-90-93": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140552141-105-111": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140688431-0-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140688431-15-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140931521-0-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "140931521-18-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "140931521-33-48": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "140931521-48-57": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "140931521-60-72": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "140939921-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140939921-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140939921-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "140939921-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141113311-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141167211-0-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141167211-12-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141617521-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141617521-15-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141617521-21-27": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141617521-30-39": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141617521-48-54": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141617521-60-72": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141617521-78-81": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "141617521-84-90": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142323511-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142323511-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": true,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "142323511-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": true,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "142744131-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142744131-15-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142744131-24-39": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142744131-39-45": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142744131-51-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142744131-63-69": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142921501-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142921501-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142921501-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "142921501-21-27": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143118211-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143118211-15-27": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143220861-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143220891-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143312541-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143321501-0-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143321501-21-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143321501-30-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143321501-45-51": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143321501-57-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143686721-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143872921-0-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": true,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143988991-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143989011-3-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143989011-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143989021-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143989031-21-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143989031-36-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143989031-42-54": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "143989031-54-60": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "144217041-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "144217041-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "144522241-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "144522241-33-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "144542321-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "144542321-9-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "144542321-21-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "144666061-6-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "144666061-12-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": true,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "144737411-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "144985691-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": true,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "144985691-15-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": true,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "144985691-27-33": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "145162571-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "145162571-9-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "145318801-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "145393821-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "145780291-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "145780291-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "146617701-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "146617701-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "146854721-0-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "147080301-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "147735271-9-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "147735271-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "147735271-39-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "147736891-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "147736891-18-21": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "147736891-27-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "147736891-36-39": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "147736891-63-66": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148271621-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148271621-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148271621-18-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148665641-3-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "148759971-3-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148759971-12-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148759971-21-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148759971-27-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148759971-33-36": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148759971-39-42": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148759971-45-48": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148939261-15-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "148939261-33-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "149356211-24-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "149356211-36-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "149356211-48-54": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "149356211-66-72": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "149444011-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149453561-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149453561-24-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "149453561-30-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149453561-39-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149487481-0-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149487481-18-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149731091-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149731091-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149731141-3-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149731141-24-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149731141-39-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149731141-48-54": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149936011-0-9": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149936011-9-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149936011-21-24": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "149936011-27-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "149936011-33-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "150404251-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "150404251-24-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "150404251-66-69": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "151570011-3-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "152151331-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "152151331-27-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "152151331-42-45": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "152784731-6-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "152784731-24-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "152784731-30-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "153684451-0-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "154817161-18-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "154817161-30-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "154817161-42-51": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "154843321-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "154941931-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "156023181-0-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "156023181-9-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "156346991-0-3": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "156346991-9-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "156346991-21-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "156346991-36-39": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "157443781-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "157546711-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "157546711-15-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "157546711-30-45": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "157546711-45-54": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "157826121-0-3": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "157826121-15-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "158361241-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159138991-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159518461-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159518461-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159518461-21-24": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159706611-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159706611-15-30": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159706611-30-45": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159706611-45-60": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159706611-60-75": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "159706611-75-78": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "160330681-0-15": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-0-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-12-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-18-33": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-33-48": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-48-63": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-63-78": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-78-84": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-87-102": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-102-117": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-120-123": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-129-144": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-144-147": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-156-162": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-165-177": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-183-198": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-198-204": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-207-222": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-222-225": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-228-243": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-243-246": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-249-258": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-264-270": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-282-288": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-309-315": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-318-330": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-336-342": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-345-348": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-354-357": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-369-381": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-411-414": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-441-444": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-447-456": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160940431-474-477": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "160957171-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "161788611-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "161788611-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162847371-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162847371-6-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162847371-15-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162847371-24-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162939421-0-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162939421-15-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162939421-30-36": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162939421-39-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162939421-42-57": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162939421-57-60": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162939421-66-69": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "162939421-72-78": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-27-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-45-48": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-60-69": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-72-75": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-78-87": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-99-105": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-114-123": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-126-132": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-135-141": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-144-147": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-153-162": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-174-180": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-189-198": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-204-207": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-210-213": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-216-219": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-222-225": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-231-237": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-252-255": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-261-267": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-270-282": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-288-294": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-306-309": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-315-321": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-327-330": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-342-345": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-363-366": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-387-390": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-399-402": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-423-432": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-435-441": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-450-453": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-465-468": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-525-528": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "163139551-561-564": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "163231911-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163231911-12-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163231911-24-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163231911-30-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163795651-3-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": true,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "163943131-6-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": true,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164096191-3-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": true,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "164096191-21-27": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": true,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "164096191-30-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": true,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164506291-3-18": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164506291-18-33": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164506291-33-39": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164635641-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164635641-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164954801-0-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164954841-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164954841-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164954841-15-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164954841-33-39": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164971281-0-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164971281-15-30": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "164971281-30-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134751-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134751-15-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-3-6": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-15-18": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-21-27": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-33-45": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-48-63": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-66-69": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-75-81": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-90-99": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-102-105": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-108-123": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-123-135": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-141-156": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-156-162": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-168-177": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "165134801-186-192": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165728231-3-9": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165728231-36-42": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165728231-48-57": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165728231-75-78": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "165728231-111-117": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "165728231-132-141": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "166049051-0-3": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": true,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166049051-9-15": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": true,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166049051-27-33": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": true,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-3-6": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-9-12": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-15-21": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-24-33": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-36-42": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-45-48": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-51-54": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-60-63": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-66-69": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-75-78": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-81-87": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-96-102": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-108-111": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-114-117": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-120-123": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-126-129": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-141-144": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-147-150": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-153-156": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-159-165": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-177-183": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-192-198": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-201-204": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-207-213": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-219-222": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-225-234": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-237-243": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-246-252": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-258-261": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-267-276": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-282-288": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-291-297": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": true,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-312-315": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-321-324": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-333-339": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-345-348": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-354-357": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-363-372": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-378-381": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-384-387": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-390-393": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-396-399": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-402-408": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-429-444": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-444-447": {
+    "crowCount": "multiple",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166505971-453-459": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "166806431-9-12": {
+    "crowCount": "single",
+    "crowAge": "adult",
+    "begging": false,
+    "softSong": false,
+    "rattle": false,
+    "badQuality": false,
+    "human": false,
+    "notes": ""
+  },
+  "167507991-3-9": {
     "crowCount": "single",
     "crowAge": "adult",
     "begging": false,
