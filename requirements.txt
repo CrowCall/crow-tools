@@ -5,3 +5,5 @@ tqdm
 resampy
 biodenoising
 norbert
+asteroid
+omegaconf==2.1.1
