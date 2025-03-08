@@ -31,7 +31,7 @@ def get_valid_segments(labels_path):
                 valid.append({"key": key, "file_id": file_id, "start_time": start_time, "end_time": end_time})
     return valid
 
-def choose_random_segments(valid_segments, count_range=(2,3)):
+def choose_random_segments(valid_segments, count_range=(2,4)):
     count = random.choice(range(count_range[0], count_range[1]+1))
     return random.sample(valid_segments, count)
 
@@ -123,6 +123,7 @@ def mix_audio(background, layers):
 
 def main():
     sr = 16000
+    total_seconds = 0.0
     preview = False
     backgrounds_dir = "labeler-vue/public/backgrounds"
     labels_json = "labeler-vue/public/labels.json"
@@ -139,13 +140,13 @@ def main():
     mix_count = 0
 
     # Generate 10 mixes (adjust as needed)
-    for _ in range(10):
+    for _ in range(1000):
         try:
             background, bg_file = next(bg_generator)
         except StopIteration:
             break
 
-        segments_info = choose_random_segments(valid_segments, (2,3))
+        segments_info = choose_random_segments(valid_segments)
         layers = []
         segments_details = []
         for seg in segments_info:
@@ -201,6 +202,11 @@ def main():
         mix_filename = f"mix_{mix_count}.wav"
         mix_path = os.path.join(merged_dir, mix_filename)
         sf.write(mix_path, mix, sr)
+
+        mix_length = len(mix)/sr
+        total_seconds += mix_length
+        print(f"Saved {mix_filename}: {mix_count} - {len(layers)} layers: {mix_length} seconds")
+
         # Save individual layers
         layer_files = {}
         bg_filename = f"mix_{mix_count}_background.wav"
@@ -220,8 +226,10 @@ def main():
         })
         mix_count += 1
 
-    with open("mix-dataset.json", "w") as f:
+    with open("labeler-vue/public/mixes//mix-dataset.json", "w") as f:
         json.dump(mix_dataset, f, indent=2)
+
+    print(f"Saved {len(mix_dataset)} mix dataset, Total: {total_seconds/60.0} minutes")
 
 if __name__ == "__main__":
     main()
