@@ -61,14 +61,40 @@ def adjust_segment(audio, sr, approx_start, approx_end, window_size=0.1, search_
         return None
     return quiet_start/sr, quiet_end/sr
 
-def add_reverb(audio, sr, reverb_amount=None):
-    if reverb_amount is None:
-        reverb_amount = random.uniform(0.2, 0.8)
-    ir_length = int(0.3 * sr)
-    t = np.linspace(0, 0.3, ir_length)
-    ir = np.exp(-t * reverb_amount)
-    ir = ir / np.sum(ir)
-    return np.convolve(audio, ir, mode="full")[:len(audio)]
+def generate_random_ir(sr, ir_length_sec):
+    ir_length = int(ir_length_sec * sr)
+    t = np.linspace(0, ir_length_sec, ir_length)
+    # Create a decaying envelope; adjust the decay constant for a stronger tail.
+    envelope = np.exp(-t / 0.3)
+    # Add some random variation (values between 0.5 and 1.0)
+    random_variation = np.random.uniform(0.5, 1.0, size=ir_length)
+    ir = envelope * random_variation
+    # Ensure the impulse has a strong initial peak.
+    ir[0] = 1.0
+    return ir
+
+def add_reverb(audio, sr, ir_length_sec=1.0, scale_rirs=10.0):
+    reverb_amount = random.uniform(0.0, 0.6)
+    # Generate a random impulse response and scale it.
+    ir = generate_random_ir(sr, ir_length_sec) * scale_rirs
+    # Convolve to get the wet (reverberated) signal.
+    wet = np.convolve(audio, ir, mode="full")[:len(audio)]
+    # Compute RMS of dry and wet signals.
+    dry_rms = np.sqrt(np.mean(audio**2))
+    wet_rms = np.sqrt(np.mean(wet**2))
+    # Set the wet signal's RMS to, say, 30% of the dry signal's RMS.
+    target_wet_rms = 0.3 * dry_rms
+    if wet_rms > 0:
+        wet = wet * (target_wet_rms / wet_rms)
+    # Mix dry and wet signals.
+    out = audio + wet
+    # Use reverb_amount to interpolate: 0 means fully dry, 1 means fully mixed.
+    out = (1 - reverb_amount) * audio + reverb_amount * out
+    # Clip to avoid distortion.
+    max_val = np.max(np.abs(out))
+    if max_val > 1:
+        out = out / max_val
+    return out
 
 def adjust_volume(audio, factor=None):
     if factor is None:
@@ -140,8 +166,8 @@ def main():
             if adj_end_sample > len(crow_audio):
                 continue
             segment_audio = crow_audio[adj_start_sample:adj_end_sample]
-            #segment_audio = add_reverb(segment_audio, sr)
-            #segment_audio = adjust_volume(segment_audio)
+            segment_audio = add_reverb(segment_audio, sr)
+            segment_audio = adjust_volume(segment_audio)
             start_idx, layer = insert_segment(background, segment_audio)
             if start_idx is None:
                 continue
