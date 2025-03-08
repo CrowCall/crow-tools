@@ -84,7 +84,7 @@ const app = Vue.createApp({
         },
         loadCrowsCSV() {
             const self = this;
-            Papa.parse('/crows.csv', {
+            Papa.parse('/csv/crows.csv', {
                 download: true,
                 header: true,
                 complete(results) {

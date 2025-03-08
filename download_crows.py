@@ -2,7 +2,7 @@ import csv
 import os
 import requests
 
-csv_path = "labeler-vue/public/crows.csv"
+csv_path = "labeler-vue/public/csv/crows.csv"
 library_dir = "labeler-vue/public/library"
 os.makedirs(library_dir, exist_ok=True)
 download_count = 0

@@ -6,7 +6,7 @@ import json
 import os
 from tqdm import tqdm
 
-csv_path = "labeler-vue/public/crows.csv"
+csv_path = "labeler-vue/public/csv/crows.csv"
 library_dir = "labeler-vue/public/library"
 segments_path = "labeler-vue/public/segments.json"
 segments = {}
