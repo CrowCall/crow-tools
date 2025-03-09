@@ -37,7 +37,7 @@ class CrowMixDataset(Dataset):
         if sr_m != self.sr:
             mixture = torchaudio.functional.resample(mixture, sr_m, self.sr)
 
-        source_keys = sorted(mix_info["layers"].keys()[1:])
+        source_keys = sorted(mix_info["layers"].keys())[1:]
         sources = []
         for key in source_keys:
             src_filename = mix_info["layers"][key]
@@ -49,10 +49,9 @@ class CrowMixDataset(Dataset):
 
         # Determine expected length from the mixture
         expected_length = mixture.shape[1]
-        # Set n_src to the maximum number of sources (for example, 3)
-        n_src = 3
+
         # Pad if necessary
-        sources = self.pad_sources(sources, n_src, expected_length)
+        sources = self.pad_sources(sources, FIXED_N_SRC, expected_length)
 
         return mixture, sources
 
