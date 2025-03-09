@@ -7,15 +7,16 @@ import sounddevice as sd
 
 random.seed(42)
 
-def background_audio_generator(directory, min_length=6.0, sr=16000):
+def background_audio_generator(directory, min_length=3.0, sr=16000):
     files = os.listdir(directory)
-    random.shuffle(files)
-    for file in files:
-        if file.lower().endswith(".mp3"):
-            path = os.path.join(directory, file)
-            audio, _ = librosa.load(path, sr=sr)
-            if len(audio) / sr >= min_length:
-                yield audio[:sr*15], file # max length 30 seconds
+    while True:
+        random.shuffle(files)
+        for file in files:
+            if file.lower().endswith(".mp3"):
+                path = os.path.join(directory, file)
+                audio, _ = librosa.load(path, sr=sr)
+                if len(audio) / sr >= min_length:
+                    yield audio[:sr*8], file
 
 def get_valid_segments(labels_path):
     with open(labels_path, "r", encoding="utf-8") as f:
@@ -31,34 +32,90 @@ def get_valid_segments(labels_path):
                 valid.append({"key": key, "file_id": file_id, "start_time": start_time, "end_time": end_time})
     return valid
 
-def choose_random_segments(valid_segments, count_range=(2,4)):
-    count = random.choice(range(count_range[0], count_range[1]+1))
+def choose_random_segments(valid_segments):
+    count = 12
     return random.sample(valid_segments, count)
 
-def adjust_segment(audio, sr, approx_start, approx_end, window_size=0.1, search_range=2.0, threshold=0.01):
+def adjust_segment(audio, sr, approx_start, approx_end,
+                              window_size=0.1, search_range=2.0, threshold=0.01):
+    """
+    Adjust an audio segment's boundaries so as to capture the full active region.
+
+    The algorithm works as follows:
+      1. Starting from approx_start, search backwards over a period of 'search_range'
+         for the first quiet window (where mean absolute amplitude < threshold).
+      2. Once found, check the window immediately following it (closer to approx_start).
+         If that window is louder, we assume a transition and use the quiet window as the start.
+      3. Similarly, starting from approx_end, search forward for a quiet window.
+      4. If no quiet window is found in a direction, use the approximate boundary.
+
+    This logic ensures that if the edges of the clip are too loud, the segment is trimmed
+    at the nearest quiet point—while otherwise capturing as much of the loud portion as possible.
+
+    Parameters:
+      audio       : 1D numpy array of audio samples.
+      sr          : Sampling rate in samples per second.
+      approx_start: Approximate start time (in seconds).
+      approx_end  : Approximate end time (in seconds).
+      window_size : Duration (in seconds) of the window used for amplitude averaging.
+      search_range: Maximum time (in seconds) to search for a quiet boundary.
+      threshold   : Amplitude threshold below which a window is considered quiet.
+
+    Returns:
+      (start_time, end_time) in seconds if a viable segment is found, otherwise None.
+    """
+    # Convert times to sample indices.
     start_idx = int(approx_start * sr)
     end_idx = int(approx_end * sr)
     win_len = int(window_size * sr)
     search_samples = int(search_range * sr)
+
+    # --- Find adjusted start ---
     quiet_start = None
+    # Search backward from the approx_start over the search range, in steps of one window.
     for offset in range(0, search_samples, win_len):
         idx = max(0, start_idx - offset)
-        if idx + win_len <= len(audio):
-            window = audio[idx:idx+win_len]
-            if np.mean(np.abs(window)) < threshold:
-                quiet_start = idx
+        if idx + win_len > len(audio):
+            continue
+        window = audio[idx: idx+win_len]
+        if np.mean(np.abs(window)) < threshold:
+            quiet_start = idx
+            # Check if the next window (closer to approx_start) is louder, meaning we’re at a quiet-to-sound transition.
+            next_idx = min(start_idx, idx + win_len)
+            if next_idx + win_len <= len(audio):
+                next_window = audio[next_idx: next_idx+win_len]
+                if np.mean(np.abs(next_window)) > np.mean(np.abs(window)):
+                    break
+            else:
                 break
+    # If no quiet window is found, fallback to the approximate start.
     if quiet_start is None:
-        return None
+        quiet_start = start_idx
+
+    # --- Find adjusted end ---
     quiet_end = None
+    # Search forward from approx_end.
     for offset in range(0, search_samples, win_len):
-        idx = min(len(audio)-win_len, end_idx + offset)
-        window = audio[idx:idx+win_len]
+        idx = min(len(audio) - win_len, end_idx + offset)
+        window = audio[idx: idx+win_len]
         if np.mean(np.abs(window)) < threshold:
             quiet_end = idx + win_len
-            break
+            # Check if the previous window (closer to approx_end) is louder.
+            prev_idx = max(0, idx - win_len)
+            if prev_idx + win_len <= len(audio):
+                prev_window = audio[prev_idx: prev_idx+win_len]
+                if np.mean(np.abs(prev_window)) > np.mean(np.abs(window)):
+                    break
+            else:
+                break
+    # If no quiet window is found, fallback to the approximate end.
     if quiet_end is None:
+        quiet_end = end_idx
+
+    # Ensure we have a viable segment.
+    if quiet_end <= quiet_start:
         return None
+
     return quiet_start/sr, quiet_end/sr
 
 def generate_random_ir(sr, ir_length_sec):
@@ -98,7 +155,7 @@ def add_reverb(audio, sr, ir_length_sec=1.0, scale_rirs=10.0):
 
 def adjust_volume(audio, factor=None):
     if factor is None:
-        factor = random.uniform(0.5, 0.9)
+        factor = random.uniform(0.6, 0.9)
     return audio * factor
 
 def insert_segment(background, segment):
@@ -140,7 +197,7 @@ def main():
     mix_count = 0
 
     # Generate 10 mixes (adjust as needed)
-    for _ in range(1000):
+    for _ in range(1200):
         try:
             background, bg_file = next(bg_generator)
         except StopIteration:
@@ -180,6 +237,9 @@ def main():
                 "adjusted_end": adj_end,
                 "insertion_index": start_idx
             })
+
+            if len(layers) == 2:
+                break
         if not layers:
             continue
 

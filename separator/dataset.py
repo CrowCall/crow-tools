@@ -3,9 +3,9 @@ import json
 import torch
 import torchaudio
 from torch.utils.data import Dataset, DataLoader
-import torch.nn.functional as F
+import numpy as np
 
-FIXED_N_SRC = 5
+FIXED_N_SRC = 2
 
 
 class CrowMixDataset(Dataset):
@@ -37,7 +37,7 @@ class CrowMixDataset(Dataset):
         if sr_m != self.sr:
             mixture = torchaudio.functional.resample(mixture, sr_m, self.sr)
 
-        source_keys = sorted(mix_info["layers"].keys())
+        source_keys = sorted(mix_info["layers"].keys()[1:])
         sources = []
         for key in source_keys:
             src_filename = mix_info["layers"][key]
@@ -56,41 +56,37 @@ class CrowMixDataset(Dataset):
 
         return mixture, sources
 
-
 def collate_fn(batch):
-    mixtures, sources_list = zip(*batch)
+    mixtures, sources_list = zip(*batch)  # Unpack batch tuples
+
+    # Convert to numpy arrays before torch conversion (avoids PyTorch warning)
+    mixtures = [mixture.numpy() if isinstance(mixture, torch.Tensor) else mixture for mixture in mixtures]
+    sources_list = [sources.numpy() if isinstance(sources, torch.Tensor) else sources for sources in sources_list]
 
     # Determine max time length among mixtures
     max_len = max(mixture.shape[1] for mixture in mixtures)
 
-    padded_mixtures = []
-    padded_sources = []
+    # Preallocate tensors
+    batch_size = len(batch)
+    padded_mixtures = np.zeros((batch_size, mixtures[0].shape[0], max_len), dtype=np.float32)  # [batch, channels, time]
+    padded_sources = np.zeros((batch_size, FIXED_N_SRC, max_len), dtype=np.float32)  # [batch, FIXED_N_SRC, time]
 
-    for mixture, sources in zip(mixtures, sources_list):
-        # Pad mixture (assumed shape [channels, time])
-        pad_time = max_len - mixture.shape[1]
-        if pad_time > 0:
-            mixture = F.pad(mixture, (0, pad_time))
-        padded_mixtures.append(mixture)
+    for i, (mixture, sources) in enumerate(zip(mixtures, sources_list)):
+        # Copy mixture data (instead of appending, preallocated)
+        padded_mixtures[i, :, :mixture.shape[1]] = mixture
 
-        # Assume sources is [n_src, channels, time]. If channels==1, squeeze it.
+        # Squeeze channel dimension if sources are mono
         if sources.shape[1] == 1:
-            sources = sources.squeeze(1)  # now shape [n_src, time]
-        # Pad sources in time dimension
-        pad_time = max_len - sources.shape[1]
-        if pad_time > 0:
-            sources = F.pad(sources, (0, pad_time))
-        # Now pad or trim along the n_src dimension
-        current_n_src = sources.shape[0]
-        if current_n_src < FIXED_N_SRC:
-            pad_tensor = torch.zeros((FIXED_N_SRC - current_n_src, sources.shape[1]), dtype=sources.dtype)
-            sources = torch.cat([sources, pad_tensor], dim=0)
-        elif current_n_src > FIXED_N_SRC:
-            sources = sources[:FIXED_N_SRC]
-        padded_sources.append(sources)
+            sources = sources.squeeze(1)  # Shape [n_src, time]
 
-    # Stack mixtures: if mixtures were mono, shape becomes [batch, time]
-    padded_mixtures = torch.stack(padded_mixtures)
-    # Stack sources: shape becomes [batch, FIXED_N_SRC, time]
-    padded_sources = torch.stack(padded_sources)
+        # Pad sources in time
+        sources_padded = np.zeros((FIXED_N_SRC, max_len), dtype=np.float32)
+        sources_padded[:sources.shape[0], :sources.shape[1]] = sources[:FIXED_N_SRC]  # Truncate or pad
+
+        padded_sources[i] = sources_padded  # Assign to preallocated array
+
+    # Convert final arrays to tensors
+    padded_mixtures = torch.tensor(padded_mixtures)
+    padded_sources = torch.tensor(padded_sources)
+
     return padded_mixtures, padded_sources
