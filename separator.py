@@ -7,9 +7,10 @@ from asteroid.models import DPRNNTasNet
 # Choose device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model_checkpoint = "separator/models/best_model.ckpt"
+model_checkpoint = "separator/models/best_model-v17.ckpt"
+input_audio = "samples/synthec-crows.wav"
 #input_audio = "samples/multiple-crow-sounds.mp3"
-input_audio = "labeler-vue/public/mixes/merged/mix_0.wav"
+#input_audio = "labeler-vue/public/mixes/merged/mix_0.wav"
 
 # Manually define the model architecture (match it exactly to your training setup)
 FIXED_N_SRC = 2  # Adjust this to match how many sources you separated in training

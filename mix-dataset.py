@@ -169,7 +169,8 @@ def insert_segment(background, segment):
     return start_idx, layer
 
 def mix_audio(background, layers):
-    mix = background.copy()
+    #mix = background.copy() # Use background audio
+    mix = np.zeros_like(background) # Use background silence
     for layer in layers:
         mix += layer
     max_val = np.max(np.abs(mix))
