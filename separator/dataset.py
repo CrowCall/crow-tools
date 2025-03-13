@@ -9,7 +9,7 @@ FIXED_N_SRC = 2
 
 
 class CrowMixDataset(Dataset):
-    def __init__(self, json_path, merged_dir, separate_dir, sr=16000, transform=None):
+    def __init__(self, json_path, merged_dir, separate_dir, sr=8000, transform=None):
         with open(json_path, "r", encoding="utf-8") as f:
             self.mixes = json.load(f)
         self.merged_dir = merged_dir
@@ -27,9 +27,13 @@ class CrowMixDataset(Dataset):
             # Create a silent source with the same number of channels (assume mono here) and expected length
             silence = torch.zeros(1, expected_length)
             sources.append(silence)
-        return torch.stack(sources, dim=0)
+        # Stack along a new dimension; shape becomes (n_src, channels, time)
+        stacked = torch.stack(sources, dim=0)
+        # If sources are mono (channels == 1), squeeze that dimension to get shape (n_src, time)
+        if stacked.shape[1] == 1:
+            stacked = stacked.squeeze(1)
+        return stacked
 
-    # In your __getitem__:
     def __getitem__(self, idx):
         mix_info = self.mixes[idx]
         mix_path = os.path.join(self.merged_dir, mix_info["mix"])
@@ -75,7 +79,7 @@ def collate_fn(batch):
         padded_mixtures[i, :, :mixture.shape[1]] = mixture
 
         # Squeeze channel dimension if sources are mono
-        if sources.shape[1] == 1:
+        if sources.ndim == 3 and sources.shape[1] == 1:
             sources = sources.squeeze(1)  # Shape [n_src, time]
 
         # Pad sources in time
