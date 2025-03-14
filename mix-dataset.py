@@ -11,7 +11,7 @@ random.seed(42)
 # Control switches and limits
 # ------------------------------
 PREVIEW = False
-NUM_MIXES = 5000
+NUM_MIXES = 3500
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
 ENABLE_REVERB = False
@@ -21,8 +21,8 @@ ENABLE_BACKGROUND_SOUNDS = True
 LIMIT_SEGMENT_USE = True
 LIMIT_FILE_ID_USE = True
 OFFSET_SECONDS = 0.5
-MAX_SEGMENT_USES = 2       # Each segment key can be used at most once.
-MAX_FILE_ID_USES = 50      # Each file ID can be used at most once.
+MAX_SEGMENT_USES = 3       # Each segment key can be used at most once.
+MAX_FILE_ID_USES = 60      # Each file ID can be used at most once.
 
 # ------------------------------
 # Helper functions
@@ -41,16 +41,50 @@ def background_audio_generator(directory, min_length=3.0, sr=SAMPLE_RATE):
 def get_valid_segments(labels_path):
     with open(labels_path, "r", encoding="utf-8") as f:
         labels = json.load(f)
-    valid = []
+    valid_segments = []
     for key, attr in labels.items():
+        # Only consider valid entries
         if attr.get("crowCount") == "single" and not attr.get("badQuality") and not attr.get("human"):
             parts = key.split("-")
             if len(parts) == 3:
                 file_id = parts[0]
                 start_time = float(parts[1])
                 end_time = float(parts[2])
-                valid.append({"key": key, "file_id": file_id, "start_time": start_time, "end_time": end_time})
-    return valid
+                length = end_time - start_time
+
+                # Determine how many splits
+                if 15.0 < length < 20.0:
+                    n = 3  # each sub-segment ~5s
+                elif 8.0 < length < 12.0:
+                    n = 2  # each sub-segment up to ~6s
+                elif 4.0 < length < 8.0:
+                    n = 1  # leave it as-is
+                else:
+                    n = 1
+
+                # Split the segment into n smaller sub-segments
+                sub_segments = []
+                if n == 1:
+                    sub_segments = [(start_time, end_time)]
+                else:
+                    sub_len = (end_time - start_time) / n
+                    seg_start = start_time
+                    for _ in range(n):
+                        seg_end = seg_start + sub_len
+                        sub_segments.append((seg_start, seg_end))
+                        seg_start = seg_end
+
+                # Create valid entries for each sub-segment
+                for idx, (sub_start, sub_end) in enumerate(sub_segments):
+                    new_key = f"{file_id}-{sub_start:.2f}-{sub_end:.2f}"
+                    valid_segments.append({
+                        "key": new_key,
+                        "file_id": file_id,
+                        "start_time": sub_start,
+                        "end_time": sub_end
+                    })
+
+    return valid_segments
 
 def choose_random_segments(valid_segments, segment_usage, file_id_usage, count=25):
     eligible_segments = []
@@ -264,7 +298,7 @@ def main():
             segment_audio = crow_audio[adj_start_sample:adj_end_sample]
 
             # Skip segment if it's less than 0.5 seconds long or if it contains no nonzero values.
-            if len(segment_audio) < int(0.5 * sr) or not np.any(segment_audio):
+            if len(segment_audio) < int(1.0 * sr) or not np.any(segment_audio):
                 print("Segment too short or silent: {}".format(crow_path))
                 continue
 
