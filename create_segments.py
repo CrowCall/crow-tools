@@ -4,7 +4,6 @@ from datetime import datetime
 import csv
 import json
 import os
-from tqdm import tqdm
 
 csv_path = "labeler-vue/public/csv/crows.csv"
 library_dir = "labeler-vue/public/library"
@@ -42,7 +41,7 @@ with open(csv_path, "r", encoding="utf-8-sig") as f:
              filepath,
              lat=lat,
              lon=long,
-             date=parsed_date,  # use date or week_48
+             date=parsed_date,
              min_conf=0.65,
             )
             recording.analyze()

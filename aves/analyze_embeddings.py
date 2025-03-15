@@ -8,14 +8,17 @@ import sounddevice as sd
 from ispa import utils
 from ispa.features import FeatureBasedISPAPredictor
 
+PATH = os.path.dirname(__file__)
+
 matplotlib.use("TkAgg")
 
+# Initialize the AVES feature predictor.
 ispa_f_predictor = FeatureBasedISPAPredictor(
     feature_type='aves',
-    kmeans_model='models/kmeans.aves.pkl',
-    phoneme_map='models/c2p.aves.json',
-    aves_config_path='models/aves-base-bio.torchaudio.model_config.json',
-    aves_model_path='models/aves-base-bio.torchaudio.pt'
+    kmeans_model=os.path.join(PATH, 'ispa', 'models', 'kmeans.aves.pkl'),
+    phoneme_map=os.path.join(PATH, 'ispa', 'models', 'c2p.aves.json'),
+    aves_config_path=os.path.join(PATH, 'ispa', 'models', 'aves-base-bio.torchaudio.model_config.json'),
+    aves_model_path=os.path.join(PATH, 'ispa', 'models', 'aves-base-bio.torchaudio.pt')
 )
 
 segments_path = "../labeler-vue/public/segments.json"

@@ -1,3 +1,4 @@
+import os.path
 from collections import defaultdict
 import json
 import pickle
@@ -8,22 +9,19 @@ import torch.nn as nn
 import torchaudio
 from torchaudio.models import wav2vec2_model
 
+PATH = os.path.dirname(__file__)
+
+# default config and model paths
+config_path = os.path.join(PATH, 'models', 'aves-base-bio.torchaudio.model_config.json')
+model_path = os.path.join(PATH, 'models', 'aves-base-bio.torchaudio.pt')
+
 
 class AvesFeatureExtractor(nn.Module):
-
-    # default config and model paths
-    config_path = 'models/aves-base-bio.torchaudio.model_config.json'
-    model_path = 'models/aves-base-bio.torchaudio.pt'
-
     def __init__(self, aves_config_path=config_path, aves_model_path=model_path):
-
         super().__init__()
-
-        # reference: https://pytorch.org/audio/stable/_modules/torchaudio/models/wav2vec2/utils/import_fairseq.html
-
-        self.config = self.load_config(aves_config_path)
+        self.config = self.load_config(config_path)
         self.model = wav2vec2_model(**self.config, aux_num_out=None)
-        self.model.load_state_dict(torch.load(aves_model_path))
+        self.model.load_state_dict(torch.load(model_path))
         self.model.feature_extractor.requires_grad_(False)
         self.model.eval()
 

@@ -36,14 +36,6 @@ with open(csv_path, "r", encoding="utf-8-sig") as f:
             skipped_count += 1
             continue
 
-        if "juv" in age_sex:
-            skipped_count += 1
-            continue
-
-        if rating < 4.0:
-            skipped_count += 1
-            continue
-
         download_count += 1
         print(f"Downloading {download_url} to {filepath}")
         response = requests.get(download_url, stream=True)
