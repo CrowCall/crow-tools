@@ -11,18 +11,19 @@ random.seed(42)
 # Control switches and limits
 # ------------------------------
 PREVIEW = False
-NUM_MIXES = 3500
+NUM_MIXES = 4500
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
-ENABLE_REVERB = False
+ENABLE_REVERB = True
 ENABLE_VOL_NORMALIZATION = True
 ENABLE_RANDOM_VOLUME = False
 ENABLE_BACKGROUND_SOUNDS = True
 LIMIT_SEGMENT_USE = True
 LIMIT_FILE_ID_USE = True
 OFFSET_SECONDS = 0.5
-MAX_SEGMENT_USES = 3       # Each segment key can be used at most once.
-MAX_FILE_ID_USES = 60      # Each file ID can be used at most once.
+MAX_SEGMENT_USES = 4        # Each segment key can be used at most once.
+MAX_FILE_ID_USES = 100      # Each file ID can be used at most once.
+NUM_SEGMENTS_PER_MIX = 2
 
 # ------------------------------
 # Helper functions
@@ -173,11 +174,6 @@ def adjust_volume(audio, factor=None):
         factor = random.uniform(0.6, 0.9)
     return audio * factor
 
-# --- NO LONGER USED ---
-# def insert_segment(background, segment):
-#     ...
-#     # (We don't call this anymore to avoid random placement.)
-
 def mix_audio(background, segments, sr=SAMPLE_RATE):
     """
     Mix each segment at OFFSET_SECONDS into the background,
@@ -225,6 +221,7 @@ def mix_audio(background, segments, sr=SAMPLE_RATE):
 def main():
     sr = SAMPLE_RATE
     total_seconds = 0.0
+    mix_dataset_path = "labeler-vue/public/mixes/mix-dataset.json"
     backgrounds_dir = "labeler-vue/public/backgrounds"
     labels_json = "labeler-vue/public/labels.json"
     library_dir = "labeler-vue/public/library"
@@ -243,8 +240,16 @@ def main():
 
     valid_segments = get_valid_segments(labels_json)
 
-    mix_dataset = []
-    mix_count = 0
+    # Load existing mix dataset if it exists, and determine starting mix count.
+    if os.path.exists(mix_dataset_path):
+        with open(mix_dataset_path, "r") as f:
+            mix_dataset = json.load(f)
+        mix_count = len(mix_dataset)
+        print(f"Loaded existing dataset. Starting mix count at {mix_count}.")
+    else:
+        mix_dataset = []
+        mix_count = 0
+        print("No existing dataset found. Starting fresh.")
 
     # Generate mixes (adjust the number as needed)
     for _ in range(NUM_MIXES):
@@ -297,7 +302,7 @@ def main():
 
             segment_audio = crow_audio[adj_start_sample:adj_end_sample]
 
-            # Skip segment if it's less than 0.5 seconds long or if it contains no nonzero values.
+            # Skip segment if it's less than 1.0 seconds long or if it contains no nonzero values.
             if len(segment_audio) < int(1.0 * sr) or not np.any(segment_audio):
                 print("Segment too short or silent: {}".format(crow_path))
                 continue
@@ -306,14 +311,12 @@ def main():
             if ENABLE_REVERB:
                 segment_audio = add_reverb(segment_audio, sr)
 
-            # No more random insert. We'll place at OFFSET_SECONDS in mix_audio().
             segments_list.append(segment_audio)
             segments_details.append({
                 "file_id": seg["file_id"],
                 "original_key": seg["key"],
                 "adjusted_start": adj_start,
                 "adjusted_end": adj_end,
-                # We no longer have a random insertion index; use OFFSET_SECONDS
                 "insertion_index": OFFSET_SECONDS
             })
 
@@ -321,15 +324,15 @@ def main():
             segment_usage[seg["key"]] = segment_usage.get(seg["key"], 0) + 1
             file_id_usage[seg["file_id"]] = file_id_usage.get(seg["file_id"], 0) + 1
 
-            # For this mix, stop after adding 2 segments.
-            if len(segments_list) == 2:
+            # For this mix, stop after adding X segments.
+            if len(segments_list) == NUM_SEGMENTS_PER_MIX:
                 break
 
         if not segments_list:
             print("No segments inserted")
             continue
 
-        if len(segments_list) < 2:
+        if len(segments_list) < NUM_SEGMENTS_PER_MIX:
             print("Not enough segments inserted: {}".format(len(segments_list)))
             continue
 
@@ -379,7 +382,7 @@ def main():
         })
         mix_count += 1
 
-    with open("labeler-vue/public/mixes/mix-dataset.json", "w") as f:
+    with open(mix_dataset_path, "w") as f:
         json.dump(mix_dataset, f, indent=2)
 
     print(f"Saved {len(mix_dataset)} mix dataset, Total: {total_seconds/60.0} minutes")
