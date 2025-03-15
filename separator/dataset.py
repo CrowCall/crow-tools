@@ -7,11 +7,38 @@ import numpy as np
 
 FIXED_N_SRC = 2
 
+import json
+import random
 
-class CrowMixDataset(Dataset):
-    def __init__(self, json_path, merged_dir, separate_dir, sr=8000, transform=None):
+
+class CrowMixDataset:
+    def __init__(self, json_path, merged_dir, separate_dir, mode="train", val_key_count=200, seed=42, sr=8000, transform=None):
+        # Load the full mixes dataset.
         with open(json_path, "r", encoding="utf-8") as f:
-            self.mixes = json.load(f)
+            self.loaded_mixes = json.load(f)
+
+        # Extract all unique segment keys.
+        unique_keys = {seg["original_key"] for mix in self.loaded_mixes for seg in mix["segments"]}
+        unique_keys = list(unique_keys)
+
+        # Select a fixed number of keys for validation.
+        random.seed(seed)
+        val_keys = set(random.sample(unique_keys, min(val_key_count, len(unique_keys))))
+
+        # Assign mixes based on the mode.
+        # For validation, include mixes with at least one segment key in the validation set.
+        # For training, include only mixes that do not have any segments from the validation set.
+        if mode == "validate":
+            self.mixes = [mix for mix in self.loaded_mixes
+                          if any(seg["original_key"] in val_keys for seg in mix["segments"])]
+        elif mode == "train":
+            self.mixes = [mix for mix in self.loaded_mixes
+                          if not any(seg["original_key"] in val_keys for seg in mix["segments"])]
+        else:
+            raise ValueError("mode must be either 'train' or 'validate'")
+
+        print(f"Mode: {mode}. Found {len(self.mixes)} mixes out of {len(self.loaded_mixes)} total.")
+
         self.merged_dir = merged_dir
         self.separate_dir = separate_dir
         self.sr = sr

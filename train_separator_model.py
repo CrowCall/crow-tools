@@ -25,13 +25,8 @@ sr = 8000
 batch_size = 1
 
 # Load dataset
-train_dataset = CrowMixDataset(json_path, merged_dir, separate_dir, sr=sr)
-
-# Split dataset into train/validation sets (80% train, 20% validation)
-total_size = len(train_dataset)
-train_size = int(0.8 * total_size)
-val_size = total_size - train_size
-train_dataset, val_dataset = random_split(train_dataset, [train_size, val_size])
+train_dataset = CrowMixDataset(json_path, merged_dir, separate_dir, sr=sr, mode="train")
+val_dataset = CrowMixDataset(json_path, merged_dir, separate_dir, sr=sr, mode="validate")
 
 # Get data loaders
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=3, persistent_workers=True, collate_fn=collate_fn)
