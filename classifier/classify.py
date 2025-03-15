@@ -1,9 +1,12 @@
 import torch
 import numpy as np
-from model import CrowClassifier
+from classifier.model import CrowClassifier
+import os
 
+PATH = os.path.dirname(__file__)
+checkpoint_path= os.path.join(PATH, "logs", "checkpoints", "best_model.ckpt")
 
-def predict_embedding(embedding, checkpoint_path="logs/checkpoints/best_model.ckpt", device="cpu"):
+def predict_embedding(embedding, device="cpu"):
     """
     Given an embedding (numpy array of shape [768]), load the model,
     perform inference, and return a predicted label dictionary.

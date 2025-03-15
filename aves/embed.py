@@ -55,5 +55,5 @@ if __name__ == "__main__":
     # Generate a random waveform as an example (normally you'd load real audio).
     dummy_waveform = torch.randn(sample_rate * duration_seconds)
 
-    embedding = generate_embeddings(dummy_waveform, sample_rate)
+    embedding = generate_embeddings(dummy_waveform)
     print("Generated embedding shape:", embedding.shape)
