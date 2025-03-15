@@ -7,3 +7,4 @@ biodenoising
 norbert
 asteroid
 omegaconf==2.1.1
+pesto-pitch==0.1.0
