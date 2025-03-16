@@ -5,6 +5,14 @@ import os
 
 PATH = os.path.dirname(__file__)
 
+# Initialize the AVES feature predictor.
+ispa_f_predictor = FeatureBasedISPAPredictor(
+    feature_type='aves',
+    kmeans_model=os.path.join(PATH, 'ispa', 'models', 'kmeans.aves.pkl'),
+    phoneme_map=os.path.join(PATH, 'ispa', 'models', 'c2p.aves.json'),
+    aves_config_path=os.path.join(PATH, 'ispa', 'models', 'aves-base-bio.torchaudio.model_config.json'),
+    aves_model_path=os.path.join(PATH, 'ispa', 'models', 'aves-base-bio.torchaudio.pt')
+)
 
 def generate_embeddings(waveform):
     """
@@ -25,15 +33,6 @@ def generate_embeddings(waveform):
     if waveform.dim() == 1:
         # Add a batch dimension.
         waveform = waveform.unsqueeze(0)
-
-    # Initialize the AVES feature predictor.
-    ispa_f_predictor = FeatureBasedISPAPredictor(
-        feature_type='aves',
-        kmeans_model= os.path.join(PATH, 'ispa', 'models', 'kmeans.aves.pkl'),
-        phoneme_map= os.path.join(PATH, 'ispa', 'models', 'c2p.aves.json'),
-        aves_config_path= os.path.join(PATH, 'ispa', 'models', 'aves-base-bio.torchaudio.model_config.json'),
-        aves_model_path= os.path.join(PATH, 'ispa', 'models', 'aves-base-bio.torchaudio.pt')
-    )
 
     # Extract features; expected shape is (batch, time, feature_dim).
     features = ispa_f_predictor.feature_extractor(waveform)
