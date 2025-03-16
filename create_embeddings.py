@@ -7,12 +7,9 @@ from aves.ispa import utils
 def main():
     # Paths to segments and labels.
     segments_path = "labeler-vue/public/segments.json"
-    labels_path = "labeler-vue/public/labels.json"
 
     with open(segments_path, encoding='utf-8', mode='r') as f:
         segments_dict = json.load(f)
-    with open(labels_path, encoding='utf-8', mode='r') as f:
-        labels = json.load(f)
 
     # Define parameters.
     sample_rate = 8000
