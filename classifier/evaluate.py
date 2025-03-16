@@ -1,12 +1,10 @@
-import os
 import torch
 from torch.utils.data import DataLoader, random_split
-from pytorch_lightning.loggers import TensorBoardLogger
-from model import CrowClassifier  # Your LightningModule
-from dataset import CrowDataset  # Your Dataset
+from model import CrowClassifier
+from dataset import CrowDataset
 
 
-def evaluate_model(model, dataloader, logger, device):
+def evaluate_model(model, dataloader, device):
     model.eval()
     # Create dictionaries to accumulate correct counts and totals per attribute.
     metrics = {
@@ -64,12 +62,7 @@ def evaluate_model(model, dataloader, logger, device):
     accuracies = {}
     for key, counts in metrics.items():
         accuracies[key] = counts["correct"] / counts["total"] if counts["total"] > 0 else 0.0
-
-    # Log each metric to TensorBoard.
-    global_step = 0  # Adjust if needed (e.g., current epoch or iteration).
-    for key, acc in accuracies.items():
-        logger.experiment.add_scalar(f"accuracy/{key}", acc, global_step)
-        print(f"Accuracy for {key}: {acc:.4f}")
+        print(f"Accuracy for {key}: {accuracies[key] :.4f} ({counts['correct']}/{counts['total']})")
 
     return accuracies
 
@@ -88,8 +81,8 @@ if __name__ == "__main__":
 
     # Split the dataset.
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-    train_loader = DataLoader(train_dataset, batch_size=32, num_workers=3, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=32, num_workers=3, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=1, num_workers=3, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=1, num_workers=3, shuffle=False)
 
     # Instantiate the model.
     model = CrowClassifier()
@@ -97,8 +90,9 @@ if __name__ == "__main__":
     model = CrowClassifier.load_from_checkpoint("logs/checkpoints/best_model.ckpt")
     model.to(device)
 
-    # Setup TensorBoard logger.
-    tb_logger = TensorBoardLogger("logs", name="crow-classify")
-
     # Run evaluation.
-    accuracies = evaluate_model(model, train_loader, tb_logger, device)
+    print(f"\nEvaluating on {len(train_loader)} TRAINING samples")
+    accuracies = evaluate_model(model, train_loader, device)
+
+    print(f"\nEvaluating on {len(val_loader)} VALIDATE samples")
+    accuracies = evaluate_model(model, val_loader, device)
