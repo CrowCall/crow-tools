@@ -11,18 +11,18 @@ random.seed(42)
 # Control switches and limits
 # ------------------------------
 PREVIEW = False
-NUM_MIXES = 4500
+NUM_MIXES = 5000
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
-ENABLE_REVERB = True
+ENABLE_REVERB = False
 ENABLE_VOL_NORMALIZATION = True
 ENABLE_RANDOM_VOLUME = False
 ENABLE_BACKGROUND_SOUNDS = True
 LIMIT_SEGMENT_USE = True
 LIMIT_FILE_ID_USE = True
 OFFSET_SECONDS = 0.5
-MAX_SEGMENT_USES = 4        # Each segment key can be used at most once.
-MAX_FILE_ID_USES = 100      # Each file ID can be used at most once.
+MAX_SEGMENT_USES = 1       # Each segment key can be used at most once.
+MAX_FILE_ID_USES = 50      # Each file ID can be used at most once.
 NUM_SEGMENTS_PER_MIX = 2
 
 # ------------------------------
@@ -223,7 +223,7 @@ def main():
     total_seconds = 0.0
     mix_dataset_path = "labeler-vue/public/mixes/mix-dataset.json"
     backgrounds_dir = "labeler-vue/public/backgrounds"
-    labels_json = "labeler-vue/public/labels.json"
+    labels_json = "labeler-vue/public/auto_labels.json"
     library_dir = "labeler-vue/public/library"
     denoised_dir = "labeler-vue/public/library-denoised"
     merged_dir = "labeler-vue/public/mixes/merged"
