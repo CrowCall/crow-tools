@@ -25,10 +25,6 @@ def main():
             end_time = segment.get('end_time')
             segment_key = f"{file_id}-{int(start_time)}-{int(end_time)}"
 
-            # (Optional) Check that the segment has a corresponding label.
-            if segment_key not in labels:
-                continue
-
             # Build the audio file path.
             # Adjust the paths as needed. Here we assume non-denoised files in MP3 format.
             audio_path = os.path.join( "/home/jonathan/apps/earthspecies/crow-sounds/labeler-vue/public/library", f"{file_id}.mp3")
@@ -37,14 +33,15 @@ def main():
                 print(f"Audio file {audio_path} not found, skipping segment {segment_key}.")
                 continue
 
-            # Load the waveform for this 3-second segment.
-            waveform, sr = utils.load_waveform(audio_path, tgt_sr=sample_rate, start_sec=start_time, end_sec=end_time)
-            if sr != sample_rate:
-                print(f"Warning: Sample rate mismatch for {file_id}. Using loaded sample rate {sr}.")
-
             # Generate the embedding.
             embedding_path = os.path.join("embeddings", f"{segment_key}.npy")
             if not os.path.exists(embedding_path):
+                # Load the waveform for this 3-second segment.
+                print(f"Load wav file {audio_path}.")
+                waveform, sr = utils.load_waveform(audio_path, tgt_sr=sample_rate, start_sec=start_time, end_sec=end_time)
+                if sr != sample_rate:
+                    print(f"Warning: Sample rate mismatch for {file_id}. Using loaded sample rate {sr}.")
+
                 embedding = generate_embeddings(waveform)
                 np.save(embedding_path, embedding)
                 print(f"Saved embedding for {segment_key} to {embedding_path}")
