@@ -36,26 +36,36 @@ with open(csv_path, "r", encoding="utf-8-sig") as f:
             # Load and initialize the BirdNET-Analyzer models.
             analyzer = Analyzer()
 
+            CONFIDENCE_THRESHOLD = 0.65
             recording = Recording(
              analyzer,
              filepath,
              lat=lat,
              lon=long,
              date=parsed_date,
-             min_conf=0.65,
+             min_conf=CONFIDENCE_THRESHOLD,
             )
             recording.analyze()
-            if recording.detections:
-                print(f">>>>> Found {len(recording.detections)} detections in {filename}")
-                segments[catalog_number] = recording.detections
+
+            # Collect crow detections
+            detections = []
+            for d in recording.detection_list:
+                if d.confidence > CONFIDENCE_THRESHOLD and d.scientific_name == "Corvus brachyrhynchos":
+                    detections.append({ "common_name": d.common_name, "scientific_name": d.scientific_name,
+                                         "start_time": d.start_time, "end_time": d.end_time, "confidence": d.confidence })
+
+            # {"common_name": "American Crow", "scientific_name": "Corvus brachyrhynchos", "start_time": 15.0, "end_time": 30.0, "confidence": 0.7989989399909974}
+            if detections:
+                print(f">>>>> Found {len(detections)} detections in {filename}")
+                segments[catalog_number] = detections
             else:
                 print(f"<<<<<< No detections in {filename}")
 
             if len(segments) % 10 == 0:
                 # Write output to JSON file
                 print(f"***** Saved Segments for Files: {len(segments)}")
-                open("segments.json", "w").write(json.dumps(segments))
+                open("labeler-vue/public/segments.json", "w").write(json.dumps(segments))
 
 # Write output to JSON file
 print(f"***** Saved Segments for Files: {len(segments)}")
-open("segments.json", "w").write(json.dumps(segments))
+open("labeler-vue/public/segments.json", "w").write(json.dumps(segments))
