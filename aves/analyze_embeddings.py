@@ -7,6 +7,7 @@ from sklearn.decomposition import PCA
 import sounddevice as sd
 from ispa import utils
 from ispa.features import FeatureBasedISPAPredictor
+from collections import Counter
 
 PATH = os.path.dirname(__file__)
 
@@ -24,8 +25,19 @@ ispa_f_predictor = FeatureBasedISPAPredictor(
 segments_path = "../labeler-vue/public/segments.json"
 segments_dict = json.load(open(segments_path, encoding='utf-8', mode='r'))
 
-labels_path = "../labeler-vue/public/labels.json"
+#labels_path = "../labeler-vue/public/labels.json"
+labels_path = "../labeler-vue/public/auto_labels.json"
 labels = json.load(open(labels_path, encoding='utf-8', mode='r'))
+
+# Print stats from segments
+print(f"Total files: {len(segments_dict)}")
+print(f"Total segments: {sum([len(segments) for file_id, segments in segments_dict.items()])}")
+durations = [
+    seg["end_time"] - seg["start_time"]
+    for segs in segments_dict.values()
+    for seg in (segs if isinstance(segs, list) else [segs])
+]
+print(f"Lengths of segments (seconds):\n{Counter(durations)}\n")
 
 # Print stats from labels
 print(f"Total labels: {len(labels)}")
@@ -47,9 +59,7 @@ print("----")
 
 denoised = False
 processed_seconds = 0
-time_resolution = 50.0
-sample_rate = 16000
-chunk_size = 149
+sample_rate = 8000
 chunk_embeddings = []
 chunk_info = []
 
@@ -59,13 +69,13 @@ for file_id, segments in segments_dict.items():
         segment_key = f"{file_id}-{segment.get('start_time'):.0f}-{segment.get('end_time'):.0f}"
         label = labels.get(segment_key)
 
-        if not label:
-            continue
         # Get labeled segment (if any)
         # if not (label and label.get('crowCount') == 'single'
         #         and label.get('badQuality') == False
         #         and label.get('human') == False):
         #     continue
+        if not label:
+            continue
 
         # Get segment length
         segment_length = segment.get('end_time') - segment.get('start_time')
@@ -81,38 +91,12 @@ for file_id, segments in segments_dict.items():
 
         if os.path.exists(audio_path):
             # check for cached embeddings
-            cached_path = os.path.join(f"embeddings{denoised_suffix}", f"{segment_key}.npy")
+            cached_path = os.path.join(f"../embeddings{denoised_suffix}", f"{segment_key}.npy")
             if os.path.exists(cached_path):
                 feature = np.load(cached_path)
             else:
-                # Load the segment of audio
-                waveform, _ = utils.load_waveform(audio_path, start_sec=segment.get('start_time'), end_sec=segment.get('end_time'))
-
-                feature_chunk_length = int(sample_rate * 60)
-                if waveform.shape[-1] > feature_chunk_length:
-                    features = []
-                    # Process each chunk
-                    for start in range(0, waveform.shape[-1], feature_chunk_length):
-                        end = min(start + feature_chunk_length, waveform.shape[-1])
-                        waveform_chunk = waveform[..., start:end]
-
-                        # Extract features using AVES on the chunk
-                        feature_chunk = ispa_f_predictor.feature_extractor(waveform_chunk)  # (batch, time, feature)
-                        feature_chunk = feature_chunk.squeeze(0)  # (time, feature)
-                        feature_chunk = feature_chunk.detach().numpy()  # Convert to NumPy
-                        features.append(feature_chunk)
-
-                    # Concatenate features along the time axis
-                    feature = np.concatenate(features, axis=0)
-                else:
-                    # Process the whole segment if it is 60 seconds or shorter
-                    feature = ispa_f_predictor.feature_extractor(waveform)  # (batch, time, feature)
-                    feature = feature.squeeze(0)  # (time, feature)
-                    feature = feature.detach().numpy()  # Convert to NumPy
-
-                # Save to cache
-                np.save(cached_path, feature)
-
+                print(f"Skipping {segment_key}, no cached file found")
+                continue
 
             if label:
                 if label.get('badQuality') == True or label.get('human') == True:
@@ -132,52 +116,23 @@ for file_id, segments in segments_dict.items():
             else:
                 color = "gray"
 
-            num_chunks = feature.shape[0] // chunk_size
-            for i in range(num_chunks):
-                start_idx = i * chunk_size
-                end_idx = (i + 1) * chunk_size
-                chunk_data = feature[start_idx:end_idx, :]  # (chunk_size, feature_dim)
-                chunk_mean = np.mean(chunk_data, axis=0)    # (feature_dim,)
-
-                # Store the embedding
-                chunk_embeddings.append(chunk_mean)
-
-                # Store metadata for playback
-                chunk_start_time = segment.get('start_time') + (start_idx / time_resolution)
-                chunk_end_time = segment.get('start_time') + (end_idx / time_resolution)
-
-                chunk_info.append({
-                    "audio_path": audio_path,
-                    "chunk_start_time": chunk_start_time,
-                    "chunk_end_time": chunk_end_time,
-                    "color": color
-                })
-
-            # Handle leftover frames
-            leftover = feature.shape[0] % chunk_size
-            if leftover > 49:
-                start_idx = feature.shape[0] - leftover
-                chunk_data = feature[start_idx:, :]
-                chunk_mean = np.mean(chunk_data, axis=0)
-
-                chunk_embeddings.append(chunk_mean)
-                chunk_start_time = segment.get('start_time') + (start_idx / time_resolution)
-                chunk_end_time = segment.get('start_time') + ((start_idx + leftover) / time_resolution)
-
-                chunk_info.append({
-                    "audio_path": audio_path,
-                    "chunk_start_time": chunk_start_time,
-                    "chunk_end_time": chunk_end_time,
-                    "color": color
-                })
+            chunk_embeddings.append(feature)
+            chunk_info.append({
+                "audio_path": audio_path,
+                "chunk_start_time": segment.get('start_time'),
+                "chunk_end_time": segment.get('end_time'),
+                "color": color
+            })
         else:
             print(f"Audio file {audio_path} not found, skipping")
 
-print(f"Processed minutes: {processed_seconds / 60} minutes")
-
+hours = int(processed_seconds // 3600)
+minutes = int((processed_seconds % 3600) // 60)
+print(f"Processed time: {hours:02d}:{minutes:02d} (HH:MM)")
+print(f"Average time per segment: {processed_seconds/len(chunk_embeddings)} seconds")
 
 chunk_embeddings = np.array(chunk_embeddings)
-print("Total chunks:", chunk_embeddings.shape[0])
+print("Total segments plotted:", chunk_embeddings.shape[0])
 
 pca = PCA(n_components=3)
 embeddings_3d = pca.fit_transform(chunk_embeddings)
