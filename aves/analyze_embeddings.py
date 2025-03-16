@@ -126,7 +126,7 @@ for file_id, segments in segments_dict.items():
         if denoised:
             denoised_suffix = "-denoised"
             audio_extension = "wav"
-        audio_path = os.path.join(f"/home/jonathan/apps/earthspecies/crow-sounds/labeler-vue/public/library{denoised_suffix}/{file_id}.{audio_extension}")
+        audio_path = os.path.join(PATH, "../", "labeler-vue", "public", f"library{denoised_suffix}", f"{file_id}.{audio_extension}")
 
         if os.path.exists(audio_path):
             # check for cached embeddings
