@@ -1,16 +1,17 @@
 import json
 import os
+
 import matplotlib
-import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
+import numpy as np
+import pandas as pd
 import sounddevice as sd
+from sklearn.decomposition import PCA
+
 from ispa import utils
 from ispa.features import FeatureBasedISPAPredictor
-from collections import Counter
 
 PATH = os.path.dirname(__file__)
-
 matplotlib.use("TkAgg")
 
 # Initialize the AVES feature predictor.
@@ -22,40 +23,78 @@ ispa_f_predictor = FeatureBasedISPAPredictor(
     aves_model_path=os.path.join(PATH, 'ispa', 'models', 'aves-base-bio.torchaudio.pt')
 )
 
+
+def print_label_stats(labels):
+    # Convert labels dict into a DataFrame.
+    df = pd.DataFrame.from_dict(labels, orient='index')
+
+    # Standardize 'crowCount' values; assume empty means "single".
+    df['crowCount'] = df['crowCount'].str.lower().replace('', 'single')
+
+    # Define quality based on badQuality and human flags.
+    def determine_quality(row):
+        if row.get('human'):
+            return 'human'
+        elif row.get('badQuality'):
+            return 'bad'
+        else:
+            return 'good'
+
+    df['quality'] = df.apply(determine_quality, axis=1)
+
+    # Overall crosstab: frequency counts.
+    overall_ct = pd.crosstab(df['quality'], df['crowCount'], margins=True)
+
+    print("=== LABEL SUMMARY ===")
+    print("\nOverall Counts (Quality vs. CrowCount):")
+    print(overall_ct)
+    print()
+
+    # For each feature, compute frequency (number of True values) and percentages.
+    features = ['rattle', 'begging', 'softSong']
+    for feat in features:
+        # Frequency: since booleans sum to counts.
+        feat_freq = df.groupby(['quality', 'crowCount'])[feat].sum().unstack()
+        print(f"{feat.capitalize()} Counts (True):")
+        print(feat_freq.fillna(0).astype(int))
+        print()
+
+    print("Total labels:", len(df))
+    print()
+
+def print_segment_stats(segments_dict):
+    total_files = len(segments_dict)
+    segments_list = []
+
+    for segs in segments_dict.values():
+        # Ensure we have a list.
+        seg_list = segs if isinstance(segs, list) else [segs]
+        for seg in seg_list:
+            duration = seg["end_time"] - seg["start_time"]
+            segments_list.append(duration)
+
+    total_segments = len(segments_list)
+    durations_series = pd.Series(segments_list)
+    freq = durations_series.value_counts().sort_index()
+    pct = durations_series.value_counts(normalize=True).sort_index() * 100
+    freq_table = pd.DataFrame({'Count': freq, 'Percentage': pct.round(1)})
+
+    print("=== SEGMENT SUMMARY ===")
+    print(f"Total files   : {total_files}")
+    print(f"Total segments: {total_segments}")
+    print("\nSegment Duration Distribution (seconds):")
+    print(freq_table)
+    print()
+
 segments_path = "../labeler-vue/public/segments.json"
 segments_dict = json.load(open(segments_path, encoding='utf-8', mode='r'))
 
-#labels_path = "../labeler-vue/public/labels.json"
-labels_path = "../labeler-vue/public/auto_labels.json"
+labels_path = "../labeler-vue/public/labels.json"
+#labels_path = "../labeler-vue/public/auto_labels.json"
 labels = json.load(open(labels_path, encoding='utf-8', mode='r'))
 
-# Print stats from segments
-print(f"Total files: {len(segments_dict)}")
-print(f"Total segments: {sum([len(segments) for file_id, segments in segments_dict.items()])}")
-durations = [
-    seg["end_time"] - seg["start_time"]
-    for segs in segments_dict.values()
-    for seg in (segs if isinstance(segs, list) else [segs])
-]
-print(f"Lengths of segments (seconds):\n{Counter(durations)}\n")
-
-# Print stats from labels
-print(f"Total labels: {len(labels)}")
-print("----Sources:")
-print(f"single crows (total): {len([value for key, value in labels.items() if value.get('crowCount') == 'single'])}")
-print(f"single crows (good): {len([value for key, value in labels.items() if value.get('crowCount') == 'single' and value.get('badQuality') == False and value.get('human') == False])}")
-print(f"multiple crows (total): {len([value for key, value in labels.items() if value.get('crowCount') == 'multiple'])}")
-print("----Age:")
-print(f"adult crows: {len([value for key, value in labels.items() if value.get('crowAge') == 'adult'])}")
-print(f"juvenile crows: {len([value for key, value in labels.items() if value.get('crowAge') == 'juvenile'])}")
-print("----Features:")
-print(f"rattle crows: {len([value for key, value in labels.items() if value.get('rattle') == True])}")
-print(f"begging crows: {len([value for key, value in labels.items() if value.get('begging') == True])}")
-print(f"soft-song crows: {len([value for key, value in labels.items() if value.get('softSong') == True])}")
-print("----Quality:")
-print(f"good quality: {len([value for key, value in labels.items() if value.get('badQuality') == False and value.get('human') == False])}")
-print(f"bad quality: {len([value for key, value in labels.items() if value.get('badQuality') == True or value.get('human') == True])}")
-print("----")
+print_label_stats(labels)
+print_segment_stats(segments_dict)
 
 denoised = False
 processed_seconds = 0
@@ -182,3 +221,4 @@ def on_pick(event):
 # Connect the pick event to the callback
 fig.canvas.mpl_connect('pick_event', on_pick)
 plt.show()
+
