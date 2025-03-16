@@ -43,7 +43,7 @@ def main():
                 print(f"Cached embedding for segment {segment_key} not found, skipping.")
 
     # Save the auto labels to "auto_labels.json".
-    with open("auto_labels.json", "w", encoding="utf-8") as f:
+    with open(os.path.join("labeler-vue", "public", "auto_labels.json"), "w", encoding="utf-8") as f:
         json.dump(auto_labels, f, indent=4)
     print("Saved auto labels to auto_labels.json")
 
