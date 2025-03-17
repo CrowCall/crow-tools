@@ -159,13 +159,39 @@ def add_reverb(audio, sr, ir_length_sec=1.0, scale_rirs=10.0):
         out = out / max_val
     return out
 
-def normalize_audio_segment(audio, target_peak=0.8):
-    """Normalize segment audio so that its peak is near target_peak."""
-    peak = np.max(np.abs(audio))
-    if peak == 0:
+def is_audio_silient(segment_audio, sr, min_duration=1.0, silence_threshold=1e-1, silence_fraction=0.95):
+    # Check if the segment is too short.
+    if len(segment_audio) < int(min_duration * sr):
+        return True
+
+    # Compute the fraction of silent samples.
+    silent_ratio = np.mean(np.abs(segment_audio) < silence_threshold)
+    return silent_ratio > silence_fraction
+
+def normalize_audio_segment(audio, target_peak=0.8, target_rms=0.15, max_peak=1.0):
+    # Convert integer audio to float in [-1, 1] if needed.
+    if np.issubdtype(audio.dtype, np.integer):
+        max_val = np.iinfo(audio.dtype).max
+        audio = audio.astype(np.float32) / max_val
+
+    # Step 1: Peak normalization
+    original_peak = np.max(np.abs(audio))
+    if original_peak == 0:
         return audio
-    scaling_factor = target_peak / peak
+    scaling_factor = target_peak / original_peak
     normalized_audio = audio * scaling_factor
+
+    # Step 2: Check RMS and apply additional gain if needed.
+    rms = np.sqrt(np.mean(normalized_audio ** 2))
+    if rms < target_rms:
+        # Candidate gain to bring RMS up to target_rms.
+        candidate_gain = target_rms / (rms + 1e-8)
+        # But after peak normalization, the maximum is target_peak.
+        # To prevent clipping above max_peak, we limit the extra gain.
+        max_gain = max_peak / target_peak  # maximum multiplier allowed.
+        extra_gain = min(candidate_gain, max_gain)
+        normalized_audio *= extra_gain
+
     return normalized_audio
 
 def adjust_volume(audio, factor=None):
@@ -284,7 +310,7 @@ def main():
 
             # Normalize segment volume if enabled (else apply a random volume adjustment)
             if ENABLE_VOL_NORMALIZATION:
-                crow_audio = normalize_audio_segment(crow_audio, target_peak=0.8)
+                crow_audio = normalize_audio_segment(crow_audio, target_peak=0.85)
             elif ENABLE_RANDOM_VOLUME:
                 crow_audio = adjust_volume(crow_audio)
 
@@ -303,7 +329,7 @@ def main():
             segment_audio = crow_audio[adj_start_sample:adj_end_sample]
 
             # Skip segment if it's less than 1.0 seconds long or if it contains no nonzero values.
-            if len(segment_audio) < int(1.0 * sr) or not np.any(segment_audio):
+            if is_audio_silient(segment_audio, sr):
                 print("Segment too short or silent: {}".format(crow_path))
                 continue
 
