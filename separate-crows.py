@@ -7,10 +7,15 @@ from asteroid.models import DPRNNTasNet
 # Choose device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model_checkpoint = "separator/models/best_model.ckpt"
+model_checkpoint = "separator/models/best_model_epoch=23.ckpt"
+
+#input_audio = "samples/non-overlapping-multiple-crows.mp3"
 #input_audio = "samples/synthec-crows.wav"
-input_audio = "samples/multiple-crow-sounds.mp3"
-#input_audio = "labeler-vue/public/mixes/merged/mix_0.wav"
+#input_audio = "samples/overlapping-crows-1.wav"
+#input_audio = "samples/overlapping-crows-2.wav"
+input_audio = "samples/overlapping-crows-3.wav"
+input_audio = "/home/jonathan/apps/earthspecies/crow-sounds/labeler-vue/public/mixes/separate/mix_10_segment_1.wav"
+
 
 # Manually define the model architecture (match it exactly to your training setup)
 FIXED_N_SRC = 2  # Adjust this to match how many sources you separated in training
