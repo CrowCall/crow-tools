@@ -11,19 +11,21 @@ random.seed(42)
 # Control switches and limits
 # ------------------------------
 PREVIEW = False
-NUM_MIXES = 5000
+NUM_MIXES = 10000
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
 ENABLE_REVERB = False
 ENABLE_VOL_NORMALIZATION = True
 ENABLE_RANDOM_VOLUME = False
 ENABLE_BACKGROUND_SOUNDS = True
+RANDOMIZE_BACKGROUND_VOLUME = True
 LIMIT_SEGMENT_USE = True
 LIMIT_FILE_ID_USE = True
 OFFSET_SECONDS = 0.5
-MAX_SEGMENT_USES = 1       # Each segment key can be used at most once.
-MAX_FILE_ID_USES = 50      # Each file ID can be used at most once.
+MAX_SEGMENT_USES = 2        # Each segment key can be used at most once.
+MAX_FILE_ID_USES = 100      # Each file ID can be used at most once.
 NUM_SEGMENTS_PER_MIX = 2
+BACKGROUND_VOLUME_RANGE = (0.0, 1.0)
 
 # ------------------------------
 # Helper functions
@@ -56,7 +58,7 @@ def get_valid_segments(labels_path):
                 # Determine how many splits
                 if 15.0 < length < 20.0:
                     n = 3  # each sub-segment ~5s
-                elif 8.0 < length < 12.0:
+                elif 8.0 < length < 15.0:
                     n = 2  # each sub-segment up to ~6s
                 elif 4.0 < length < 8.0:
                     n = 1  # leave it as-is
@@ -225,7 +227,6 @@ def mix_audio(background, segments, sr=SAMPLE_RATE):
 
         # Place the segment at OFFSET_SECONDS, but truncate if it goes beyond final_length
         start = offset_samples
-        end   = offset_samples + seg_len
         if start >= final_length:
             # No room to place this segment (offset is beyond final length)
             layers_out.append(layer)
@@ -282,6 +283,9 @@ def main():
         if ENABLE_BACKGROUND_SOUNDS:
             try:
                 background, bg_file = next(bg_generator)
+                if RANDOMIZE_BACKGROUND_VOLUME:
+                    bg_volume_factor = random.uniform(*BACKGROUND_VOLUME_RANGE)
+                    background = background * bg_volume_factor
             except StopIteration:
                 break
         else:
@@ -289,9 +293,13 @@ def main():
             bg_file = "silence"
 
         # Choose segments while respecting usage limits
-        segments_info = choose_random_segments(valid_segments, segment_usage, file_id_usage, count=12)
+        segments_info = choose_random_segments(valid_segments, segment_usage, file_id_usage, count=50)
         segments_list = []  # We'll store each trimmed segment audio here
         segments_details = []
+
+        if not segments_info:
+            print(f"No more valid segments found. Skipping...")
+            break
 
         for seg in segments_info:
             if ENABLE_DENOISED:
@@ -316,21 +324,21 @@ def main():
 
             adjusted = adjust_segment(crow_audio, sr, approx_start, approx_end)
             if adjusted is None:
-                print("Segment could not be adjusted: {}, start: {}, end: {}".format(
-                    crow_path, approx_start, approx_end))
+                print("Segment could not be adjusted: {}, start: {}, end: {}".format(crow_path, approx_start, approx_end))
+                segment_usage[seg["key"]] = segment_usage.get(seg["key"], 0) + 1
                 continue
             adj_start, adj_end = adjusted
             adj_start_sample = int(adj_start * sr)
             adj_end_sample = int(adj_end * sr)
-            if adj_end_sample > len(crow_audio):
-                print("Adjusted segment too long: {}".format(crow_path))
-                continue
-
             segment_audio = crow_audio[adj_start_sample:adj_end_sample]
+
+            if ENABLE_VOL_NORMALIZATION:
+                segment_audio = normalize_audio_segment(segment_audio, target_peak=0.85)
 
             # Skip segment if it's less than 1.0 seconds long or if it contains no nonzero values.
             if is_audio_silient(segment_audio, sr):
                 print("Segment too short or silent: {}".format(crow_path))
+                segment_usage[seg["key"]] = segment_usage.get(seg["key"], 0) + 1
                 continue
 
             # Apply reverb if enabled
