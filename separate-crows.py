@@ -7,6 +7,8 @@ from asteroid.models import DPRNNTasNet
 # Choose device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+# 22, *46, 91
+# 43, *46, 49 (2 rounds of testing finds 46 the nicest to listen to)
 model_checkpoint = "separator/models/best_model_epoch=46.ckpt"
 
 # 16 is pretty good
@@ -18,6 +20,9 @@ model_checkpoint = "separator/models/best_model_epoch=46.ckpt"
 # 43 better
 # 45 similar to 43
 # 46 better
+# 58, 64, 79 good
+# 87 not sure if it's better
+# 91 ???
 
 input_audio = "samples/non-overlapping-multiple-crows.mp3"
 # input_audio = "samples/overlapping-crows-1.wav"
