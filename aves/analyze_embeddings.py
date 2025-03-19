@@ -89,8 +89,8 @@ def print_segment_stats(segments_dict):
 segments_path = "../labeler-vue/public/segments.json"
 segments_dict = json.load(open(segments_path, encoding='utf-8', mode='r'))
 
-labels_path = "../labeler-vue/public/labels.json"
-#labels_path = "../labeler-vue/public/auto_labels.json"
+#labels_path = "../labeler-vue/public/labels.json"
+labels_path = "../labeler-vue/public/auto_labels.json"
 labels = json.load(open(labels_path, encoding='utf-8', mode='r'))
 
 print_label_stats(labels)
@@ -105,6 +105,7 @@ chunk_info = []
 # Loop through all segments
 for file_id, segments in segments_dict.items():
     for segment in segments:
+        # Compute segment key using file_id only (as in "225318321-0-3")
         segment_key = f"{file_id}-{segment.get('start_time'):.0f}-{segment.get('end_time'):.0f}"
         label = labels.get(segment_key)
 
@@ -160,7 +161,8 @@ for file_id, segments in segments_dict.items():
                 "audio_path": audio_path,
                 "chunk_start_time": segment.get('start_time'),
                 "chunk_end_time": segment.get('end_time'),
-                "color": color
+                "color": color,
+                "segment_key": segment_key
             })
         else:
             print(f"Audio file {audio_path} not found, skipping")
@@ -173,10 +175,29 @@ print(f"Average time per segment: {processed_seconds/len(chunk_embeddings)} seco
 chunk_embeddings = np.array(chunk_embeddings)
 print("Total segments plotted:", chunk_embeddings.shape[0])
 
+# Perform PCA: reduce from 768 to 3 dimensions.
 pca = PCA(n_components=3)
 embeddings_3d = pca.fit_transform(chunk_embeddings)
 
-# Use custom colors
+# Build output data: for each embedding, store segment_key, 3D coordinates, and color.
+output_data = []
+embeddings_3d_list = embeddings_3d.tolist()
+for i, coords in enumerate(embeddings_3d_list):
+    seg_key = chunk_info[i].get("segment_key")
+    color = chunk_info[i].get("color")
+    output_data.append({
+         "segment_key": seg_key,
+         "coordinates": coords,
+         "color": color
+    })
+
+# Save the output data to JSON.
+output_json_path = os.path.join("..", "labeler-vue", "public", "embeddings-3d.json")
+with open(output_json_path, "w") as f:
+    json.dump(output_data, f, indent=2)
+print(f"Saved 3D embeddings to {output_json_path}")
+
+# Proceed with plotting.
 colors = [info.get('color') for info in chunk_info]
 
 fig = plt.figure(figsize=(10, 8))
