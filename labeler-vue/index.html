@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <title>Crow Audio Labeler</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+    <text y='0.9em' font-size='90'>🐦‍⬛</text>
+  </svg>">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <style>
@@ -20,27 +24,99 @@
         .border-secondary {
             border-width: 1px !important;
         }
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #000033, #000000, #330033);
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        /* Modern, semi-transparent card style */
+        .card {
+            background-color: rgba(255, 255, 255, 0.75);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Update page title for better contrast */
+        h1 {
+            color: #fff;
+            font-family: 'Montserrat', sans-serif; /* Ensure you include this font */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-check:not(:checked) + .btn-outline-primary,
+        .btn-check:not(:checked) + .btn-outline-secondary,
+        .btn-check:not(:checked) + .btn-outline-danger,
+        .btn-check:not(:checked) + .btn-outline-success {
+            background-color: #fff !important;
+        }
+
+        .btn-check:checked + .btn-feature {
+            color: transparent;
+            text-shadow: 0 0 0 white;
+        }
+
+        .stats-card {
+            background-color: rgba(40, 40, 40, 0.9); /* dark, semi-transparent background */
+            color: #f8f9fa; /* light text */
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .stats-card .card-body {
+            padding: 0.75rem;
+        }
+
+        .stats-card .card-title {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .stats-card p {
+            color: #ddd;
+        }
+
+        .stats-card .progress {
+            background-color: rgba(255,255,255,0.2); /* subtle light progress track */
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .stats-card .progress-bar {
+            background-color: #00aaff; /* a bright accent color */
+        }
+
     </style>
 </head>
 <body>
 <div id="app" class="container my-4">
-    <h1 class="mb-4">Crow Audio Labeler</h1>
+    <h1 class="mb-4">🐦‍⬛ Crow Audio Labeler</h1>
 
     <div v-if="errorMessage" class="alert alert-danger" role="alert">
         {{ errorMessage }}
     </div>
 
     <!-- Stats Row (3 columns) -->
+    <!-- Stats Row (3 columns) -->
     <div class="row mb-3">
         <!-- Files Card -->
         <div class="col-md-4">
-            <div class="card bg-light text-dark mb-2">
+            <div class="card stats-card mb-2">
                 <div class="card-body p-1">
                     <h6 class="card-title mb-1">Files</h6>
                     <p class="m-0">
                         {{ stats.labeledFiles }}/{{ stats.totalFiles }} ({{ stats.filesPct }}%)
                     </p>
-                    <div class="progress" style="height:6px;">
+                    <div class="progress">
                         <div class="progress-bar" role="progressbar" :style="{ width: stats.filesPct + '%' }"></div>
                     </div>
                 </div>
@@ -48,13 +124,13 @@
         </div>
         <!-- Segments Card -->
         <div class="col-md-4">
-            <div class="card bg-light text-dark mb-2">
+            <div class="card stats-card mb-2">
                 <div class="card-body p-1">
                     <h6 class="card-title mb-1">Segments</h6>
                     <p class="m-0">
                         {{ stats.labeledSegments }}/{{ stats.totalSegments }} ({{ stats.segmentsPct }}%)
                     </p>
-                    <div class="progress" style="height:6px;">
+                    <div class="progress">
                         <div class="progress-bar" role="progressbar" :style="{ width: stats.segmentsPct + '%' }"></div>
                     </div>
                 </div>
@@ -62,13 +138,13 @@
         </div>
         <!-- Hours Card -->
         <div class="col-md-4">
-            <div class="card bg-light text-dark mb-2">
+            <div class="card stats-card mb-2">
                 <div class="card-body p-1">
                     <h6 class="card-title mb-1">Hours</h6>
                     <p class="m-0">
                         {{ stats.labeledHours.toFixed(2) }}/{{ stats.totalHours.toFixed(2) }} ({{ stats.hoursPct }}%)
                     </p>
-                    <div class="progress" style="height:6px;">
+                    <div class="progress">
                         <div class="progress-bar" role="progressbar" :style="{ width: stats.hoursPct + '%' }"></div>
                     </div>
                 </div>
@@ -76,33 +152,37 @@
         </div>
     </div>
 
-    <!-- Pagination Controls -->
-    <pagination
-            :current-page="currentPage"
-            :total-pages="totalPages"
-            @prev="prevPage"
-            @next="nextPage"
-            @goto="handleGotoPage"
-    ></pagination>
 
-    <!-- Playback Speed Button Group -->
-    <div class="d-flex align-items-center mb-3" style="gap: 1rem;">
-        <span>Playback Speed:</span>
-        <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn"
-                    :class="{'btn-primary': playbackSpeed === 1, 'btn-outline-primary': playbackSpeed !== 1}"
-                    @click="setPlaybackSpeed(1)">1X</button>
-            <button type="button" class="btn"
-                    :class="{'btn-primary': playbackSpeed === 2, 'btn-outline-primary': playbackSpeed !== 2}"
-                    @click="setPlaybackSpeed(2)">2X</button>
-            <button type="button" class="btn"
-                    :class="{'btn-primary': playbackSpeed === 3, 'btn-outline-primary': playbackSpeed !== 3}"
-                    @click="setPlaybackSpeed(3)">3X</button>
-            <button type="button" class="btn"
-                    :class="{'btn-primary': playbackSpeed === 4, 'btn-outline-primary': playbackSpeed !== 4}"
-                    @click="setPlaybackSpeed(4)">4X</button>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Paginator on the left -->
+        <pagination
+                :current-page="currentPage"
+                :total-pages="totalPages"
+                @prev="prevPage"
+                @next="nextPage"
+                @goto="handleGotoPage">
+        </pagination>
+
+        <!-- Playback Speed Button Group on the right -->
+        <div class="d-flex align-items-center" style="gap: 1rem;">
+            <span style="color: #fff;">Speed:</span>
+            <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn"
+                        :class="{'btn-primary': playbackSpeed === 1, 'btn-outline-primary': playbackSpeed !== 1}"
+                        @click="setPlaybackSpeed(1)">1X</button>
+                <button type="button" class="btn"
+                        :class="{'btn-primary': playbackSpeed === 2, 'btn-outline-primary': playbackSpeed !== 2}"
+                        @click="setPlaybackSpeed(2)">2X</button>
+                <button type="button" class="btn"
+                        :class="{'btn-primary': playbackSpeed === 3, 'btn-outline-primary': playbackSpeed !== 3}"
+                        @click="setPlaybackSpeed(3)">3X</button>
+                <button type="button" class="btn"
+                        :class="{'btn-primary': playbackSpeed === 4, 'btn-outline-primary': playbackSpeed !== 4}"
+                        @click="setPlaybackSpeed(4)">4X</button>
+            </div>
         </div>
     </div>
+
 
     <!-- 2-Column Layout for Segment Cards -->
     <div class="row row-cols-1 row-cols-lg-2 g-2">

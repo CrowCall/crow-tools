@@ -31,14 +31,15 @@ const app = Vue.createApp({
                 const lbl = this.labels[segKey];
                 if (!lbl) return false;
                 if (
-                    lbl.crowCount !== '' ||
-                    lbl.crowAge !== '' ||
-                    lbl.begging ||
-                    lbl.softSong ||
-                    lbl.rattle ||
-                    lbl.badQuality ||
-                    lbl.human ||
-                    (lbl.notes && lbl.notes.trim() !== '')
+                    lbl.crowCount !== null ||
+                    lbl.crowAge !== null ||
+                    lbl.quality !== null ||
+                    lbl.alert === true ||
+                    lbl.begging === true ||
+                    lbl.grief === true ||
+                    lbl.softSong === true ||
+                    lbl.rattle === true ||
+                    lbl.mob === true
                 ) {
                     return true;
                 }

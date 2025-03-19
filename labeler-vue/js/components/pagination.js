@@ -12,7 +12,7 @@ window.Pagination = {
         }
     },
     template: `
-      <div class="mb-3 d-flex flex-wrap align-items-center" style="gap: 0.5rem;">
+      <div class="mb-3 d-flex flex-wrap align-items-center text-nowrap" style="gap: 0.5rem; color: #fff;">
         <button class="btn btn-primary" @click="$emit('prev')" :disabled="currentPage === 1">
           Previous
         </button>
@@ -24,7 +24,6 @@ window.Pagination = {
                 v-model.number="pageSelection" @change="goToPage">
           <option v-for="p in totalPages" :value="p" :key="p">{{ p }}</option>
         </select>
-        <span>of {{ totalPages }}</span>
       </div>
     `,
     methods: {
