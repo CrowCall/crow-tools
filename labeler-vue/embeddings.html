@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Embeddings 3D Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #000033, #000000, #330033);
+        }
+        #app {
+            width: 100vw;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- Vue 3 (global build) -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<!-- Three.js and OrbitControls -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.134/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+    const App = {
+        data() {
+            return {
+                embeddings: [] // Each embedding should include coordinates, color, and segment (e.g. "FILE-START-END")
+            };
+        },
+        methods: {
+            async loadEmbeddings() {
+                try {
+                    const res = await fetch('/api/embeddings');
+                    const data = await res.json();
+                    if (data.success) {
+                        this.embeddings = data.embeddings;
+                        this.initThreeJS();
+                    } else {
+                        console.error("Error loading embeddings:", data.error);
+                    }
+                } catch (e) {
+                    console.error("Fetch error:", e);
+                }
+            },
+            playSegment(segmentKey) {
+                // segmentKey must be in the format: FILE-START-END, e.g., "104365511-15-30"
+                if (!segmentKey) return;
+                const parts = segmentKey.split("-");
+                if (parts.length !== 3) {
+                    console.error("Invalid segment key:", segmentKey);
+                    return;
+                }
+                const file = parts[0];
+                const start = parseFloat(parts[1]);
+                const end = parseFloat(parts[2]);
+                const audio = new Audio("public/library/" + file + ".mp3");
+                audio.addEventListener('loadedmetadata', () => {
+                    audio.currentTime = start;
+                    audio.play();
+                });
+                audio.addEventListener('timeupdate', () => {
+                    if (audio.currentTime >= end) {
+                        audio.pause();
+                    }
+                });
+            },
+            initThreeJS() {
+                const container = document.getElementById('app');
+                const scene = new THREE.Scene();
+
+                const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+                camera.position.z = 50;
+
+                const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setClearColor(0x000000, 0); // transparent background
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
+
+                const controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+
+                // Create a circular texture from an inline SVG.
+                const circleSVG = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+              <circle cx="32" cy="32" r="30" fill="white"/>
+            </svg>
+          `;
+                const circleURL = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(circleSVG);
+                const textureLoader = new THREE.TextureLoader();
+                const circleTexture = textureLoader.load(circleURL);
+
+                // Build the points geometry.
+                const positions = [];
+                const colors = [];
+                this.embeddings.forEach(item => {
+                    positions.push(item.coordinates[0], item.coordinates[1], item.coordinates[2]);
+                    const color = new THREE.Color(item.color);
+                    colors.push(color.r, color.g, color.b);
+                });
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+                geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
+
+                // Points material using the circular texture.
+                const pointsMaterial = new THREE.PointsMaterial({
+                    size: 0.2,
+                    vertexColors: true,
+                    map: circleTexture,
+                    alphaTest: 0.5,
+                    transparent: true
+                });
+                const points = new THREE.Points(geometry, pointsMaterial);
+                scene.add(points);
+
+                // Line segments connecting the hovered point to its 5 nearest neighbors.
+                const linePositions = new Float32Array(5 * 2 * 3); // 5 segments: 2 vertices each, 3 components per vertex.
+                const lineGeometry = new THREE.BufferGeometry();
+                lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+                const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+                const lineSegments = new THREE.LineSegments(lineGeometry, lineMaterial);
+                lineSegments.visible = false;
+                scene.add(lineSegments);
+
+                const raycaster = new THREE.Raycaster();
+                const mouse = new THREE.Vector2();
+                let selectedIndex = null;
+
+                // Simplified mousemove: use default raycaster intersection.
+                renderer.domElement.addEventListener('mousemove', event => {
+                    const rect = renderer.domElement.getBoundingClientRect();
+                    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+                    raycaster.setFromCamera(mouse, camera);
+                    const intersects = raycaster.intersectObject(points);
+                    if (intersects.length > 0) {
+                        const intersect = intersects[0];
+                        const hoveredPoint = intersect.point;
+                        const hoveredIndex = intersect.index;
+                        // Find the 5 nearest neighbors.
+                        let neighbors = [];
+                        for (let i = 0; i < geometry.attributes.position.count; i++) {
+                            if (i === hoveredIndex) continue;
+                            let pt = new THREE.Vector3().fromBufferAttribute(geometry.attributes.position, i);
+                            // Convert to world coordinates.
+                            points.localToWorld(pt);
+                            neighbors.push({ pt, dist: hoveredPoint.distanceToSquared(pt) });
+                        }
+                        neighbors.sort((a, b) => a.dist - b.dist);
+                        const five = neighbors.slice(0, 5);
+                        // Update line geometry.
+                        for (let i = 0; i < five.length; i++) {
+                            linePositions[i * 6 + 0] = hoveredPoint.x;
+                            linePositions[i * 6 + 1] = hoveredPoint.y;
+                            linePositions[i * 6 + 2] = hoveredPoint.z;
+                            linePositions[i * 6 + 3] = five[i].pt.x;
+                            linePositions[i * 6 + 4] = five[i].pt.y;
+                            linePositions[i * 6 + 5] = five[i].pt.z;
+                        }
+                        lineGeometry.attributes.position.needsUpdate = true;
+                        lineSegments.visible = true;
+                    } else {
+                        lineSegments.visible = false;
+                    }
+                });
+
+                // Simplified click: select/deselect point and play its audio segment.
+                renderer.domElement.addEventListener('click', event => {
+                    const rect = renderer.domElement.getBoundingClientRect();
+                    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+                    raycaster.setFromCamera(mouse, camera);
+                    const intersects = raycaster.intersectObject(points);
+                    if (intersects.length > 0) {
+                        const intersect = intersects[0];
+                        const clickedIndex = intersect.index;
+                        let pos = new THREE.Vector3().fromBufferAttribute(geometry.attributes.position, clickedIndex);
+                        points.localToWorld(pos);
+                        if (selectedIndex === clickedIndex) {
+                            // Deselect.
+                            selectedIndex = null;
+                        } else {
+                            selectedIndex = clickedIndex;
+                            const embedding = this.embeddings[clickedIndex];
+                            if (embedding && embedding.segment_key) {
+                                this.playSegment(embedding.segment_key);
+                            }
+                        }
+                    }
+                });
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    controls.update();
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                window.addEventListener('resize', () => {
+                    camera.aspect = container.clientWidth / container.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(container.clientWidth, container.clientHeight);
+                });
+            }
+        },
+        mounted() {
+            this.loadEmbeddings();
+        }
+    };
+
+    Vue.createApp(App).mount('#app');
+</script>
+</body>
+</html>

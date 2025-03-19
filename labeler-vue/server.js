@@ -35,6 +35,27 @@ app.post('/updateLabels', (req, res) => {
   }
 });
 
+app.get('/api/embeddings', (req, res) => {
+    const embeddingsFile = path.join(__dirname, 'public', 'embeddings-3d.json');
+    if (fs.existsSync(embeddingsFile)) {
+        fs.readFile(embeddingsFile, 'utf8', (err, data) => {
+            if (err) {
+                console.error("Error reading embeddings file:", err);
+                return res.status(500).json({ success: false, error: err.message });
+            }
+            try {
+                const embeddings = JSON.parse(data);
+                res.json({ success: true, embeddings });
+            } catch (parseErr) {
+                console.error("Error parsing embeddings JSON:", parseErr);
+                res.status(500).json({ success: false, error: parseErr.message });
+            }
+        });
+    } else {
+        res.status(404).json({ success: false, error: "Embeddings file not found" });
+    }
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
