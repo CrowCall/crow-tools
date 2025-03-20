@@ -3,10 +3,12 @@ import json
 import numpy as np
 from classifier.classify import predict_embedding
 
+PATH = os.path.dirname(__file__)
+
 
 def main():
     # Path to segments (we use segments.json to iterate over all segments).
-    segments_path = "labeler-vue/public/segments.json"
+    segments_path = os.path.join("labeler-vue", "public", "segments.json")
 
     # Load segments.
     with open(segments_path, encoding='utf-8', mode='r') as f:
@@ -24,7 +26,7 @@ def main():
             segment_key = f"{file_id}-{int(start_time)}-{int(end_time)}"
 
             # Build the audio file path (assumes MP3 files in the public library).
-            audio_path = os.path.join("/home/jonathan/apps/earthspecies/crow-sounds/labeler-vue/public/library", f"{file_id}.mp3")
+            audio_path = os.path.join(PATH, "labeler-vue", "public", "library", f"{file_id}.mp3")
 
             if not os.path.exists(audio_path):
                 print(f"Audio file {audio_path} not found, skipping segment {segment_key}.")
@@ -43,7 +45,7 @@ def main():
                 print(f"Cached embedding for segment {segment_key} not found, skipping.")
 
     # Save the auto labels to "auto_labels.json".
-    with open(os.path.join("labeler-vue", "public", "auto_labels.json"), "w", encoding="utf-8") as f:
+    with open(os.path.join(PATH, "labeler-vue", "public", "auto_labels.json"), "w", encoding="utf-8") as f:
         json.dump(auto_labels, f, indent=4)
     print("Saved auto labels to auto_labels.json")
 
