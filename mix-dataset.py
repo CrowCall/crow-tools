@@ -11,7 +11,7 @@ random.seed(42)
 # Control switches and limits
 # ------------------------------
 PREVIEW = False
-NUM_MIXES = 10000
+NUM_MIXES = 20000
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
 ENABLE_REVERB = False

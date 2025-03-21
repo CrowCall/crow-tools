@@ -2,11 +2,14 @@ from torch import optim
 from asteroid.models import DPRNNTasNet
 from asteroid.losses import pairwise_neg_sisdr, PITLossWrapper
 from asteroid.engine import System
-from pytorch_lightning import Trainer
+from pytorch_lightning import Trainer, seed_everything
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
 from torch.utils.data import random_split, DataLoader
 from separator.dataset import *
+
+# Seed for reproducibility
+seed_everything(42, workers=True)
 
 import os
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
@@ -65,6 +68,7 @@ trainer = Trainer(
     accumulate_grad_batches=2,
     precision="16-mixed",
     #accelerator="gpu",
+    deterministic=True,
     callbacks=[checkpoint_callback]
 )
 
