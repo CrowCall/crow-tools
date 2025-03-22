@@ -27,7 +27,7 @@ app.post('/updateLabels', (req, res) => {
   }
   allLabels[update.segmentKey] = update.labels;
   try {
-    fs.writeFileSync(labelsFile, JSON.stringify(allLabels, null, 2));
+    fs.writeFileSync(labelsFile, JSON.stringify(allLabels, null, 4));
     res.json({ success: true });
   } catch (e) {
     console.error("Error writing auto_labels.json:", e);
