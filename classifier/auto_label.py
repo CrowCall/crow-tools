@@ -8,7 +8,7 @@ PATH = os.path.dirname(__file__)
 
 def main():
     # Path to segments (we use segments.json to iterate over all segments).
-    segments_path = os.path.join(".cache", "segments.json")
+    segments_path = os.path.join("../.cache", "segments.json")
 
     # Load segments.
     with open(segments_path, encoding='utf-8', mode='r') as f:
@@ -26,14 +26,14 @@ def main():
             segment_key = f"{file_id}-{int(start_time)}-{int(end_time)}"
 
             # Build the audio file path (assumes MP3 files in the public library).
-            audio_path = os.path.join(PATH, ".cache", "library", f"{file_id}.mp3")
+            audio_path = os.path.join(PATH, "..", ".cache", "library", f"{file_id}.mp3")
 
             if not os.path.exists(audio_path):
                 print(f"Audio file {audio_path} not found, skipping segment {segment_key}.")
                 continue
 
             # Cached embedding file path.
-            embedding_path = os.path.join(".cache", "embeddings", f"{segment_key}.npy")
+            embedding_path = os.path.join("..", ".cache", "embeddings", f"{segment_key}.npy")
             if os.path.exists(embedding_path):
                 # Load the cached embedding.
                 embedding = np.load(embedding_path)
@@ -45,7 +45,7 @@ def main():
                 print(f"Cached embedding for segment {segment_key} not found, skipping.")
 
     # Save the auto labels to "auto_labels.json".
-    with open(os.path.join(PATH, ".cache", "auto_labels.json"), "w", encoding="utf-8") as f:
+    with open(os.path.join(PATH, "..", ".cache", "auto_labels.json"), "w", encoding="utf-8") as f:
         json.dump(auto_labels, f, indent=4)
     print("Saved auto labels to auto_labels.json")
 
