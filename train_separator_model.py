@@ -21,9 +21,9 @@ torch.set_float32_matmul_precision('high')
 # Choose device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-json_path = "labeler-vue/public/mixes/mix-dataset.json"
-merged_dir = "labeler-vue/public/mixes/merged"
-separate_dir = "labeler-vue/public/mixes/separate"
+json_path = os.path.join(".cache", "mixes", "mix-dataset.json")
+merged_dir = os.path.join(".cache", "mixes", "merged")
+separate_dir = os.path.join(".cache", "mixes", "separate")
 sr = 8000
 batch_size = 1
 
@@ -48,12 +48,12 @@ loss = PITLossWrapper(pairwise_neg_sisdr, pit_from="pw_mtx")
 optimizer = optim.Adam(model.parameters(), lr=5e-4)
 
 # Create the training system with your custom DataLoader(s)
-tb_logger = TensorBoardLogger("logs", name="asteroid-crow")
+tb_logger = TensorBoardLogger("logs", name="crow")
 system = System(model, optimizer, loss, train_loader, val_loader)
 
 # Checkpointing
 checkpoint_callback = ModelCheckpoint(
-    dirpath="logs/asteroid-crow/checkpoints",
+    dirpath="logs/crow/checkpoints",
     filename="best_model",
     monitor="val_loss",
     mode="min",
