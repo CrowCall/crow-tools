@@ -2,12 +2,11 @@ import csv
 import os
 import requests
 
-csv_path = "labeler-vue/public/csv/crows.csv"
-library_dir = "labeler-vue/public/library"
+csv_path = os.path.join(".cache", "csv", "crows.csv")
+library_dir = os.path.join(".cache", "library")
 os.makedirs(library_dir, exist_ok=True)
 download_count = 0
 skipped_count = 0
-age_sexes = {}
 
 with open(csv_path, "r", encoding="utf-8-sig") as f:
     reader = csv.DictReader(f)
@@ -24,11 +23,6 @@ with open(csv_path, "r", encoding="utf-8-sig") as f:
         
         filename = f"{catalog_number}.mp3"
         filepath = os.path.join(library_dir, filename)
-
-        if age_sex not in age_sexes:
-            age_sexes[age_sex] = 1
-        else:
-            age_sexes[age_sex] += 1
 
         # Skip download if the file already exists
         if os.path.exists(filepath):

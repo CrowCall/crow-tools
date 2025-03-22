@@ -22,8 +22,8 @@ skipped_count = 0
 
 for background_filename in background_filenames:
     print(f"Downloading {background_filename} - {max_downloads} downloads")
-    csv_path = os.path.join("labeler-vue/public/csv/", background_filename)
-    library_dir = "labeler-vue/public/backgrounds/"
+    csv_path = os.path.join(".cache/csv/", background_filename)
+    library_dir = ".cache/backgrounds/"
     os.makedirs(library_dir, exist_ok=True)
     background_count = 0
     age_sexes = {}
