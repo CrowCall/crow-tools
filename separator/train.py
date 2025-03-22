@@ -6,7 +6,7 @@ from pytorch_lightning import Trainer, seed_everything
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
 from torch.utils.data import random_split, DataLoader
-from separator.dataset import *
+from dataset import *
 
 # Seed for reproducibility
 seed_everything(42, workers=True)
@@ -21,9 +21,9 @@ torch.set_float32_matmul_precision('high')
 # Choose device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-json_path = os.path.join(".cache", "mixes", "mix-dataset.json")
-merged_dir = os.path.join(".cache", "mixes", "merged")
-separate_dir = os.path.join(".cache", "mixes", "separate")
+json_path = os.path.join("../.cache", "mixes", "mix-dataset.json")
+merged_dir = os.path.join("../.cache", "mixes", "merged")
+separate_dir = os.path.join("../.cache", "mixes", "separate")
 sr = 8000
 batch_size = 1
 

@@ -9,8 +9,8 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # 69 = best so far
 # 75 is great
-#model_checkpoint = "separator/models/best/best_model_epoch=46.ckpt" # BEST
-model_checkpoint = "separator/models/best_model_epoch=94.ckpt"
+#model_checkpoint = "models/best/best_model_epoch=46.ckpt" # BEST
+model_checkpoint = "models/best_model_epoch=94.ckpt"
 
 input_audio = "samples/non-overlapping-multiple-crows.mp3"
 #input_audio = "samples/overlapping-crows-1.wav"

@@ -8,7 +8,7 @@ FIXED_N_SRC = 2
 
 
 class CrowMixDataset:
-    def __init__(self, json_path, merged_dir, separate_dir, val_key_count=200, seed=42, sr=8000, transform=None):
+    def __init__(self, json_path, merged_dir, separate_dir, sr=8000, transform=None):
         # Load the full mixes dataset.
         with open(json_path, "r", encoding="utf-8") as f:
             self.mixes = json.load(f)

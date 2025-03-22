@@ -10,8 +10,8 @@ random.seed(42)
 # ------------------------------
 # Control switches and limits
 # ------------------------------
-PREVIEW = True
-NUM_MIXES = 20000
+PREVIEW = False
+NUM_MIXES = 100
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
 ENABLE_REVERB = False
@@ -250,13 +250,13 @@ def mix_audio(background, segments, sr=SAMPLE_RATE):
 def main():
     sr = SAMPLE_RATE
     total_seconds = 0.0
-    mix_dataset_path = ".cache/mixes/mix-dataset.json"
-    backgrounds_dir = ".cache/backgrounds"
-    labels_json = ".cache/auto_labels.json"
-    library_dir = ".cache/library"
-    denoised_dir = ".cache/library-denoised"
-    merged_dir = ".cache/mixes/merged"
-    separate_dir = ".cache/mixes/separate"
+    mix_dataset_path = "../.cache/mixes/mix-dataset.json"
+    backgrounds_dir = "../.cache/backgrounds"
+    labels_json = "../.cache/auto_labels.json"
+    library_dir = "../.cache/library"
+    denoised_dir = "../.cache/library-denoised"
+    merged_dir = "../.cache/mixes/merged"
+    separate_dir = "../.cache/mixes/separate"
     os.makedirs(merged_dir, exist_ok=True)
     os.makedirs(separate_dir, exist_ok=True)
 
