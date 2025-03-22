@@ -11,8 +11,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = pretrained.biodenoising16k_dns48().to(device)
 
 # Define directories
-library_dir = 'labeler-vue/public/library'
-output_dir = 'labeler-vue/public/library-denoised'
+library_dir = os.path.join(".cache", "library")
+output_dir = os.path.join(".cache", "library-denoised")
 os.makedirs(output_dir, exist_ok=True)
 
 # Get sorted list of files from the library directory
