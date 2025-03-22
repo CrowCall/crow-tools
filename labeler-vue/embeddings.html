@@ -64,7 +64,7 @@
                 const file = parts[0];
                 const start = parseFloat(parts[1]);
                 const end = parseFloat(parts[2]);
-                const audio = new Audio("public/library/" + file + ".mp3");
+                const audio = new Audio("/cache/library/" + file + ".mp3");
                 audio.addEventListener('loadedmetadata', () => {
                     audio.currentTime = start;
                     audio.play();

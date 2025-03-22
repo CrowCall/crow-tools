@@ -76,7 +76,7 @@ const app = Vue.createApp({
             return `${segment.id}-${segment.start_time}-${segment.end_time}`;
         },
         loadCrowsCSV() {
-          const files = ['/csv/crows.csv', '/csv/crows-xeno-canto.csv'];
+          const files = ['/cache/csv/crows.csv', '/csv/crows-xeno-canto.csv'];
           let remaining = files.length;
 
           files.forEach(file => {
@@ -101,7 +101,7 @@ const app = Vue.createApp({
           });
         },
         loadSegments() {
-            fetch('/segments.json')
+            fetch('/cache/segments.json')
                 .then(r => r.json())
                 .then(data => {
                     const segArray = [];
@@ -129,7 +129,7 @@ const app = Vue.createApp({
             });
         },
         loadLabels() {
-            fetch('/auto_labels.json')
+            fetch('/cache/auto_labels.json')
                 .then(r => r.json())
                 .then(data => {
                     this.labels = data;

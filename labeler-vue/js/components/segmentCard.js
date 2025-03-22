@@ -283,7 +283,7 @@ window.SegmentCard = {
   },
   mounted() {
     this.audio = this.$refs.audio;
-    this.audio.src = `/library/${this.segment.id}.mp3`;
+    this.audio.src = `/cache/library/${this.segment.id}.mp3`;
     this.audio.currentTime = this.segment.start_time;
     this.audio.playbackRate = this.playbackSpeed;
     this.audio.addEventListener('timeupdate', this.updateProgress);

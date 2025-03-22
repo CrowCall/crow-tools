@@ -9,13 +9,13 @@ app.use(express.json({
 }));
 
 // Serve static files from "public" and the project root
-app.use(express.static('public'));
+app.use('/cache', express.static(path.join(__dirname, '../.cache')));
 app.use(express.static('.'));
 
 // Endpoint to update labels.json on disk
 app.post('/updateLabels', (req, res) => {
   const update = req.body; // Expecting: { segmentKey, labels }
-  const labelsFile = path.join(__dirname, 'public', 'auto_labels.json');
+  const labelsFile = path.join(__dirname, '../', '.cache', 'auto_labels.json');
   let allLabels = {};
   try {
     if (fs.existsSync(labelsFile)) {
@@ -36,7 +36,7 @@ app.post('/updateLabels', (req, res) => {
 });
 
 app.get('/api/embeddings', (req, res) => {
-    const embeddingsFile = path.join(__dirname, 'public', 'embeddings-3d.json');
+    const embeddingsFile = path.join(__dirname, '../', '.cache', 'embeddings-3d.json');
     if (fs.existsSync(embeddingsFile)) {
         fs.readFile(embeddingsFile, 'utf8', (err, data) => {
             if (err) {
