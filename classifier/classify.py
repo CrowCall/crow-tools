@@ -15,7 +15,7 @@ def predict_embedding(embedding, device="cpu"):
       "crowCount": int in [1,2,3,4],   # here, 1 = single, 2 = multiple (no info for 3 or 4 from old model)
       "crowAge": int in [1,2],          # 1 = adult, 2 = juvenile
       "alert": bool,                   # default False (new field)
-      "food": bool,                    # from old "begging" output
+      "begging": bool,                 # food related calls
       "grief": bool,                   # default False (new field)
       "softSong": bool,                # from model
       "rattle": bool,                  # from model
@@ -56,8 +56,7 @@ def predict_embedding(embedding, device="cpu"):
 
     # New fields that aren't in the old model
     new_pred["alert"] = False
-    # Map old "begging" output to the new "food" field.
-    new_pred["food"] = (outputs["begging"].squeeze() > 0).item()
+    new_pred["begging"] = (outputs["begging"].squeeze() > 0).item()
     new_pred["grief"] = False
 
     # Copy binary outputs for softSong and rattle.

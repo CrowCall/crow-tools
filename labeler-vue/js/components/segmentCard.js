@@ -47,32 +47,32 @@ window.SegmentCard = {
           <input type="radio" class="btn-check"
                  :name="'crowCount' + segmentKey"
                  :id="'crowCount1_' + segmentKey"
-                 value="1"
-                 v-model="currentLabels.crowCount"
+                 :value="1"
+                 v-model.number="currentLabels.crowCount"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-primary" :for="'crowCount1_' + segmentKey" title="1 Crow">1</label>
       
           <input type="radio" class="btn-check"
                  :name="'crowCount' + segmentKey"
                  :id="'crowCount2_' + segmentKey"
-                 value="2"
-                 v-model="currentLabels.crowCount"
+                 :value="2"
+                 v-model.number="currentLabels.crowCount"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-primary" :for="'crowCount2_' + segmentKey" title="2 Crows">2</label>
       
           <input type="radio" class="btn-check"
                  :name="'crowCount' + segmentKey"
                  :id="'crowCount3_' + segmentKey"
-                 value="3"
-                 v-model="currentLabels.crowCount"
+                 :value="3"
+                 v-model.number="currentLabels.crowCount"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-primary" :for="'crowCount3_' + segmentKey" title="3 Crows">3</label>
       
           <input type="radio" class="btn-check"
                  :name="'crowCount' + segmentKey"
                  :id="'crowCount4_' + segmentKey"
-                 value="4"
-                 v-model="currentLabels.crowCount"
+                 :value="4"
+                 v-model.number="currentLabels.crowCount"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-primary" :for="'crowCount4_' + segmentKey" title="Crowd">📣</label>
         </div>
@@ -82,16 +82,16 @@ window.SegmentCard = {
           <input type="radio" class="btn-check"
                  :name="'crowAge' + segmentKey"
                  :id="'crowAgeAdult_' + segmentKey"
-                 value="1"
-                 v-model="currentLabels.crowAge"
+                 :value="1"
+                 v-model.number="currentLabels.crowAge"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-primary" :for="'crowAgeAdult_' + segmentKey" title="Adult">🧍</label>
       
           <input type="radio" class="btn-check"
                  :name="'crowAge' + segmentKey"
                  :id="'crowAgeJuvenile_' + segmentKey"
-                 value="2"
-                 v-model="currentLabels.crowAge"
+                 :value="2"
+                 v-model.number="currentLabels.crowAge"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-primary" :for="'crowAgeJuvenile_' + segmentKey" title="Juvenile">👶</label>
         </div>
@@ -141,24 +141,24 @@ window.SegmentCard = {
           <input type="radio" class="btn-check"
                  :name="'quality' + segmentKey"
                  :id="'quality1_' + segmentKey"
-                 value="1"
-                 v-model="currentLabels.quality"
+                 :value="1"
+                 v-model.number="currentLabels.quality"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-danger btn-feature" :for="'quality1_' + segmentKey" title="Bad Quality">🚫</label>
       
           <input type="radio" class="btn-check"
                  :name="'quality' + segmentKey"
                  :id="'quality2_' + segmentKey"
-                 value="2"
-                 v-model="currentLabels.quality"
+                 :value="2"
+                 v-model.number="currentLabels.quality"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-success" :for="'quality2_' + segmentKey" title="Average Quality">✅</label>
       
           <input type="radio" class="btn-check"
                  :name="'quality' + segmentKey"
                  :id="'quality3_' + segmentKey"
-                 value="3"
-                 v-model="currentLabels.quality"
+                 :value="3"
+                 v-model.number="currentLabels.quality"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-primary" :for="'quality3_' + segmentKey" title="Best Quality">⭐</label>
         </div>
@@ -183,15 +183,15 @@ window.SegmentCard = {
       if (!this.labels[this.segmentKey]) {
         // Initialize with the new structure
         this.labels[this.segmentKey] = {
-          crowCount: null,   // integer [1..4]
-          crowAge: null,     // 1=adult, 2=juvenile
+          crowCount: 1,   // integer [1..4]
+          crowAge: 1,     // 1=adult, 2=juvenile
           alert: false,
           begging: false,
           grief: false,
           softSong: false,
           rattle: false,
           mob: false,
-          quality: null,     // integer [1..3]
+          quality: 2,     // integer [1..3]
           notes: "",
           reviewed: false
         };
