@@ -15,7 +15,7 @@ app.use(express.static('.'));
 // Endpoint to update labels.json on disk
 app.post('/updateLabels', (req, res) => {
   const update = req.body; // Expecting: { segmentKey, labels }
-  const labelsFile = path.join(__dirname, 'public', 'labels.json');
+  const labelsFile = path.join(__dirname, 'public', 'auto_labels.json');
   let allLabels = {};
   try {
     if (fs.existsSync(labelsFile)) {
@@ -23,14 +23,14 @@ app.post('/updateLabels', (req, res) => {
       allLabels = JSON.parse(data);
     }
   } catch (e) {
-    console.error("Error reading existing labels.json:", e);
+    console.error("Error reading existing auto_labels.json:", e);
   }
   allLabels[update.segmentKey] = update.labels;
   try {
     fs.writeFileSync(labelsFile, JSON.stringify(allLabels, null, 2));
     res.json({ success: true });
   } catch (e) {
-    console.error("Error writing labels.json:", e);
+    console.error("Error writing auto_labels.json:", e);
     res.status(500).json({ success: false, error: 'Failed to update labels.' });
   }
 });

@@ -134,13 +134,13 @@ const app = Vue.createApp({
             });
         },
         loadLabels() {
-            fetch('/labels.json')
+            fetch('/auto_labels.json')
                 .then(r => r.json())
                 .then(data => {
                     this.labels = data;
                 })
                 .catch(err => {
-                    console.warn('No labels.json found, starting fresh.');
+                    console.warn('No auto_labels.json found, starting fresh.');
                     this.labels = {};
                 });
         },
