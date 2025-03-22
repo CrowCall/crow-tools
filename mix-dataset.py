@@ -10,7 +10,7 @@ random.seed(42)
 # ------------------------------
 # Control switches and limits
 # ------------------------------
-PREVIEW = False
+PREVIEW = True
 NUM_MIXES = 20000
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
@@ -47,7 +47,7 @@ def get_valid_segments(labels_path):
     valid_segments = []
     for key, attr in labels.items():
         # Only consider valid entries
-        if attr.get("crowCount") == "single" and not attr.get("badQuality") and not attr.get("human"):
+        if attr.get("crowCount") == 1 and not attr.get("quality") == 1:
             parts = key.split("-")
             if len(parts) == 3:
                 file_id = parts[0]
@@ -250,13 +250,13 @@ def mix_audio(background, segments, sr=SAMPLE_RATE):
 def main():
     sr = SAMPLE_RATE
     total_seconds = 0.0
-    mix_dataset_path = "labeler-vue/public/mixes/mix-dataset.json"
-    backgrounds_dir = "labeler-vue/public/backgrounds"
-    labels_json = "labeler-vue/public/auto_labels.json"
-    library_dir = "labeler-vue/public/library"
-    denoised_dir = "labeler-vue/public/library-denoised"
-    merged_dir = "labeler-vue/public/mixes/merged"
-    separate_dir = "labeler-vue/public/mixes/separate"
+    mix_dataset_path = ".cache/mixes/mix-dataset.json"
+    backgrounds_dir = ".cache/backgrounds"
+    labels_json = ".cache/auto_labels.json"
+    library_dir = ".cache/library"
+    denoised_dir = ".cache/library-denoised"
+    merged_dir = ".cache/mixes/merged"
+    separate_dir = ".cache/mixes/separate"
     os.makedirs(merged_dir, exist_ok=True)
     os.makedirs(separate_dir, exist_ok=True)
 
@@ -269,16 +269,8 @@ def main():
 
     valid_segments = get_valid_segments(labels_json)
 
-    # Load existing mix dataset if it exists, and determine starting mix count.
-    if os.path.exists(mix_dataset_path):
-        with open(mix_dataset_path, "r") as f:
-            mix_dataset = json.load(f)
-        mix_count = len(mix_dataset)
-        print(f"Loaded existing dataset. Starting mix count at {mix_count}.")
-    else:
-        mix_dataset = []
-        mix_count = 0
-        print("No existing dataset found. Starting fresh.")
+    mix_dataset = []
+    mix_count = 0
 
     # Generate mixes (adjust the number as needed)
     for _ in range(NUM_MIXES):
