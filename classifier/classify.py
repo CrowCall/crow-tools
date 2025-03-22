@@ -21,7 +21,6 @@ def predict_embedding(embedding, device="cpu"):
       "rattle": bool,                  # from model
       "mob": bool,                     # default False (new field)
       "quality": int in [1,2,3],        # 1 = bad/low (if badQuality or human true), else default 2
-      "notes": str,                    # default empty
       "reviewed": bool                 # default False
     }
     """
@@ -73,7 +72,6 @@ def predict_embedding(embedding, device="cpu"):
     new_pred["quality"] = 1 if (badQuality or human) else 2
 
     # Additional new fields.
-    new_pred["notes"] = ""
     new_pred["reviewed"] = False
 
     return new_pred

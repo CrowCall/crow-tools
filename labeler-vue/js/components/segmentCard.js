@@ -192,7 +192,6 @@ window.SegmentCard = {
           rattle: false,
           mob: false,
           quality: 2,     // integer [1..3]
-          notes: "",
           reviewed: false
         };
       }
