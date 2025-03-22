@@ -2,8 +2,8 @@ import csv
 import os
 import requests
 
-csv_path = os.path.join(".cache", "csv", "crows.csv")
-library_dir = os.path.join(".cache", "library")
+csv_path = os.path.join("../.cache", "csv", "crows.csv")
+library_dir = os.path.join("../.cache", "library")
 os.makedirs(library_dir, exist_ok=True)
 download_count = 0
 skipped_count = 0

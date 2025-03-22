@@ -5,7 +5,7 @@ import csv
 import json
 import os
 
-public_path = os.path.join(".cache")
+public_path = os.path.join("..", ".cache")
 csv_paths = [os.path.join(public_path, "csv", "crows.csv"),
             os.path.join(public_path, "csv", "crows-xeno-canto.csv")]
 
@@ -74,4 +74,4 @@ for csv_path in csv_paths:
 
 # Write output to JSON file
 print(f"***** Saved Segments for Files: {len(segments)}")
-open(".cache/segments.json", "w").write(json.dumps(segments))
+open("../.cache/segments.json", "w").write(json.dumps(segments))

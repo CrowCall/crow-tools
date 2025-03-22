@@ -5,8 +5,8 @@ from datetime import datetime
 
 # -- CONFIG: Adjust as needed --
 SPECIES_QUERY = "American+Crow"
-OUTPUT_CSV = os.path.join(".cache", "csv", "crows-xeno-canto.csv")
-OUTPUT_DIR = os.path.join(".cache", "library")
+OUTPUT_CSV = os.path.join("../.cache", "csv", "crows-xeno-canto.csv")
+OUTPUT_DIR = os.path.join("../.cache", "library")
 BASE_API_URL = "https://www.xeno-canto.org/api/2/recordings"
 
 # Create output folder if not existing
