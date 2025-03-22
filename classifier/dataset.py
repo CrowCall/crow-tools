@@ -4,8 +4,10 @@ import torch
 from torch.utils.data import Dataset
 import numpy as np
 
-embeddings_dir = "/home/jonathan/apps/earthspecies/crow-sounds/embeddings/"
-labels_file = "/home/jonathan/apps/earthspecies/crow-sounds/labeler-vue/public/labels.json"
+PATH = os.path.dirname(__file__)
+
+embeddings_dir = os.path.join(PATH, "..", ".cache", "embeddings")
+labels_file = os.path.join(PATH, ".. ", ".cache", "labels.json")
 
 class CrowDataset(Dataset):
     def __init__(self):
