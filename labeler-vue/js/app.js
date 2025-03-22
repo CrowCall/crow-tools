@@ -148,7 +148,9 @@ const app = Vue.createApp({
           })
           .then(res => {
             if (!res.ok) {
-              return res.json().then(data => { throw new Error(data.error || "Server error"); });
+              return res.json().then(data => {
+                throw new Error(data.error || "Server error");
+              });
             }
             return res.json();
           })
@@ -156,10 +158,12 @@ const app = Vue.createApp({
             if (!data.success) {
               throw new Error("Failed to update labels on server.");
             }
+            // Clear any previous error message on success.
+            this.errorMessage = "";
           })
           .catch(err => {
             console.error('Error updating labels on server:', err);
-            // Optionally, set a global error message.
+            this.errorMessage = "Error updating labels: " + err.message;
           });
         },
         prevPage() {
