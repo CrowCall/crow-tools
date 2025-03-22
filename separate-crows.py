@@ -7,27 +7,15 @@ from asteroid.models import DPRNNTasNet
 # Choose device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-# 22, *46, 91
-# 43, *46, 49 (2 rounds of testing finds 46 the nicest to listen to)
-model_checkpoint = "separator/models/best_model_epoch=46.ckpt"
+# 69 = best so far
+# 75 is great
+#model_checkpoint = "separator/models/best/best_model_epoch=46.ckpt" # BEST
+model_checkpoint = "separator/models/best_model_epoch=96.ckpt"
 
-# 16 is pretty good
-# 20-21 is better
-# 22 is better
-# 26, 27, 28 is good, not sure if better than 22
-# 32 seems worse
-# 42 seems better
-# 43 better
-# 45 similar to 43
-# 46 better
-# 58, 64, 79 good
-# 87 not sure if it's better
-# 91 ???
-
-input_audio = "samples/non-overlapping-multiple-crows.mp3"
-# input_audio = "samples/overlapping-crows-1.wav"
-# input_audio = "samples/overlapping-crows-2.wav"
-# input_audio = "samples/overlapping-crows-3.wav"
+#input_audio = "samples/non-overlapping-multiple-crows.mp3"
+input_audio = "samples/overlapping-crows-1.wav"
+#input_audio = "samples/overlapping-crows-2.wav"
+#input_audio = "samples/overlapping-crows-3.wav"
 
 
 # Manually define the model architecture (match it exactly to your training setup)

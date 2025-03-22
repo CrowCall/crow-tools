@@ -21,11 +21,11 @@ ENABLE_BACKGROUND_SOUNDS = True
 RANDOMIZE_BACKGROUND_VOLUME = True
 LIMIT_SEGMENT_USE = True
 LIMIT_FILE_ID_USE = True
-OFFSET_SECONDS = 0.5
-MAX_SEGMENT_USES = 2        # Each segment key can be used at most once.
+OFFSET_SECONDS = (0.0, 0.5)
+MAX_SEGMENT_USES = 1        # Each segment key can be used at most once.
 MAX_FILE_ID_USES = 100      # Each file ID can be used at most once.
 NUM_SEGMENTS_PER_MIX = 2
-BACKGROUND_VOLUME_RANGE = (0.0, 1.0)
+BACKGROUND_VOLUME_RANGE = (0.0, 0.9)
 
 # ------------------------------
 # Helper functions
@@ -209,7 +209,6 @@ def mix_audio(background, segments, sr=SAMPLE_RATE):
     """
     bg_len = len(background)
     seg_lens = [len(seg) for seg in segments]
-    offset_samples = int(OFFSET_SECONDS * sr)
 
     # The final mix length is the minimum among:
     #   - background length
@@ -224,6 +223,9 @@ def mix_audio(background, segments, sr=SAMPLE_RATE):
     for seg in segments:
         layer = np.zeros(final_length, dtype=seg.dtype)
         seg_len = len(seg)
+
+        # Random offset start
+        offset_samples = int(random.uniform(*OFFSET_SECONDS) * sr)
 
         # Place the segment at OFFSET_SECONDS, but truncate if it goes beyond final_length
         start = offset_samples
@@ -350,8 +352,7 @@ def main():
                 "file_id": seg["file_id"],
                 "original_key": seg["key"],
                 "adjusted_start": adj_start,
-                "adjusted_end": adj_end,
-                "insertion_index": OFFSET_SECONDS
+                "adjusted_end": adj_end
             })
 
             # Update usage counts
