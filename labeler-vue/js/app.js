@@ -84,26 +84,29 @@ const app = Vue.createApp({
             return `${segment.id}-${segment.start_time}-${segment.end_time}`;
         },
         loadCrowsCSV() {
-            const self = this;
-            Papa.parse('/csv/crows.csv', {
-                download: true,
-                header: true,
-                complete(results) {
-                    results.data.forEach(row => {
-                        const id = row['ML Catalog Number'];
-                        if (id) {
-                            self.csvData[id] = {
-                                recorder: row['Recordist'] || 'Unknown',
-                                mediaNotes: row['Media notes'] || ''
-                            };
-                        }
-                    });
-                    self.attachCSVtoSegments();
-                },
-                error(err) {
-                    console.error('Error parsing crows.csv:', err);
-                }
+          const files = ['/csv/crows.csv', '/csv/crows-xeno-canto.csv'];
+          let remaining = files.length;
+
+          files.forEach(file => {
+            Papa.parse(file, {
+              download: true,
+              header: true,
+              complete: (results) => {
+                results.data.forEach(row => {
+                  const id = row['ML Catalog Number'];
+                  if (!id) return;
+                  if (!this.csvData[id]) this.csvData[id] = {};
+                  this.csvData[id].recorder = row['Recordist'] || this.csvData[id].recorder || 'Unknown';
+                  this.csvData[id].mediaNotes = row['Media notes'] || this.csvData[id].mediaNotes || '';
+                });
+                if (!--remaining) this.attachCSVtoSegments();
+              },
+              error: err => {
+                console.error('Error parsing', file, err);
+                if (!--remaining) this.attachCSVtoSegments();
+              }
             });
+          });
         },
         loadSegments() {
             fetch('/segments.json')
