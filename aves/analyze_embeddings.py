@@ -7,43 +7,27 @@ import numpy as np
 import pandas as pd
 import sounddevice as sd
 from sklearn.decomposition import PCA
-
 from ispa import utils
-from ispa.features import FeatureBasedISPAPredictor
 
 PATH = os.path.dirname(__file__)
 matplotlib.use("TkAgg")
-
-# Initialize the AVES feature predictor.
-ispa_f_predictor = FeatureBasedISPAPredictor(
-    feature_type='aves',
-    kmeans_model=os.path.join(PATH, 'ispa', 'models', 'kmeans.aves.pkl'),
-    phoneme_map=os.path.join(PATH, 'ispa', 'models', 'c2p.aves.json'),
-    aves_config_path=os.path.join(PATH, 'ispa', 'models', 'aves-base-bio.torchaudio.model_config.json'),
-    aves_model_path=os.path.join(PATH, 'ispa', 'models', 'aves-base-bio.torchaudio.pt')
-)
 
 
 def print_label_stats(labels):
     # Convert labels dict into a DataFrame.
     df = pd.DataFrame.from_dict(labels, orient='index')
 
-    # Standardize 'crowCount' values; assume empty means "single".
-    df['crowCount'] = df['crowCount'].str.lower().replace('', 'single')
-
     # Define quality based on badQuality and human flags.
     def determine_quality(row):
-        if row.get('human'):
-            return 'human'
-        elif row.get('badQuality'):
+        if row.get('quality') == 1:
             return 'bad'
         else:
             return 'good'
 
-    df['quality'] = df.apply(determine_quality, axis=1)
+    df['quality_label'] = df.apply(determine_quality, axis=1)
 
     # Overall crosstab: frequency counts.
-    overall_ct = pd.crosstab(df['quality'], df['crowCount'], margins=True)
+    overall_ct = pd.crosstab(df['quality_label'], df['crowCount'], margins=True)
 
     print("=== LABEL SUMMARY ===")
     print("\nOverall Counts (Quality vs. CrowCount):")
@@ -54,7 +38,7 @@ def print_label_stats(labels):
     features = ['rattle', 'begging', 'softSong']
     for feat in features:
         # Frequency: since booleans sum to counts.
-        feat_freq = df.groupby(['quality', 'crowCount'])[feat].sum().unstack()
+        feat_freq = df.groupby(['quality_label', 'crowCount'])[feat].sum().unstack()
         print(f"{feat.capitalize()} Counts (True):")
         print(feat_freq.fillna(0).astype(int))
         print()
@@ -86,11 +70,10 @@ def print_segment_stats(segments_dict):
     print(freq_table)
     print()
 
-segments_path = "../labeler-vue/public/segments.json"
+segments_path = os.path.join("..", ".cache", "segments.json")
 segments_dict = json.load(open(segments_path, encoding='utf-8', mode='r'))
 
-#labels_path = "../labeler-vue/public/labels.json"
-labels_path = "../labeler-vue/public/auto_labels.json"
+labels_path = os.path.join("..", ".cache", "auto_labels.json")
 labels = json.load(open(labels_path, encoding='utf-8', mode='r'))
 
 print_label_stats(labels)
@@ -127,11 +110,11 @@ for file_id, segments in segments_dict.items():
         if denoised:
             denoised_suffix = "-denoised"
             audio_extension = "wav"
-        audio_path = os.path.join(PATH, "../", "labeler-vue", "public", f"library{denoised_suffix}", f"{file_id}.{audio_extension}")
+        audio_path = os.path.join(PATH, "..", ".cache", f"library{denoised_suffix}", f"{file_id}.{audio_extension}")
 
         if os.path.exists(audio_path):
             # check for cached embeddings
-            cached_path = os.path.join(f"../embeddings{denoised_suffix}", f"{segment_key}.npy")
+            cached_path = os.path.join(PATH, "..", ".cache", f"embeddings{denoised_suffix}", f"{segment_key}.npy")
             if os.path.exists(cached_path):
                 feature = np.load(cached_path)
             else:
@@ -139,17 +122,17 @@ for file_id, segments in segments_dict.items():
                 continue
 
             if label:
-                if label.get('badQuality') == True or label.get('human') == True:
+                if label.get('quality') == 1:
                     color = "red"
-                elif label.get('crowAge') == "juvenile":
+                elif label.get('crowAge') == 2:
                     color = "yellow"
-                elif label.get('crowCount') == 'multiple':
+                elif label.get('crowCount') == 2:
                     color = "green"
                 # elif label.get('softSong'):
                 #     color = "pink"
                 elif label.get('rattle'):
                     color = "purple"
-                elif label.get('crowCount') == 'single':
+                elif label.get('crowCount') == 1:
                     color = "blue"
                 else:
                     color = "gray"
@@ -192,7 +175,7 @@ for i, coords in enumerate(embeddings_3d_list):
     })
 
 # Save the output data to JSON.
-output_json_path = os.path.join("..", "labeler-vue", "public", "embeddings-3d.json")
+output_json_path = os.path.join(PATH, "..", ".cache", "embeddings-3d.json")
 with open(output_json_path, "w") as f:
     json.dump(output_data, f, indent=2)
 print(f"Saved 3D embeddings to {output_json_path}")
