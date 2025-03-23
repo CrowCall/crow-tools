@@ -79,22 +79,21 @@ provides a 3D interactive embedding feature. This web app is created with Vue v3
 ![labeler.png](docs/images/labeler.png)
 
 ### Classifier
-The classifier module analyzes crow calls and categorizes them (i.e. auto labels) into various types such as alert calls, counting calls, 
-age indicators, rattles, soft songs, and instances of poor quality. It processes the embedded data and applies machine 
-learning techniques to identify and label crow vocalizations.
+The classifier module analyzes crow call embeddings and categorizes them (i.e. auto labels) into various types such as 
+alert, number of calls, age indicators, rattles, soft songs, and quality of audio. It processes the embedded data and 
+applies machine learning techniques to identify and label crow vocalizations.
 
-```json
-    "229089-111-114": {
-        "crowCount": 1,
-        "crowAge": 1,
-        "alert": false,
-        "begging": true,
-        "grief": false,
-        "softSong": false,
-        "rattle": false,
-        "mob": false,
-        "quality": 2,
-        "reviewed": false
+```python
+    {
+      "crowCount": int in [1,2,3,4],   # 1 = single, 2 = two crows, 3 = three crows, 4 = crowd
+      "crowAge": int in [1,2],         # 1 = adult, 2 = juvenile
+      "alert": bool,                   # attack | alert | mob
+      "begging": bool,                 # food related calls
+      "grief": bool,                   # sadness | grief
+      "softSong": bool,                # songs | soft sounds
+      "rattle": bool,                  # rattle sounds
+      "quality": int in [1,2,3],       # 1 = bad/low, 2 = average, 3 = high quality
+      "reviewed": bool                 # human reviewed (else auto labeled)
     }
 ```
 
