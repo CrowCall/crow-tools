@@ -12,5 +12,5 @@ for download in [start_downloads_background, start_downloads_ebird, start_downlo
 # Denoise all crow audio
 start_denoising()
 
-# Detect 3 second crow segments
+# Detect 3 second crow segments (using BirdNET)
 start_detections()
