@@ -110,7 +110,6 @@ crow-tools/
 ├── classifier/  # classify types of crow calls (alert, count, age, rattle, soft song, bad quality)
 ├── denoiser/    # denoise crow audio files (remove background noises)
 ├── detector/    # detect segments (3 seconds each) of crow calls (BirdNET)
-├── docs/        # documentation
 ├── downloader/  # download library of crow audio files
 ├── embedder/    # embed crow calls into 768 dimensions (AVES embedding model)
 ├── labeler/     # human labeling web app (for training the classifier)
