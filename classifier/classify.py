@@ -4,7 +4,7 @@ from classifier.model import CrowClassifier
 import os
 
 PATH = os.path.dirname(__file__)
-checkpoint_path = os.path.join(PATH, "logs", "checkpoints", "best_model.ckpt")
+checkpoint_path = os.path.join(PATH, "models", "best_model.ckpt")
 
 def predict_embedding(embedding, device="cpu"):
     """
