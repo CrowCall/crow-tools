@@ -1,3 +1,18 @@
+import sys
+
+print("""
+This script will download and process a large amount of crow audio data.
+It requires over 30 GB of disk space and will take several hours to complete.
+Each audio file will be downloaded, denoised, segmented, embedded, and classified.
+
+Files that are already processed will be skipped.
+Are you ready to begin? (y/n)
+""")
+response = input("> ").strip().lower()
+if response not in ("y", "yes"):
+    print("Exiting. Please run the script again when you're ready.")
+    sys.exit(0)
+
 from downloader.download_backgrounds import start_downloads as start_downloads_background
 from downloader.download_crows_ebird import start_downloads as start_downloads_ebird
 from downloader.download_crows_xeno import start_downloads as start_downloads_xeno
