@@ -6,7 +6,7 @@ This repo is built for processing crow audio data. It includes modules for embed
 
 ## Download and Prepare Data
 
-Run the main pipeline script to download, denoise, embed, auto-label, and get a summary:
+Run this script to download, denoise, embed, and auto-label all crow audio files:
 
 ```
 python get-data.py
