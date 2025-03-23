@@ -14,7 +14,7 @@ window.SegmentCard = {
       </div>
 
       <!-- 2) Media Notes -->
-      <div class="mb-2" style="overflow: auto; text-overflow: ellipsis; max-height: 3em; font-size: .85em;">
+      <div class="mb-2" style="overflow: hidden; text-overflow: ellipsis; max-height: 3em; font-size: .85em;">
         <div class="text-muted" :title="segment.media_notes">{{ segment.media_notes }}</div>
       </div>
 
@@ -85,7 +85,7 @@ window.SegmentCard = {
                  :value="1"
                  v-model.number="currentLabels.crowAge"
                  @change="onLabelsChanged">
-          <label class="btn btn-outline-primary" :for="'crowAgeAdult_' + segmentKey" title="Adult">🧍</label>
+          <label class="btn btn-outline-primary" :for="'crowAgeAdult_' + segmentKey" title="Adult">🐦‍⬛</label>
       
           <input type="radio" class="btn-check"
                  :name="'crowAge' + segmentKey"
@@ -93,40 +93,34 @@ window.SegmentCard = {
                  :value="2"
                  v-model.number="currentLabels.crowAge"
                  @change="onLabelsChanged">
-          <label class="btn btn-outline-primary" :for="'crowAgeJuvenile_' + segmentKey" title="Juvenile">👶</label>
+          <label class="btn btn-outline-primary" :for="'crowAgeJuvenile_' + segmentKey" title="Juvenile">🐣</label>
         </div>
       
         <!-- Behavior Group -->
         <div class="btn-group btn-group-sm flex-fill mx-1" role="group">
           <input type="checkbox" class="btn-check"
-                 :id="'alert_' + segmentKey"
-                 v-model="currentLabels.alert"
-                 @change="onLabelsChanged">
-          <label class="btn btn-outline-primary" :for="'alert_' + segmentKey" title="Alert">🚨</label>
-
-          <input type="checkbox" class="btn-check"
                  :id="'mob_' + segmentKey"
                  v-model="currentLabels.mob"
                  @change="onLabelsChanged">
-          <label class="btn btn-outline-primary btn-feature" :for="'mob_' + segmentKey" title="Mob / Attack">⚔️</label>
+          <label class="btn btn-outline-primary btn-feature" :for="'mob_' + segmentKey" title="Mob / Attack / Alert">⚔️</label>
           
           <input type="checkbox" class="btn-check"
                  :id="'begging_' + segmentKey"
                  v-model="currentLabels.begging"
                  @change="onLabelsChanged">
-          <label class="btn btn-outline-primary" :for="'begging_' + segmentKey" title="Food / Begging">🥜</label>
-          
-          <input type="checkbox" class="btn-check"
-                 :id="'softSong_' + segmentKey"
-                 v-model="currentLabels.softSong"
-                 @change="onLabelsChanged">
-          <label class="btn btn-outline-primary btn-feature" :for="'softSong_' + segmentKey" title="Soft Song">🎵</label>
+          <label class="btn btn-outline-primary" :for="'begging_' + segmentKey" title="Food / Begging">🍇</label>
 
           <input type="checkbox" class="btn-check"
                  :id="'rattle_' + segmentKey"
                  v-model="currentLabels.rattle"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-primary btn-feature" :for="'rattle_' + segmentKey" title="Rattle">🪇</label>
+          
+          <input type="checkbox" class="btn-check"
+                 :id="'softSong_' + segmentKey"
+                 v-model="currentLabels.softSong"
+                 @change="onLabelsChanged">
+          <label class="btn btn-outline-primary btn-feature" :for="'softSong_' + segmentKey" title="Soft Song">🎵</label>
 
           <input type="checkbox" class="btn-check"
                  :id="'grief_' + segmentKey"
