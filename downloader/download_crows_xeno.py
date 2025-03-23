@@ -3,10 +3,12 @@ import csv
 import os
 from datetime import datetime
 
+PATH = os.path.dirname(__file__)
+
 # -- CONFIG: Adjust as needed --
 SPECIES_QUERY = "American+Crow"
-OUTPUT_CSV = os.path.join("../.cache", "csv", "crows-xeno-canto.csv")
-OUTPUT_DIR = os.path.join("../.cache", "library")
+OUTPUT_CSV = os.path.join(PATH, "..", ".cache", "csv", "crows-xeno-canto.csv")
+OUTPUT_DIR = os.path.join(PATH, "..", ".cache", "library")
 BASE_API_URL = "https://www.xeno-canto.org/api/2/recordings"
 
 # Create output folder if not existing
@@ -56,22 +58,10 @@ def download_mp3(xc_id, mp3_url):
         except Exception as e:
             print(f"Error downloading {mp3_url}: {e}")
 
-def main():
-    # 1) Fetch all recordings from Xeno-Canto
+def start_downloads():
+    # Fetch all recordings
     recordings = fetch_all_recordings(SPECIES_QUERY)
     print(f"Found {len(recordings)} recordings for '{SPECIES_QUERY}'.")
-
-    # 2) Prepare CSV
-    #    We'll keep just a few columns.
-    #    - "ML Catalog Number" => Xeno-Canto "id"
-    #    - "Date" => rec["date"]
-    #    - "Latitude" => rec["lat"]
-    #    - "Longitude" => rec["lng"]
-    #    - "Recordist" => rec["rec"]
-    #    - "Media notes" => rec["rmk"]
-    #    - "Age/Sex" => placeholder "unknown"
-    #    - "Average Community Rating" => placeholder "0.0"
-    #    - "Filename" => e.g. 543339.mp3
 
     fieldnames = [
         "ML Catalog Number",
@@ -141,4 +131,4 @@ def main():
     print(f"Done! CSV written to '{OUTPUT_CSV}'. MP3s downloaded to '{OUTPUT_DIR}/'.")
 
 if __name__ == "__main__":
-    main()
+    start_downloads()
