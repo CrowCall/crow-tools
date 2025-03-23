@@ -17,7 +17,12 @@ understanding them through technology.
 
 ## Install Dependencies
 
+This project was built on **Ubuntu 24.04** and **Python 3.8+**, however it should be compatible with most linux
+and mac systems. **Git LFS** is required to correctly clone, pull, and inflate all models. **FFmpeg** is required
+to run the denoiser.
+
 ```
+sudo apt install ffmpeg git-lfs
 pip install -r requirements.txt
 ```
 

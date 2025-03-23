@@ -6,6 +6,6 @@ resampy
 biodenoising
 norbert
 asteroid
-omegaconf==2.1.1
+omegaconf
 pesto-pitch==0.1.0
 pandas

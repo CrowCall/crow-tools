@@ -21,7 +21,7 @@ class AvesFeatureExtractor(nn.Module):
         super().__init__()
         self.config = self.load_config(config_path)
         self.model = wav2vec2_model(**self.config, aux_num_out=None)
-        self.model.load_state_dict(torch.load(model_path))
+        self.model.load_state_dict(torch.load(model_path, weights_only=False))
         self.model.feature_extractor.requires_grad_(False)
         self.model.eval()
 
