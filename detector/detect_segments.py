@@ -68,7 +68,7 @@ def start_detections():
                     else:
                         print(f"<<<<<< No detections in {filename}")
 
-                    if len(segments) % 10 == 0:
+                    if len(segments) % 100 == 0:
                         # Write output to JSON file
                         print(f"***** Saved Segments for Files: {len(segments)}")
                         # Write the updated data back to the same file
