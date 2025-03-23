@@ -68,7 +68,8 @@ learning applications.
 
 ### Labeler
 The labeler module provides a web interface for manual labeling of crow calls. This interface is designed for 
-human review, ensuring that the training data for the classifier is accurate and reliable. It provides
+human labeling and review, ensuring that the training data for the classifier is accurate and reliable. It also
+provides a 3D interactive embedding feature. This web app is created with Vue v3 and Node.js.
 
 ![labeler.png](docs/images/labeler.png)
 
