@@ -6,9 +6,9 @@ from classifier.classify import predict_embedding
 PATH = os.path.dirname(__file__)
 
 
-def main():
+def start_labeling():
     # Path to segments (we use segments.json to iterate over all segments).
-    segments_path = os.path.join("../.cache", "segments.json")
+    segments_path = os.path.join(PATH, "..", ".cache", "segments.json")
 
     # Load segments.
     with open(segments_path, encoding='utf-8', mode='r') as f:
@@ -33,7 +33,7 @@ def main():
                 continue
 
             # Cached embedding file path.
-            embedding_path = os.path.join("..", ".cache", "embeddings", f"{segment_key}.npy")
+            embedding_path = os.path.join(PATH, "..", ".cache", "embeddings", f"{segment_key}.npy")
             if os.path.exists(embedding_path):
                 # Load the cached embedding.
                 embedding = np.load(embedding_path)
@@ -51,4 +51,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    start_labeling()

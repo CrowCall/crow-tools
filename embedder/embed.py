@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from ispa.features import FeatureBasedISPAPredictor
+from embedder.ispa.features import FeatureBasedISPAPredictor
 import os
 
 PATH = os.path.dirname(__file__)
