@@ -9,10 +9,15 @@ PATH = os.path.dirname(__file__)
 
 def start_embeddings():
     # Paths to segments and labels.
-    segments_path = os.path.join(PATH, "..", ".cache", "segments.json")
-
+    cache_path = os.path.join(PATH, "..", ".cache")
+    segments_path = os.path.join(cache_path, "segments.json")
     with open(segments_path, encoding='utf-8', mode='r') as f:
         segments_dict = json.load(f)
+
+    # Create directories
+    embeddings_path = os.path.join(cache_path, "embeddings")
+    if not os.path.exists(embeddings_path):
+        os.makedirs(embeddings_path)
 
     # Define parameters.
     sample_rate = 8000
