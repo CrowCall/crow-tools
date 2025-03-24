@@ -15,6 +15,10 @@ library_dir = os.path.join(public_path, "library")
 segments_path = os.path.join(public_path, "segments.json")
 segments = {}
 
+# Load and initialize the BirdNET-Analyzer models.
+analyzer = Analyzer()
+
+
 def start_detections():
     if os.path.exists(segments_path):
         with open(segments_path) as json_file:
@@ -40,9 +44,6 @@ def start_detections():
                 filepath = os.path.join(library_dir, filename)
 
                 if os.path.exists(filepath) and catalog_number not in segments:
-                    # Load and initialize the BirdNET-Analyzer models.
-                    analyzer = Analyzer()
-
                     CONFIDENCE_THRESHOLD = 0.5
                     recording = Recording(
                      analyzer,
