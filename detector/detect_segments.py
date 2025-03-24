@@ -72,13 +72,14 @@ def start_detections():
                     if len(segments) % 100 == 0:
                         # Write output to JSON file
                         print(f"***** Saved Segments for Files: {len(segments)}")
-                        # Write the updated data back to the same file
                         with open(segments_path, 'w') as f:
                             json.dump(segments, f, indent=2)
 
     # Write output to JSON file
     print(f"***** Saved Segments for Files: {len(segments)}")
-    open("../.cache/segments.json", "w").write(json.dumps(segments))
+    with open(segments_path, 'w') as f:
+        json.dump(segments, f, indent=2)
+
 
 if __name__ == "__main__":
     start_detections()
