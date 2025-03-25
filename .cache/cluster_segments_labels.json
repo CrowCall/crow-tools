@@ -1,0 +1,13 @@
+{
+  "1": {
+    "crowCount": 1, "crowAge": 1,
+    "alert": false, "begging": false, "grief": false, "softSong": false, "rattle": false, "mob": false,
+    "quality": 2, "reviewed": false
+  },
+  "2": {
+    "crowCount": 1, "crowAge": 1,
+    "alert": false, "begging": false, "grief": false, "softSong": false, "rattle": false, "mob": false,
+    "quality": 2, "reviewed": false
+  }
+
+}
