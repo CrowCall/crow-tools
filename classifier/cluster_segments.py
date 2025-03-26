@@ -30,6 +30,13 @@ PREVIEW = False
 PREVIEW_PER_CLUSTER = 10
 NUM_REPRESENTATIVE = 30  # Number of segments per merged cluster for labeling
 
+# Seed examples for new clusters.
+SEED_EXAMPLES = [
+    {"file_id": "408950861", "start": 20.0, "end": 21.0},
+    {"file_id": "13123", "start": 34.0, "end": 35.0},
+
+]
+
 
 def play_audio_preview(audio_file, start_time, duration):
     try:
@@ -63,11 +70,21 @@ def load_non_silent_embeddings(emb_dir, vol_dir, thresh):
 
 
 def random_subsample(embeddings, ids, factor):
+    try:
+        seed_file_ids = {seed["file_id"] for seed in SEED_EXAMPLES}
+    except NameError:
+        seed_file_ids = set()
+    # Get indices for embeddings with a file_id in the seed set.
+    seed_indices = [i for i, (file_id, _) in enumerate(ids) if file_id in seed_file_ids]
+    # All other indices.
+    other_indices = [i for i, (file_id, _) in enumerate(ids) if file_id not in seed_file_ids]
     if factor >= 1.0:
-        return embeddings, ids
-    n_keep = int(len(embeddings) * factor)
-    idxs = sorted(random.sample(range(len(embeddings)), n_keep))
-    return embeddings[idxs], [ids[i] for i in idxs]
+        selected_other = other_indices
+    else:
+        n_keep = int(len(other_indices) * factor)
+        selected_other = sorted(random.sample(other_indices, n_keep))
+    selected_indices = sorted(seed_indices + selected_other)
+    return embeddings[selected_indices], [ids[i] for i in selected_indices]
 
 
 def reduce_dim_pca(embeddings, n_components=64):
@@ -94,13 +111,8 @@ def print_hierarchy_summary(tree, indent=0):
 
 
 def hierarchical_split(embeddings, indices, max_size=500, level=0):
-    """
-    Recursively splits the data (given by indices) using Faiss k-means (k=2)
-    until each leaf has <= max_size items.
-    """
     if len(indices) <= max_size:
         return {"indices": indices, "level": level, "size": len(indices)}
-
     k = 2
     d = embeddings.shape[1]
     kmeans = faiss.Kmeans(d, k, niter=20, verbose=False, seed=42)
@@ -108,11 +120,9 @@ def hierarchical_split(embeddings, indices, max_size=500, level=0):
     kmeans.train(subset)
     D, I = kmeans.index.search(subset, 1)
     assignments = I.flatten()
-
     clusters = {i: [] for i in range(k)}
     for j, assign in enumerate(assignments):
         clusters[assign].append(indices[j])
-
     result = {"level": level, "size": len(indices), "children": {}}
     for i in range(k):
         result["children"][i] = hierarchical_split(embeddings, clusters[i], max_size, level + 1)
@@ -198,7 +208,7 @@ def print_leaf_similarity_table(sim_matrix, top_n=3):
         sims = []
         for j in range(num_leaves):
             if i != j:
-                sims.append((j, 1 - sim_matrix[i, j]))  # cosine distance
+                sims.append((j, 1 - sim_matrix[i, j]))
         sims.sort(key=lambda x: x[1])
         top = sims[:top_n]
         row = f"Leaf {i} | " + " | ".join(f"{j} ({dist:.2f})" for j, dist in top)
@@ -208,7 +218,6 @@ def print_leaf_similarity_table(sim_matrix, top_n=3):
 def build_cluster_segments_and_labels(merged_leaves, ids, norm_emb, num_representative=30):
     segments = defaultdict(list)
     labels = {}
-    # Load label templates if available.
     if os.path.exists(LABEL_TEMPLATE_FILE):
         with open(LABEL_TEMPLATE_FILE, "r") as f:
             label_templates = json.load(f)
@@ -224,7 +233,6 @@ def build_cluster_segments_and_labels(merged_leaves, ids, norm_emb, num_represen
     for cluster_id, leaf in enumerate(merged_leaves, start=1):
         center = compute_leaf_center(norm_emb, leaf["indices"])
         sorted_indices = sorted(leaf["indices"], key=lambda idx: np.dot(norm_emb[idx], center), reverse=True)
-        # For each representative segment, group them by file.
         for idx in sorted_indices[:num_representative]:
             file_id, sec = ids[idx]
             seg = {
@@ -248,6 +256,59 @@ def build_cluster_segments_and_labels(merged_leaves, ids, norm_emb, num_represen
     return dict(segments), labels
 
 
+def process_seed_example(seed, norm_emb, ids, faiss_index, max_per_file=4):
+    # For the given seed example, find similar segments via Faiss.
+    target_index = None
+    for i, (file_id, sec) in enumerate(ids):
+        if file_id == seed["file_id"] and int(sec) == int(seed["start"]):
+            target_index = i
+            break
+    if target_index is None:
+        print(f"Seed example {seed} not found.")
+        return None
+    vec = norm_emb[target_index].reshape(1, norm_emb.shape[1])
+    D, I = faiss_index.search(vec, NUM_REPRESENTATIVE)
+    results = []
+    for idx, sim in zip(I[0], D[0]):
+        results.append((ids[idx][0], ids[idx][1], 1 - sim))
+    # Limit number of results per file.
+    file_counts = defaultdict(int)
+    filtered = []
+    for file_id, sec, dist in results:
+        if file_counts[file_id] < max_per_file:
+            filtered.append((file_id, sec, dist))
+            file_counts[file_id] += 1
+    return filtered
+
+
+def process_seed_examples(SEED_EXAMPLES, norm_emb, ids, faiss_index, max_per_file=4):
+    seed_clusters = {}
+    seed_labels = {}
+    default_template = {
+        "crowCount": 1, "crowAge": 1,
+        "alert": False, "begging": False, "grief": False,
+        "softSong": False, "rattle": False, "mob": False,
+        "quality": 2, "reviewed": False
+    }
+    for i, seed in enumerate(SEED_EXAMPLES):
+        similar = process_seed_example(seed, norm_emb, ids, faiss_index, max_per_file)
+        if similar is not None:
+            seed_clusters[str(i)] = [{"file_id": f, "start_time": float(sec), "end_time": float(sec + 1)} for
+                                     f, sec, dist in similar]
+            # Use the seed cluster id to label each representative segment.
+            for f, sec, dist in similar:
+                key = f"{f}-{sec}-{sec + 1}"
+                seed_labels[key] = default_template.copy()
+            # Optionally, preview the seed cluster.
+            if PREVIEW:
+                print(f"\nSeed Cluster {i} from seed example {seed}:")
+                for f, sec, dist in similar[:PREVIEW_PER_CLUSTER]:
+                    print(f"  File: {f}, Start: {sec}, Cosine Distance: {dist:.2f}")
+                    audio_file = os.path.join(AUDIO_DIR, f"{f}.wav")
+                    play_audio_preview(audio_file, float(sec), 1.0)
+    return seed_clusters, seed_labels
+
+
 def main():
     random.seed(42)
     np.random.seed(42)
@@ -263,6 +324,11 @@ def main():
 
     # Normalize embeddings.
     norm_emb = normalize_embeddings(reduced)
+
+    # Build a Faiss index for similarity search.
+    d = norm_emb.shape[1]
+    faiss_index = faiss.IndexFlatIP(d)
+    faiss_index.add(norm_emb)
 
     # Recursive k-means splitting.
     all_indices = list(range(len(norm_emb)))
@@ -318,22 +384,52 @@ def main():
         print(row)
 
     # Preview merged clusters.
-    if PREVIEW:
-        print("\nPreviewing merged clusters (sorted by similarity to merged leaf center):")
-        for i, leaf in enumerate(merged_leaves):
-            center = compute_leaf_center(norm_emb, leaf["indices"])
-            sorted_indices = sorted(leaf["indices"], key=lambda idx: np.dot(norm_emb[idx], center), reverse=True)
-            print(f"\nMerged Cluster {i} (Size {leaf['size']}):")
-            for idx in sorted_indices[:PREVIEW_PER_CLUSTER]:
-                file_id, sec = ids[idx]
-                sim = np.dot(norm_emb[idx], center)
-                print(f"  File: {file_id}, Start: {sec}, Cosine Similarity to Merged Center: {sim:.4f}")
-                audio_file = os.path.join(AUDIO_DIR, f"{file_id}.wav")
-                play_audio_preview(audio_file, float(sec), 1.0)
+    # if PREVIEW:
+    #     print("\nPreviewing merged clusters (sorted by similarity to merged leaf center):")
+    #     for i, leaf in enumerate(merged_leaves):
+    #         center = compute_leaf_center(norm_emb, leaf["indices"])
+    #         sorted_indices = sorted(leaf["indices"], key=lambda idx: np.dot(norm_emb[idx], center), reverse=True)
+    #         print(f"\nMerged Cluster {i} (Size {leaf['size']}):")
+    #         for idx in sorted_indices[:PREVIEW_PER_CLUSTER]:
+    #             file_id, sec = ids[idx]
+    #             sim = np.dot(norm_emb[idx], center)
+    #             print(f"  File: {file_id}, Start: {sec}, Cosine Similarity to Merged Center: {sim:.4f}")
+    #             audio_file = os.path.join(AUDIO_DIR, f"{file_id}.wav")
+    #             play_audio_preview(audio_file, float(sec), 1.0)
 
-    # Build final segments mapping (keyed by file) and cluster labels (keyed by "file-start-end").
+    # Process seed examples.
+    seed_clusters, seed_labels = process_seed_examples(SEED_EXAMPLES, norm_emb, ids, faiss_index, max_per_file=4)
+    if seed_clusters:
+        print(f"\nProcessed {len(seed_clusters)} seed clusters.")
+
+    # Build final segments mapping and cluster labels from merged clusters.
     segments, cluster_labels = build_cluster_segments_and_labels(merged_leaves, ids, norm_emb,
                                                                  num_representative=NUM_REPRESENTATIVE)
+    # Append seed clusters into segments and labels as additional clusters.
+    for cluster_offset, (key, segs_list) in enumerate(seed_clusters.items(), start=1):
+        # Use a new cluster id that is not used in merged clusters.
+        new_cluster_id = str(len(merged_leaves) + cluster_offset)
+        # Create a new key for each segment.
+        for seg in segs_list:
+            file_id = seg["file_id"]
+            # Append to segments: ensure segments are grouped by file.
+            segments[file_id] = segments.get(file_id, []) + [{
+                "common_name": "American Crow",
+                "scientific_name": "Corvus brachyrhynchos",
+                "start_time": seg["start_time"],
+                "end_time": seg["end_time"],
+                "cluster": new_cluster_id
+            }]
+            seg_key = f"{file_id}-{seg['start_time']}-{seg['end_time']}"
+            seed_labels[seg_key] = seed_labels.get(seg_key, {
+                "crowCount": 1, "crowAge": 1,
+                "alert": False, "begging": False, "grief": False,
+                "softSong": False, "rattle": False, "mob": False,
+                "quality": 2, "reviewed": False
+            })
+        # Also add this new cluster to cluster_labels.
+        cluster_labels[new_cluster_id] = seed_labels
+    # Save final outputs.
     with open(OUTPUT_SEGMENTS, "w") as f:
         json.dump(segments, f, indent=2)
     with open(OUTPUT_LABELS, "w") as f:
