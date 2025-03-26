@@ -1986,17 +1986,17 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "616319820-78-79": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2004,13 +2004,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "624142917-77-78": {
-        "crowCount": 1,
+        "crowCount": 2,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2018,7 +2018,7 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "120784771-61-62": {
@@ -2028,17 +2028,17 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "625551577-2-3": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2046,13 +2046,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "254210271-25-26": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2060,7 +2060,7 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "620467738-17-18": {
@@ -2070,11 +2070,11 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "195090691-178-179": {
@@ -2084,17 +2084,17 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "345460801-27-28": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2102,7 +2102,7 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "214233011-1-2": {
@@ -2112,17 +2112,17 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "176987321-30-31": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2130,7 +2130,7 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "472704461-68-69": {
@@ -2140,17 +2140,17 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "247001581-55-56": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2158,13 +2158,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "65252511-23-24": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2172,13 +2172,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "924636-49-50": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2186,7 +2186,7 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "229089-143-144": {
@@ -2200,13 +2200,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "593993511-9-10": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2214,7 +2214,7 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "121416131-26-27": {
@@ -2224,17 +2224,17 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "610594790-124-125": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2242,13 +2242,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "247001581-135-136": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2256,7 +2256,7 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "413361311-67-68": {
@@ -2266,17 +2266,17 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "629906437-20-21": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2284,11 +2284,11 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "376182-12-13": {
-        "crowCount": 1,
+        "crowCount": 2,
         "crowAge": 1,
         "alert": false,
         "scold": false,
@@ -2298,13 +2298,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "247001581-72-73": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2312,13 +2312,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "543428441-19-20": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2326,13 +2326,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "482915631-18-19": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2340,13 +2340,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "366001401-5-6": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2354,13 +2354,13 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "465715521-47-48": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
@@ -2368,7 +2368,7 @@
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "207780-137-138": {
@@ -2378,11 +2378,11 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "620467738-25-26": {
@@ -2392,11 +2392,11 @@
         "scold": false,
         "begging": false,
         "grief": false,
-        "softSong": false,
+        "softSong": true,
         "rattle": false,
         "mob": false,
         "quality": 2,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 6
     },
     "27548361-8-9": {
@@ -2410,7 +2410,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "584296971-60-61": {
@@ -2424,7 +2424,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "620390651-228-229": {
@@ -2438,7 +2438,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "61456291-97-98": {
@@ -2452,7 +2452,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "389878901-195-196": {
@@ -2466,7 +2466,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "457826211-42-43": {
@@ -2480,7 +2480,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "621072570-53-54": {
@@ -2494,7 +2494,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "61456301-216-217": {
@@ -2508,7 +2508,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "389878901-71-72": {
@@ -2522,21 +2522,21 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "539850-181-182": {
-        "crowCount": 0,
+        "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 1,
-        "reviewed": false,
+        "quality": 2,
+        "reviewed": true,
         "cluster": 7
     },
     "224235891-1-2": {
@@ -2550,7 +2550,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "539850-285-286": {
@@ -2564,7 +2564,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "61456301-206-207": {
@@ -2578,7 +2578,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "115940-22-23": {
@@ -2592,7 +2592,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "429606651-28-29": {
@@ -2606,7 +2606,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "66252021-527-528": {
@@ -2620,7 +2620,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "460531431-66-67": {
@@ -2634,7 +2634,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "314764581-18-19": {
@@ -2648,7 +2648,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "389878901-199-200": {
@@ -2662,7 +2662,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "193503-89-90": {
@@ -2676,7 +2676,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "619932442-7-8": {
@@ -2690,7 +2690,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "106123561-100-101": {
@@ -2704,21 +2704,21 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "623608269-18-19": {
-        "crowCount": 0,
+        "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 1,
-        "reviewed": false,
+        "quality": 2,
+        "reviewed": true,
         "cluster": 7
     },
     "106123561-116-117": {
@@ -2732,7 +2732,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "628820941-37-38": {
@@ -2746,7 +2746,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "622745843-20-21": {
@@ -2760,7 +2760,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "50804851-118-119": {
@@ -2774,7 +2774,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "61456301-307-308": {
@@ -2788,7 +2788,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "389878901-200-201": {
@@ -2802,7 +2802,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "389878901-15-16": {
@@ -2816,7 +2816,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 7
     },
     "169376651-98-99": {
@@ -2830,7 +2830,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "104494001-13-14": {
@@ -2844,7 +2844,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "160165-23-24": {
@@ -2858,7 +2858,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "456351071-11-12": {
@@ -2872,7 +2872,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "589928531-19-20": {
@@ -2886,7 +2886,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "169376651-116-117": {
@@ -2900,7 +2900,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "160940431-412-413": {
@@ -2914,7 +2914,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "618970933-48-49": {
@@ -2928,7 +2928,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "237392681-206-207": {
@@ -2942,7 +2942,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "593992121-1210-1211": {
@@ -2956,7 +2956,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "593992121-1214-1215": {
@@ -2970,7 +2970,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "618970933-59-60": {
@@ -2984,7 +2984,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "361336-23-24": {
@@ -2998,7 +2998,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "169376651-110-111": {
@@ -3012,7 +3012,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "169376361-440-441": {
@@ -3026,7 +3026,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "330632521-51-52": {
@@ -3040,7 +3040,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "165728231-24-25": {
@@ -3054,7 +3054,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "169376651-57-58": {
@@ -3068,7 +3068,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "61456301-349-350": {
@@ -3082,21 +3082,21 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "135751-7-8": {
-        "crowCount": 0,
+        "crowCount": 1,
         "crowAge": 1,
-        "alert": false,
+        "alert": true,
         "scold": false,
         "begging": false,
         "grief": false,
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 1,
-        "reviewed": false,
+        "quality": 2,
+        "reviewed": true,
         "cluster": 8
     },
     "456351071-42-43": {
@@ -3110,7 +3110,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "594362951-1838-1839": {
@@ -3124,7 +3124,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "594362951-1830-1831": {
@@ -3138,7 +3138,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "248058541-75-76": {
@@ -3152,7 +3152,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "100711-23-24": {
@@ -3166,7 +3166,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "618970933-50-51": {
@@ -3180,7 +3180,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "169376361-215-216": {
@@ -3194,7 +3194,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "100711-10-11": {
@@ -3208,7 +3208,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "230072511-45-46": {
@@ -3222,7 +3222,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "618970933-43-44": {
@@ -3236,7 +3236,7 @@
         "rattle": false,
         "mob": false,
         "quality": 1,
-        "reviewed": false,
+        "reviewed": true,
         "cluster": 8
     },
     "222309301-10-11": {
