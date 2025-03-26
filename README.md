@@ -22,7 +22,7 @@ and mac systems. **Git LFS** is required to correctly clone, pull, and inflate a
 to run the denoiser.
 
 ```
-sudo apt install ffmpeg git-lfs
+sudo apt install ffmpeg git-lfs portaudio19-dev
 pip install -r requirements.txt
 ```
 
