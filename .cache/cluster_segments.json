@@ -1253,7 +1253,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 141.0,
       "end_time": 142.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "172876": [
@@ -2984,7 +2985,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 95.0,
       "end_time": 96.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "239199291": [
@@ -3881,17 +3883,18 @@
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 497.0,
-      "end_time": 498.0,
+      "start_time": 404.0,
+      "end_time": 405.0,
       "confidence": 0.0,
-      "cluster": 11
+      "cluster": 49
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 404.0,
-      "end_time": 405.0,
-      "cluster": "49"
+      "start_time": 497.0,
+      "end_time": 498.0,
+      "confidence": 0.0,
+      "cluster": 11
     }
   ],
   "13142": [
@@ -4264,13 +4267,6 @@
       "end_time": 3.0,
       "confidence": 0.0,
       "cluster": 12
-    },
-    {
-      "common_name": "American Crow",
-      "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 2.0,
-      "end_time": 3.0,
-      "cluster": "50"
     }
   ],
   "626354401": [
@@ -4289,13 +4285,6 @@
       "end_time": 43.0,
       "confidence": 0.0,
       "cluster": 13
-    },
-    {
-      "common_name": "American Crow",
-      "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 25.0,
-      "end_time": 26.0,
-      "cluster": "50"
     }
   ],
   "376180": [
@@ -8062,6 +8051,38 @@
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 34.0,
+      "end_time": 35.0,
+      "confidence": 0.0,
+      "cluster": 50
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 49.0,
+      "end_time": 50.0,
+      "confidence": 0.0,
+      "cluster": 50
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 50.0,
+      "end_time": 51.0,
+      "confidence": 0.0,
+      "cluster": 50
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 62.0,
+      "end_time": 63.0,
+      "confidence": 0.0,
+      "cluster": 50
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
       "start_time": 90.0,
       "end_time": 91.0,
       "confidence": 0.0,
@@ -8098,34 +8119,6 @@
       "end_time": 110.0,
       "confidence": 0.0,
       "cluster": 33
-    },
-    {
-      "common_name": "American Crow",
-      "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 34.0,
-      "end_time": 35.0,
-      "cluster": "50"
-    },
-    {
-      "common_name": "American Crow",
-      "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 62.0,
-      "end_time": 63.0,
-      "cluster": "50"
-    },
-    {
-      "common_name": "American Crow",
-      "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 50.0,
-      "end_time": 51.0,
-      "cluster": "50"
-    },
-    {
-      "common_name": "American Crow",
-      "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 49.0,
-      "end_time": 50.0,
-      "cluster": "50"
     }
   ],
   "416757831": [
@@ -8884,6 +8877,14 @@
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 39.0,
+      "end_time": 40.0,
+      "confidence": 0.0,
+      "cluster": 50
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
       "start_time": 51.0,
       "end_time": 52.0,
       "confidence": 0.0,
@@ -8896,13 +8897,6 @@
       "end_time": 67.0,
       "confidence": 0.0,
       "cluster": 27
-    },
-    {
-      "common_name": "American Crow",
-      "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 39.0,
-      "end_time": 40.0,
-      "cluster": "50"
     }
   ],
   "56781051": [
@@ -10107,17 +10101,18 @@
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 70.0,
-      "end_time": 71.0,
+      "start_time": 19.0,
+      "end_time": 20.0,
       "confidence": 0.0,
-      "cluster": 31
+      "cluster": 50
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 19.0,
-      "end_time": 20.0,
-      "cluster": "50"
+      "start_time": 70.0,
+      "end_time": 71.0,
+      "confidence": 0.0,
+      "cluster": 31
     }
   ],
   "614032288": [
@@ -12198,7 +12193,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 219.0,
       "end_time": 220.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "947716": [
@@ -12709,7 +12705,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 19.0,
       "end_time": 20.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "627976553": [
@@ -13666,28 +13663,32 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 20.0,
       "end_time": 21.0,
-      "cluster": "49"
-    },
-    {
-      "common_name": "American Crow",
-      "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 25.0,
-      "end_time": 26.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 21.0,
       "end_time": 22.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 25.0,
+      "end_time": 26.0,
+      "confidence": 0.0,
+      "cluster": 49
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 26.0,
       "end_time": 27.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "470754131": [
@@ -13696,7 +13697,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 24.0,
       "end_time": 25.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "165983411": [
@@ -13705,7 +13707,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 22.0,
       "end_time": 23.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "539550101": [
@@ -13714,14 +13717,16 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 11.0,
       "end_time": 12.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 12.0,
       "end_time": 13.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "609370062": [
@@ -13730,23 +13735,26 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 30.0,
       "end_time": 31.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "621286827": [
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 22.0,
-      "end_time": 23.0,
-      "cluster": "49"
+      "start_time": 9.0,
+      "end_time": 10.0,
+      "confidence": 0.0,
+      "cluster": 49
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 9.0,
-      "end_time": 10.0,
-      "cluster": "49"
+      "start_time": 22.0,
+      "end_time": 23.0,
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "542024451": [
@@ -13755,7 +13763,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 7.0,
       "end_time": 8.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "543653981": [
@@ -13764,30 +13773,34 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 225.0,
       "end_time": 226.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "167792": [
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 113.0,
-      "end_time": 114.0,
-      "cluster": "49"
+      "start_time": 20.0,
+      "end_time": 21.0,
+      "confidence": 0.0,
+      "cluster": 50
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 66.0,
       "end_time": 67.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 20.0,
-      "end_time": 21.0,
-      "cluster": "50"
+      "start_time": 113.0,
+      "end_time": 114.0,
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "438816681": [
@@ -13796,7 +13809,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 145.0,
       "end_time": 146.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "281232521": [
@@ -13805,7 +13819,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 21.0,
       "end_time": 22.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "255708911": [
@@ -13814,7 +13829,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 14.0,
       "end_time": 15.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "335716951": [
@@ -13823,7 +13839,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 60.0,
       "end_time": 61.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "535466271": [
@@ -13832,7 +13849,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 1.0,
       "end_time": 2.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "165983361": [
@@ -13841,7 +13859,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 0.0,
       "end_time": 1.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "216768": [
@@ -13850,23 +13869,26 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 14.0,
       "end_time": 15.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "343529711": [
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 42.0,
-      "end_time": 43.0,
-      "cluster": "49"
+      "start_time": 21.0,
+      "end_time": 22.0,
+      "confidence": 0.0,
+      "cluster": 49
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 21.0,
-      "end_time": 22.0,
-      "cluster": "49"
+      "start_time": 42.0,
+      "end_time": 43.0,
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "332365111": [
@@ -13875,7 +13897,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 30.0,
       "end_time": 31.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "27851631": [
@@ -13884,7 +13907,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 2.0,
       "end_time": 3.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "614968986": [
@@ -13893,7 +13917,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 5.0,
       "end_time": 6.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "123411961": [
@@ -13902,7 +13927,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 5.0,
       "end_time": 6.0,
-      "cluster": "49"
+      "confidence": 0.0,
+      "cluster": 49
     }
   ],
   "229159": [
@@ -13911,23 +13937,26 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 73.0,
       "end_time": 74.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "629375337": [
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 13.0,
-      "end_time": 14.0,
-      "cluster": "50"
+      "start_time": 1.0,
+      "end_time": 2.0,
+      "confidence": 0.0,
+      "cluster": 50
     },
     {
       "common_name": "American Crow",
       "scientific_name": "Corvus brachyrhynchos",
-      "start_time": 1.0,
-      "end_time": 2.0,
-      "cluster": "50"
+      "start_time": 13.0,
+      "end_time": 14.0,
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "620655698": [
@@ -13936,7 +13965,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 29.0,
       "end_time": 30.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "58723871": [
@@ -13945,7 +13975,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 9.0,
       "end_time": 10.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "230870281": [
@@ -13954,7 +13985,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 2.0,
       "end_time": 3.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "20847511": [
@@ -13963,7 +13995,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 86.0,
       "end_time": 87.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "114373391": [
@@ -13972,7 +14005,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 54.0,
       "end_time": 55.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "249490911": [
@@ -13981,7 +14015,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 19.0,
       "end_time": 20.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "419661481": [
@@ -13990,7 +14025,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 74.0,
       "end_time": 75.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "622181334": [
@@ -13999,7 +14035,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 25.0,
       "end_time": 26.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "109865531": [
@@ -14008,7 +14045,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 41.0,
       "end_time": 42.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "311449061": [
@@ -14017,7 +14055,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 41.0,
       "end_time": 42.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "361178511": [
@@ -14026,7 +14065,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 368.0,
       "end_time": 369.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "291495991": [
@@ -14035,7 +14075,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 11.0,
       "end_time": 12.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "236661751": [
@@ -14044,7 +14085,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 27.0,
       "end_time": 28.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ],
   "58187": [
@@ -14053,7 +14095,8 @@
       "scientific_name": "Corvus brachyrhynchos",
       "start_time": 13.0,
       "end_time": 14.0,
-      "cluster": "50"
+      "confidence": 0.0,
+      "cluster": 50
     }
   ]
 }
