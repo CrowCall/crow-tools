@@ -9,3 +9,4 @@ asteroid
 omegaconf
 pesto-pitch==0.1.0
 pandas
+faiss-cpu
