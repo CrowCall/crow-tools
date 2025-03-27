@@ -1,11 +1,12 @@
 import torch
 import torch.nn as nn
 import pytorch_lightning as pl
+from lightning_fabric import seed_everything
 
-seed = 42
-pl.seed_everything(seed, workers=True)
+# Seed for reproducibility.
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
+seed_everything(42, workers=True)
 
 
 class CrowClassifier(pl.LightningModule):
@@ -13,47 +14,47 @@ class CrowClassifier(pl.LightningModule):
         super().__init__()
         # A simple shared backbone.
         self.backbone = nn.Sequential(
+            nn.Flatten(),
             nn.Linear(input_dim, hidden_dim),
             nn.ReLU()
         )
-        # Separate output heads:
-        self.crowCount_head = nn.Linear(hidden_dim, 2)  # e.g. "single" vs "multiple"
-        self.crowAge_head = nn.Linear(hidden_dim, 2)  # "adult" vs "juvenile"
-        self.begging_head = nn.Linear(hidden_dim, 1)
-        self.softSong_head = nn.Linear(hidden_dim, 1)
-        self.rattle_head = nn.Linear(hidden_dim, 1)
-        self.badQuality_head = nn.Linear(hidden_dim, 1)
-        self.human_head = nn.Linear(hidden_dim, 1)
 
-        # Define loss functions.
+        # Output heads for each task.
+        self.crowCount_head = nn.Linear(hidden_dim, 5)  # 5 classes (labels: 0,1,2,3,4)
+        self.crowAge_head = nn.Linear(hidden_dim, 2)      # 2 classes: adult vs juvenile
+        self.begging_head = nn.Linear(hidden_dim, 1)        # binary
+        self.softSong_head = nn.Linear(hidden_dim, 1)        # binary
+        self.rattle_head = nn.Linear(hidden_dim, 1)          # binary
+        self.mob_head = nn.Linear(hidden_dim, 1)             # binary
+        self.quality_head = nn.Linear(hidden_dim, 3)         # 3 classes: bad, average, HQ
+
+        # Loss functions.
         self.loss_fn_class = nn.CrossEntropyLoss()
         self.loss_fn_bce = nn.BCEWithLogitsLoss()
 
     def forward(self, x):
-        x = self.backbone(x)
+        rep = self.backbone(x)
         out = {
-            "crowCount": self.crowCount_head(x),
-            "crowAge": self.crowAge_head(x),
-            "begging": self.begging_head(x),
-            "softSong": self.softSong_head(x),
-            "rattle": self.rattle_head(x),
-            "badQuality": self.badQuality_head(x),
-            "human": self.human_head(x)
+            "crowCount": self.crowCount_head(rep),
+            "crowAge": self.crowAge_head(rep),
+            "begging": self.begging_head(rep),
+            "softSong": self.softSong_head(rep),
+            "rattle": self.rattle_head(rep),
+            "mob": self.mob_head(rep),
+            "quality": self.quality_head(rep)
         }
         return out
 
     def training_step(self, batch, batch_idx):
         embeddings, labels = batch
         outputs = self(embeddings)
-
-        # Calculate the losses for each task.
-        loss = self.loss_fn_class(outputs["crowCount"], labels["crowCount"]) + \
-               self.loss_fn_class(outputs["crowAge"], labels["crowAge"]) + \
+        loss = self.loss_fn_class(outputs["crowCount"], labels["crowCount"].long()) + \
+               self.loss_fn_class(outputs["crowAge"], (labels["crowAge"] - 1).long()) + \
                self.loss_fn_bce(outputs["begging"].squeeze(), labels["begging"].float()) + \
                self.loss_fn_bce(outputs["softSong"].squeeze(), labels["softSong"].float()) + \
                self.loss_fn_bce(outputs["rattle"].squeeze(), labels["rattle"].float()) + \
-               self.loss_fn_bce(outputs["badQuality"].squeeze(), labels["badQuality"].float()) + \
-               self.loss_fn_bce(outputs["human"].squeeze(), labels["human"].float())
+               self.loss_fn_bce(outputs["mob"].squeeze(), labels["mob"].float()) + \
+               self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
 
         self.log('train_loss', loss)
         return loss
@@ -61,14 +62,12 @@ class CrowClassifier(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         embeddings, labels = batch
         outputs = self(embeddings)
-
-        loss = self.loss_fn_class(outputs["crowCount"], labels["crowCount"]) + \
-               self.loss_fn_class(outputs["crowAge"], labels["crowAge"]) + \
-               self.loss_fn_bce(outputs["begging"].squeeze(), labels["begging"].float()) + \
+        loss = self.loss_fn_class(outputs["crowCount"], labels["crowCount"].long()) + \
+               self.loss_fn_class(outputs["crowAge"], (labels["crowAge"] - 1).long()) + \
                self.loss_fn_bce(outputs["softSong"].squeeze(), labels["softSong"].float()) + \
                self.loss_fn_bce(outputs["rattle"].squeeze(), labels["rattle"].float()) + \
-               self.loss_fn_bce(outputs["badQuality"].squeeze(), labels["badQuality"].float()) + \
-               self.loss_fn_bce(outputs["human"].squeeze(), labels["human"].float())
+               self.loss_fn_bce(outputs["mob"].squeeze(), labels["mob"].float()) + \
+               self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
 
         self.log('val_loss', loss)
         return loss

@@ -1,23 +1,34 @@
+from lightning_fabric import seed_everything
 from pytorch_lightning.callbacks import ModelCheckpoint
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, Subset
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
 from model import CrowClassifier
 from dataset import CrowDataset
+import random
+
+# Seed for reproducibility.
+seed_everything(42, workers=True)
 
 # Create the dataset.
 dataset = CrowDataset()
 
-# Determine sizes for training and validation sets.
-train_size = int(0.9 * len(dataset))
-val_size = len(dataset) - train_size
+# Create a list of indices and shuffle them.
+indices = list(range(len(dataset)))
+random.shuffle(indices)
 
-# Split the dataset.
-train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+# Compute the split index for 85% training and 15% validation.
+split = int(0.85 * len(dataset))
+train_indices = indices[:split]
+val_indices = indices[split:]
 
-# Create DataLoaders for each split.
-train_loader = DataLoader(train_dataset, batch_size=32, num_workers=3, shuffle=True)
-val_loader = DataLoader(val_dataset, batch_size=32, num_workers=3, shuffle=False)
+# Create Subset datasets.
+train_dataset = Subset(dataset, train_indices)
+val_dataset = Subset(dataset, val_indices)
+
+# Create DataLoaders.
+train_loader = DataLoader(train_dataset, batch_size=16, num_workers=3, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=16, num_workers=3, shuffle=False)
 
 # Instantiate the model.
 model = CrowClassifier()
@@ -25,7 +36,7 @@ model = CrowClassifier()
 # Create TensorBoard logger.
 tb_logger = TensorBoardLogger("logs", name="crow-classify")
 
-# Checkpointing
+# Checkpointing.
 checkpoint_callback = ModelCheckpoint(
     dirpath="logs/checkpoints",
     filename="best_model",
@@ -34,6 +45,6 @@ checkpoint_callback = ModelCheckpoint(
     save_top_k=3
 )
 
-# Initialize the Trainer with the logger and train.
+# Initialize the Trainer.
 trainer = pl.Trainer(max_epochs=60, logger=tb_logger, callbacks=[checkpoint_callback])
 trainer.fit(model, train_loader, val_loader)
