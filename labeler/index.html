@@ -38,10 +38,11 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        
+        /* Style for reviewed cards */
+        .reviewed-card {
+            background-color: rgba(200, 200, 200, 0.7) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         /* Update page title for better contrast */
@@ -183,9 +184,9 @@
     </div>
 
 
-    <!-- 2-Column Layout for Segment Cards -->
-    <div class="row row-cols-1 row-cols-lg-2 g-2">
-        <div v-for="(segment, index) in paginatedSegments" :key="segment.id + '-' + segment.start_time + '-' + segment.end_time" class="col">
+    <!-- 2-Column Layout for Segment Cards with equal height rows -->
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
+        <div v-for="(segment, index) in paginatedSegments" :key="segment.id + '-' + segment.start_time + '-' + segment.end_time" class="col d-flex">
             <segment-card
                     :segment="segment"
                     :labels="labels"
@@ -193,7 +194,8 @@
                     :prev-labels="index > 0
         ? labels[paginatedSegments[index - 1].id + '-' + paginatedSegments[index - 1].start_time + '-' + paginatedSegments[index - 1].end_time]
         : null"
-                    @labels-changed="saveLabelsToServer">
+                    @labels-changed="saveLabelsToServer"
+                    class="w-100">
             </segment-card>
         </div>
     </div>

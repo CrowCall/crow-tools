@@ -5,7 +5,7 @@ const app = Vue.createApp({
             labels: {},
             csvData: {},
             currentPage: 1,
-            segmentsPerPage: 50,
+            segmentsPerPage: 30,
             playbackSpeed: 1,
             totalPagesCached: 0,
             errorMessage: ""
@@ -76,7 +76,7 @@ const app = Vue.createApp({
             return `${segment.id}-${segment.start_time}-${segment.end_time}`;
         },
         loadCrowsCSV() {
-          const files = ['/cache/csv/crows.csv', '/csv/crows-xeno-canto.csv'];
+          const files = ['/cache/csv/crows.csv', '/cache/csv/crows-xeno-canto.csv'];
           let remaining = files.length;
 
           files.forEach(file => {
@@ -101,7 +101,7 @@ const app = Vue.createApp({
           });
         },
         loadSegments() {
-            fetch('/cache/segments.json')
+            fetch('/cache/cluster_segments.json')
                 .then(r => r.json())
                 .then(data => {
                     const segArray = [];
@@ -111,6 +111,14 @@ const app = Vue.createApp({
                             segArray.push(seg);
                         });
                     }
+                    
+                    // Sort by cluster
+                    segArray.sort((a, b) => {
+                        const clusterA = a.cluster || 1;
+                        const clusterB = b.cluster || 1;
+                        return clusterA - clusterB;
+                    });
+                    
                     this.segments = segArray;
                     this.loadCrowsCSV();
                     this.totalPagesCached = Math.ceil(this.segments.length / this.segmentsPerPage);
@@ -129,13 +137,13 @@ const app = Vue.createApp({
             });
         },
         loadLabels() {
-            fetch('/cache/auto_labels.json')
+            fetch('/cache/cluster_labels.json')
                 .then(r => r.json())
                 .then(data => {
                     this.labels = data;
                 })
                 .catch(err => {
-                    console.warn('No auto_labels.json found, starting fresh.');
+                    console.warn('No labels json found, starting fresh.');
                     this.labels = {};
                 });
         },
@@ -158,6 +166,16 @@ const app = Vue.createApp({
             if (!data.success) {
               throw new Error("Failed to update labels on server.");
             }
+            
+            // Update the segment's labelData property to reflect the change
+            const segmentToUpdate = this.segments.find(seg => 
+              this.segmentKey(seg) === payload.segmentKey
+            );
+            
+            if (segmentToUpdate) {
+              segmentToUpdate.labelData = payload.labels;
+            }
+            
             // Clear any previous error message on success.
             this.errorMessage = "";
           })
@@ -206,7 +224,7 @@ const app = Vue.createApp({
         if (savedSpeed) {
             this.playbackSpeed = parseInt(savedSpeed, 10);
         }
-        // Then load segments and labels as before
+        // Now loadSegments and labels
         this.loadSegments();
         this.loadLabels();
     }

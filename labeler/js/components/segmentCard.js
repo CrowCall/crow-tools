@@ -1,7 +1,7 @@
 window.SegmentCard = {
   props: ['segment', 'labels', 'playbackSpeed', 'prevLabels'],
   template: `
-    <div :class="['card', 'mb-2', 'p-2', cardBorderClass]" :style="leftBorderStyle">
+    <div :class="['card', 'h-100', 'mb-2', 'p-2', cardBorderClass, {'reviewed-card': currentLabels.reviewed}]" :style="[leftBorderStyle, cardBackgroundStyle]">
       <!-- 1) Title Row -->
       <div class="d-flex flex-wrap align-items-center mb-1">
         <strong class="me-2">
@@ -9,13 +9,14 @@ window.SegmentCard = {
         </strong>
         <small class="text-muted">
           Time: {{ segment.start_time }} - {{ segment.end_time }},
-          Conf: {{ segment.confidence.toFixed(2) }}
+          Conf: {{ segment.confidence.toFixed(2) }},
+          Cluster: {{ segment.cluster }}
         </small>
       </div>
 
       <!-- 2) Media Notes -->
       <div class="mb-2" style="overflow: hidden; text-overflow: ellipsis; max-height: 3em; font-size: .85em;">
-        <div class="text-muted" :title="segment.media_notes">{{ segment.media_notes }}</div>
+        <div class="text-muted" :title="segment.media_notes">{{ segment.media_notes || "N/A" }}</div>
       </div>
 
       <!-- 3) Play Button, Slider, and Copy Button -->
@@ -44,6 +45,15 @@ window.SegmentCard = {
       <div class="d-flex flex-wrap align-items-center justify-content-evenly" style="gap: 0.5rem;">
         <!-- Crow Count Group -->
         <div class="btn-group btn-group-sm flex-fill mx-1" role="group">
+           <input type="radio" class="btn-check"
+                 :name="'crowCount' + segmentKey"
+                 :id="'crowCount0_' + segmentKey"
+                 :value="0"
+                 v-model.number="currentLabels.crowCount"
+                 @change="onLabelsChanged">
+          <label class="btn btn-outline-primary" :for="'crowCount0_' + segmentKey" title="No Crows">0</label>
+      
+ 
           <input type="radio" class="btn-check"
                  :name="'crowCount' + segmentKey"
                  :id="'crowCount1_' + segmentKey"
@@ -99,10 +109,16 @@ window.SegmentCard = {
         <!-- Behavior Group -->
         <div class="btn-group btn-group-sm flex-fill mx-1" role="group">
           <input type="checkbox" class="btn-check"
+                 :id="'alert_' + segmentKey"
+                 v-model="currentLabels.alert"
+                 @change="onLabelsChanged">
+          <label class="btn btn-outline-primary" :for="'alert_' + segmentKey" title="Alert">️🚨</label>
+          
+          <input type="checkbox" class="btn-check"
                  :id="'mob_' + segmentKey"
                  v-model="currentLabels.mob"
                  @change="onLabelsChanged">
-          <label class="btn btn-outline-primary btn-feature" :for="'mob_' + segmentKey" title="Mob / Attack / Alert">⚔️</label>
+          <label class="btn btn-outline-primary btn-feature" :for="'mob_' + segmentKey" title="Mob / Attack">⚔️</label>
           
           <input type="checkbox" class="btn-check"
                  :id="'begging_' + segmentKey"
@@ -111,22 +127,16 @@ window.SegmentCard = {
           <label class="btn btn-outline-primary" :for="'begging_' + segmentKey" title="Food / Begging">🍇</label>
 
           <input type="checkbox" class="btn-check"
-                 :id="'rattle_' + segmentKey"
-                 v-model="currentLabels.rattle"
-                 @change="onLabelsChanged">
-          <label class="btn btn-outline-primary btn-feature" :for="'rattle_' + segmentKey" title="Rattle">🪇</label>
-          
-          <input type="checkbox" class="btn-check"
                  :id="'softSong_' + segmentKey"
                  v-model="currentLabels.softSong"
                  @change="onLabelsChanged">
           <label class="btn btn-outline-primary btn-feature" :for="'softSong_' + segmentKey" title="Soft Song">🎵</label>
 
           <input type="checkbox" class="btn-check"
-                 :id="'grief_' + segmentKey"
-                 v-model="currentLabels.grief"
+                 :id="'rattle_' + segmentKey"
+                 v-model="currentLabels.rattle"
                  @change="onLabelsChanged">
-          <label class="btn btn-outline-primary" :for="'grief_' + segmentKey" title="Grief">💔</label>
+          <label class="btn btn-outline-primary btn-feature" :for="'rattle_' + segmentKey" title="Rattle">🪇</label>
 
         </div>
       
@@ -174,20 +184,31 @@ window.SegmentCard = {
       return `${this.segment.id}-${this.segment.start_time}-${this.segment.end_time}`;
     },
     currentLabels() {
+      // If we have labelData directly on the segment, use that
+      if (this.segment.labelData) {
+        // Make sure it's in the labels object for compatibility
+        this.labels[this.segmentKey] = this.segment.labelData;
+        return this.segment.labelData;
+      }
+      
+      // Otherwise use the labels object
       if (!this.labels[this.segmentKey]) {
         // Initialize with the new structure
         this.labels[this.segmentKey] = {
           crowCount: 1,   // integer [1..4]
           crowAge: 1,     // 1=adult, 2=juvenile
+          scold: false,
           alert: false,
           begging: false,
-          grief: false,
           softSong: false,
           rattle: false,
           mob: false,
           quality: 2,     // integer [1..3]
           reviewed: false
         };
+      } else if (this.labels[this.segmentKey] && typeof this.labels[this.segmentKey].cluster === 'undefined') {
+        // Ensure cluster property exists
+        this.labels[this.segmentKey].cluster = 1;
       }
       return this.labels[this.segmentKey];
     },
@@ -208,6 +229,13 @@ window.SegmentCard = {
         hash = (hash * 31 + fileId.charCodeAt(i)) % colors.length;
       }
       return { borderLeft: `6px solid ${colors[hash]} !important` };
+    },
+    cardBackgroundStyle() {
+      // Apply darker background for reviewed items
+      if (this.currentLabels.reviewed) {
+        return { backgroundColor: 'rgba(200, 200, 200, 0.9)' };
+      }
+      return {};
     }
   },
   methods: {
@@ -264,7 +292,7 @@ window.SegmentCard = {
           this.isPlaying = false;
         }
         // Copy all fields from prevLabels
-        const fields = ['crowCount', 'crowAge', 'alert', 'begging', 'grief', 'softSong', 'rattle', 'mob', 'quality', 'notes'];
+        const fields = ['crowCount', 'crowAge', 'alert', 'begging', 'scold', 'softSong', 'rattle', 'mob', 'quality'];
         fields.forEach(field => {
           this.currentLabels[field] = this.prevLabels[field];
         });
