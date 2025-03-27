@@ -243,5 +243,20 @@
     "crowCount": 1, "crowAge": 1,
     "alert": false, "scold": false, "begging": false, "grief": false, "softSong": true, "rattle": false, "mob": false,
     "quality": 2, "reviewed": false
+  },
+  "51": {
+    "crowCount": 1, "crowAge": 1,
+    "alert": false, "scold": false, "begging": false, "grief": false, "softSong": false, "rattle": true, "mob": false,
+    "quality": 2, "reviewed": false
+  },
+  "52": {
+    "crowCount": 1, "crowAge": 1,
+    "alert": false, "scold": false, "begging": false, "grief": false, "softSong": false, "rattle": true, "mob": false,
+    "quality": 2, "reviewed": false
+  },
+  "53": {
+    "crowCount": 1, "crowAge": 1,
+    "alert": false, "scold": false, "begging": false, "grief": false, "softSong": false, "rattle": true, "mob": false,
+    "quality": 2, "reviewed": false
   }
 }
