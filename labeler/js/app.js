@@ -9,6 +9,7 @@ const app = Vue.createApp({
             playbackSpeed: 1,
             totalPagesCached: 0,
             errorMessage: "",
+            visibleSegmentKeys: [], // Keep track of segments that should remain visible even if they don't match filters
             filters: {
                 labelStatus: 'all',
                 reviewStatus: 'all',
@@ -41,6 +42,12 @@ const app = Vue.createApp({
             
             return this.segments.filter(segment => {
                 const segKey = `${segment.id}-${segment.start_time}-${segment.end_time}`;
+                
+                // If this segment is in our visible list, always include it
+                if (this.visibleSegmentKeys.includes(segKey)) {
+                    return true;
+                }
+                
                 const labelData = this.labels[segKey];
                 
                 // Label status filter
@@ -246,6 +253,12 @@ const app = Vue.createApp({
         },
         saveLabelsToServer(payload) {
           // payload is expected to be: { segmentKey, labels }
+          
+          // Make sure the segment stays visible even if it no longer matches the filter
+          if (!this.visibleSegmentKeys.includes(payload.segmentKey)) {
+            this.visibleSegmentKeys.push(payload.segmentKey);
+          }
+          
           fetch('/updateLabels', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -283,18 +296,24 @@ const app = Vue.createApp({
         },
         prevPage() {
             if (this.currentPage > 1) {
+                // Clear the visible segments list when changing pages
+                this.visibleSegmentKeys = [];
                 this.currentPage--;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         },
         nextPage() {
             if (this.currentPage < this.totalPages) {
+                // Clear the visible segments list when changing pages
+                this.visibleSegmentKeys = [];
                 this.currentPage++;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         },
         handleGotoPage(pageNum) {
             if (pageNum >= 1 && pageNum <= this.totalPages) {
+                // Clear the visible segments list when changing pages
+                this.visibleSegmentKeys = [];
                 this.currentPage = pageNum;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -308,6 +327,9 @@ const app = Vue.createApp({
             
             // Reset to page 1 when filters change
             this.currentPage = 1;
+            
+            // Clear the list of visible segments on filter change
+            this.visibleSegmentKeys = [];
             
             // Save filters to localStorage
             localStorage.setItem('activeFilters', JSON.stringify(this.activeFilters));

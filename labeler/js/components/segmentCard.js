@@ -272,7 +272,12 @@ window.SegmentCard = {
     onLabelsChanged() {
       // Whenever any label is changed, mark as reviewed and emit update.
       this.currentLabels.reviewed = true;
-      this.$emit('labels-changed', { segmentKey: this.segmentKey, labels: this.currentLabels });
+      
+      // Add a small delay to ensure this doesn't trigger reactivity too quickly
+      // This prevents UI flickering if filtering would normally remove this item
+      setTimeout(() => {
+        this.$emit('labels-changed', { segmentKey: this.segmentKey, labels: this.currentLabels });
+      }, 10);
     },
     updateProgress() {
       if (this.audio) {
