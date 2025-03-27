@@ -8,21 +8,118 @@ const app = Vue.createApp({
             segmentsPerPage: 30,
             playbackSpeed: 1,
             totalPagesCached: 0,
-            errorMessage: ""
+            errorMessage: "",
+            filters: {
+                labelStatus: 'all',
+                reviewStatus: 'all',
+                callTypes: {
+                    rattle: false,
+                    softSong: false,
+                    mob: false,
+                    alert: false
+                },
+                crowCounts: {
+                    0: false,
+                    1: false,
+                    2: false,
+                    3: false,
+                    4: false
+                },
+                crowAge: 'all',
+                mediaNotesText: '',
+                cluster: null
+            },
+            activeFilters: null
         };
     },
     computed: {
         totalPages() {
-            return this.totalPagesCached;
+            return Math.ceil(this.filteredSegments.length / this.segmentsPerPage);
+        },
+        filteredSegments() {
+            if (!this.activeFilters) return this.segments;
+            
+            return this.segments.filter(segment => {
+                const segKey = `${segment.id}-${segment.start_time}-${segment.end_time}`;
+                const labelData = this.labels[segKey];
+                
+                // Label status filter
+                if (this.activeFilters.labelStatus !== 'all') {
+                    const isLabeled = labelData && (labelData.crowCount !== undefined);
+                    if (this.activeFilters.labelStatus === 'labeled' && !isLabeled) return false;
+                    if (this.activeFilters.labelStatus === 'unlabeled' && isLabeled) return false;
+                }
+                
+                // Review status filter
+                if (this.activeFilters.reviewStatus !== 'all') {
+                    const isReviewed = labelData && labelData.reviewed === true;
+                    if (this.activeFilters.reviewStatus === 'reviewed' && !isReviewed) return false;
+                    if (this.activeFilters.reviewStatus === 'unreviewed' && isReviewed) return false;
+                }
+                
+                // Call types
+                if (labelData) {
+                    const callTypeFilters = this.activeFilters.callTypes;
+                    // If any filters are active, the segment must match at least one
+                    const hasActiveCallTypeFilters = Object.values(callTypeFilters).some(val => val);
+                    
+                    if (hasActiveCallTypeFilters) {
+                        const matchesAType = 
+                            (callTypeFilters.rattle && labelData.rattle) ||
+                            (callTypeFilters.softSong && labelData.softSong) ||
+                            (callTypeFilters.mob && labelData.mob) ||
+                            (callTypeFilters.alert && labelData.alert);
+                        
+                        if (!matchesAType) return false;
+                    }
+                }
+                
+                // Crow count
+                if (labelData && labelData.crowCount !== undefined) {
+                    const crowCountFilters = this.activeFilters.crowCounts;
+                    const hasActiveCrowCountFilters = Object.values(crowCountFilters).some(val => val);
+                    
+                    if (hasActiveCrowCountFilters && !crowCountFilters[labelData.crowCount]) {
+                        return false;
+                    }
+                }
+                
+                // Crow age
+                if (this.activeFilters.crowAge !== 'all' && labelData && labelData.crowAge !== undefined) {
+                    if (this.activeFilters.crowAge === 'adult' && labelData.crowAge !== 1) return false;
+                    if (this.activeFilters.crowAge === 'juvenile' && labelData.crowAge !== 2) return false;
+                }
+                
+                // Media notes text
+                if (this.activeFilters.mediaNotesText) {
+                    // If there's a filter for media notes, require that media_notes exists and is not empty
+                    if (!segment.media_notes || segment.media_notes.trim() === '') {
+                        return false;
+                    }
+                    // Also check that it includes the filter text
+                    if (!segment.media_notes.toLowerCase().includes(this.activeFilters.mediaNotesText.toLowerCase())) {
+                        return false;
+                    }
+                }
+                
+                // Cluster
+                if (this.activeFilters.cluster !== null && this.activeFilters.cluster !== '' && segment.cluster !== undefined) {
+                    if (segment.cluster !== this.activeFilters.cluster) return false;
+                }
+                
+                return true;
+            });
         },
         paginatedSegments() {
             const start = (this.currentPage - 1) * this.segmentsPerPage;
-            return this.segments.slice(start, start + this.segmentsPerPage);
+            return this.filteredSegments.slice(start, start + this.segmentsPerPage);
         },
         // Stats aggregator
         stats() {
             const uniqueFileIDs = new Set();
-            let totalSegments = this.segments.length;
+            // Use filtered segments when filters are active, otherwise use all segments
+            const segmentsToCount = this.activeFilters ? this.filteredSegments : this.segments;
+            let totalSegments = segmentsToCount.length;
             let labeledSegments = 0;
             let totalDurationSec = 0;
             let labeledDurationSec = 0;
@@ -37,7 +134,7 @@ const app = Vue.createApp({
                 }
                 return false;
             };
-            for (const seg of this.segments) {
+            for (const seg of segmentsToCount) {
                 uniqueFileIDs.add(seg.id);
                 const segKey = `${seg.id}-${seg.start_time}-${seg.end_time}`;
                 const durationSec = seg.end_time - seg.start_time;
@@ -204,6 +301,16 @@ const app = Vue.createApp({
         },
         setPlaybackSpeed(speed) {
             this.playbackSpeed = speed;
+        },
+        updateFilters(newFilters) {
+            // Deep copy the filters to avoid reference issues
+            this.activeFilters = JSON.parse(JSON.stringify(newFilters));
+            
+            // Reset to page 1 when filters change
+            this.currentPage = 1;
+            
+            // Save filters to localStorage
+            localStorage.setItem('activeFilters', JSON.stringify(this.activeFilters));
         }
     },
     watch: {
@@ -224,6 +331,18 @@ const app = Vue.createApp({
         if (savedSpeed) {
             this.playbackSpeed = parseInt(savedSpeed, 10);
         }
+        
+        // Load saved filters if they exist
+        const savedFilters = localStorage.getItem('activeFilters');
+        if (savedFilters) {
+            try {
+                this.activeFilters = JSON.parse(savedFilters);
+            } catch (e) {
+                console.error('Error parsing saved filters:', e);
+                this.activeFilters = null;
+            }
+        }
+        
         // Now loadSegments and labels
         this.loadSegments();
         this.loadLabels();
@@ -232,5 +351,6 @@ const app = Vue.createApp({
 
 app.component('pagination', window.Pagination);
 app.component('segment-card', window.SegmentCard);
+app.component('filter-component', window.FilterComponent);
 
 app.mount('#app');

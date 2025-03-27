@@ -154,14 +154,16 @@
 
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <!-- Paginator on the left -->
-        <pagination
-                :current-page="currentPage"
-                :total-pages="totalPages"
-                @prev="prevPage"
-                @next="nextPage"
-                @goto="handleGotoPage">
-        </pagination>
+        <!-- Left side: Paginator and Filter -->
+        <div class="d-flex align-items-center gap-2">
+            <pagination
+                    :current-page="currentPage"
+                    :total-pages="totalPages"
+                    @prev="prevPage"
+                    @next="nextPage"
+                    @goto="handleGotoPage">
+            </pagination>
+        </div>
 
         <!-- Playback Speed Button Group on the right -->
         <div class="d-flex align-items-center" style="gap: 1rem;">
@@ -180,12 +182,31 @@
                         :class="{'btn-primary': playbackSpeed === 4, 'btn-outline-primary': playbackSpeed !== 4}"
                         @click="setPlaybackSpeed(4)">4X</button>
             </div>
+
+            <!-- Filter Component -->
+            <filter-component
+                    :filters="filters"
+                    :active-filters="activeFilters"
+                    @filters-changed="updateFilters">
+            </filter-component>
         </div>
     </div>
 
 
     <!-- 2-Column Layout for Segment Cards with equal height rows -->
     <div class="row row-cols-1 row-cols-lg-2 g-4">
+        <div v-if="filteredSegments.length === 0" class="col-12 text-center py-5">
+            <div class="card bg-light p-5">
+                <h4 class="text-muted">No results found</h4>
+                <p class="mb-0">Try adjusting your filters to see more segments</p>
+            </div>
+        </div>
+        <div v-else-if="paginatedSegments.length === 0 && filteredSegments.length > 0" class="col-12 text-center py-5">
+            <div class="card bg-light p-5">
+                <h4 class="text-muted">No segments on this page</h4>
+                <p class="mb-0">Try navigating to a different page</p>
+            </div>
+        </div>
         <div v-for="(segment, index) in paginatedSegments" :key="segment.id + '-' + segment.start_time + '-' + segment.end_time" class="col d-flex">
             <segment-card
                     :segment="segment"
@@ -213,11 +234,14 @@
 
 <!-- Vue 3 global build -->
 <script src="node_modules/vue/dist/vue.global.js"></script>
+<!-- Bootstrap JS -->
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Papa Parse for CSV parsing (if needed) -->
 <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
 <!-- Components -->
 <script src="js/components/pagination.js"></script>
 <script src="js/components/segmentCard.js"></script>
+<script src="js/components/filterComponent.js"></script>
 <!-- Main app script -->
 <script src="js/app.js"></script>
 </body>
