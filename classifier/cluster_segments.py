@@ -20,20 +20,34 @@ INDEX_PATH = os.path.join(BASE_PATH, "..", ".cache", "faiss_index.index")
 LABEL_TEMPLATE_FILE = os.path.join(BASE_PATH, "..", ".cache", "cluster_segments_labels.json")
 
 # Parameters
-VOLUME_THRESHOLD = 0.0005
-SUBSAMPLE_FACTOR = 0.1
+STARTING_CLUSTER_ID = 54
+VOLUME_THRESHOLD = 0.0002
+SUBSAMPLE_FACTOR = 1.0
 PCA_COMPONENTS = 64
 MAX_CLUSTER_SIZE = 500  # Maximum leaf size before splitting stops.
 MERGE_THRESHOLD = 0.15  # Merge leaves if cosine distance < 0.15 (single pass)
 PREVIEW_SEEDS = False
 PREVIEW_CLUSTERS = False
+ONLY_OUTPUT_SEEDS = True
 PREVIEW_PER_CLUSTER = 15
 NUM_REPRESENTATIVE = 30  # Number of segments per merged cluster for labeling
 
 # Seed examples for new clusters.
 SEED_EXAMPLES = [
-    {"file_id": "408950861", "start": 20.0, "end": 21.0},
-    {"file_id": "13123", "start": 34.0, "end": 35.0},
+    # Rattles
+    #{"file_id": "365208991", "start": 13.0, "end": 14.0}, # Good, 9 similar
+    #{"file_id": "227497211", "start": 48.0, "end": 49.0}, # Good, 7 similar
+    #{"file_id": "124568031", "start": 7.0, "end": 8.0}, # Good 10+ similar, (had to lower volume to 0.0002)
+
+    # Sub/Soft Song
+    #{"file_id": "408950861", "start": 20.0, "end": 21.0},
+    #{"file_id": "13123", "start": 34.0, "end": 35.0},
+
+    # Juvenile begging
+    {"file_id": "32684421", "start": 39.0, "end": 40.0},
+    {"file_id": "32684421", "start": 22.0, "end": 23.0},
+    {"file_id": "32684421", "start": 10.0, "end": 11.0},
+    {"file_id": "32684421", "start": 3.0, "end": 4.0}
 ]
 
 
@@ -200,7 +214,7 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
         "softSong": False, "rattle": False, "mob": False,
         "quality": 2, "reviewed": False
     }
-    cluster_id = 1
+    cluster_id = STARTING_CLUSTER_ID
 
     # Process merged clusters
     for leaf in merged_leaves:
@@ -312,22 +326,25 @@ def main():
     faiss_index.add(norm_emb)
 
     # Hierarchical clustering via recursive k-means splitting.
-    all_indices = list(range(len(norm_emb)))
-    hierarchy = hierarchical_split(norm_emb, all_indices, max_size=MAX_CLUSTER_SIZE)
-    leaves = collect_leaves(hierarchy)
-    print(f"\nTotal leaf clusters: {len(leaves)}")
+    if not ONLY_OUTPUT_SEEDS:
+        all_indices = list(range(len(norm_emb)))
+        hierarchy = hierarchical_split(norm_emb, all_indices, max_size=MAX_CLUSTER_SIZE)
+        leaves = collect_leaves(hierarchy)
+        print(f"\nTotal leaf clusters: {len(leaves)}")
 
-    # Compute leaf centers and determine merge candidates.
-    centers = {i: compute_leaf_center(norm_emb, leaf["indices"]) for i, leaf in enumerate(leaves)}
-    num_leaves = len(centers)
-    merges = []
-    for i in range(num_leaves):
-        for j in range(i + 1, num_leaves):
-            cosine_distance = 1 - np.dot(centers[i], centers[j])
-            if cosine_distance < MERGE_THRESHOLD:
-                merges.append((i, j, cosine_distance))
-    merged_leaves = merge_leaves_once(leaves, merges)
-    print(f"After merging, total clusters: {len(merged_leaves)}")
+        # Compute leaf centers and determine merge candidates.
+        centers = {i: compute_leaf_center(norm_emb, leaf["indices"]) for i, leaf in enumerate(leaves)}
+        num_leaves = len(centers)
+        merges = []
+        for i in range(num_leaves):
+            for j in range(i + 1, num_leaves):
+                cosine_distance = 1 - np.dot(centers[i], centers[j])
+                if cosine_distance < MERGE_THRESHOLD:
+                    merges.append((i, j, cosine_distance))
+        merged_leaves = merge_leaves_once(leaves, merges)
+        print(f"After merging, total clusters: {len(merged_leaves)}")
+    else:
+        merged_leaves = []
 
     # Process seed examples.
     seed_clusters = process_seed_examples(norm_emb, ids, faiss_index, max_per_file=4)
