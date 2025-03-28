@@ -20,7 +20,7 @@ INDEX_PATH = os.path.join(BASE_PATH, "..", ".cache", "faiss_index.index")
 LABEL_TEMPLATE_FILE = os.path.join(BASE_PATH, "..", ".cache", "cluster_segments_labels.json")
 
 # Parameters
-STARTING_CLUSTER_ID = 54
+STARTING_CLUSTER_ID = 58
 VOLUME_THRESHOLD = 0.0002
 SUBSAMPLE_FACTOR = 1.0
 PCA_COMPONENTS = 64
@@ -39,15 +39,22 @@ SEED_EXAMPLES = [
     #{"file_id": "227497211", "start": 48.0, "end": 49.0}, # Good, 7 similar
     #{"file_id": "124568031", "start": 7.0, "end": 8.0}, # Good 10+ similar, (had to lower volume to 0.0002)
 
+    {"file_id": "431165421", "start": 12.0, "end": 13.0}, # Okay, 3 similar
+    {"file_id": "58460", "start": 12.0, "end": 13.0}, # Good, 8 similar
+    {"file_id": "504976401", "start": 4.0, "end": 5.0}, # Great, 9 similar
+    {"file_id": "122364731", "start": 3.0, "end": 4.0}, # Okay, 3 similar
+
     # Sub/Soft Song
     #{"file_id": "408950861", "start": 20.0, "end": 21.0},
-    #{"file_id": "13123", "start": 34.0, "end": 35.0},
+    #{"file_id": "13123", "start": 34.0, "end": 35.0},r
+
+
 
     # Juvenile begging
-    {"file_id": "32684421", "start": 39.0, "end": 40.0},
-    {"file_id": "32684421", "start": 22.0, "end": 23.0},
-    {"file_id": "32684421", "start": 10.0, "end": 11.0},
-    {"file_id": "32684421", "start": 3.0, "end": 4.0}
+    #{"file_id": "32684421", "start": 39.0, "end": 40.0},
+    #{"file_id": "32684421", "start": 22.0, "end": 23.0},
+    #{"file_id": "32684421", "start": 10.0, "end": 11.0},
+    #{"file_id": "32684421", "start": 3.0, "end": 4.0}
 ]
 
 
