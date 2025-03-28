@@ -20,7 +20,7 @@ INDEX_PATH = os.path.join(BASE_PATH, "..", ".cache", "faiss_index.index")
 LABEL_TEMPLATE_FILE = os.path.join(BASE_PATH, "..", ".cache", "cluster_segments_labels.json")
 
 # Parameters
-STARTING_CLUSTER_ID = 58
+STARTING_CLUSTER_ID = 62
 VOLUME_THRESHOLD = 0.0002
 SUBSAMPLE_FACTOR = 1.0
 PCA_COMPONENTS = 64
@@ -38,17 +38,20 @@ SEED_EXAMPLES = [
     #{"file_id": "365208991", "start": 13.0, "end": 14.0}, # Good, 9 similar
     #{"file_id": "227497211", "start": 48.0, "end": 49.0}, # Good, 7 similar
     #{"file_id": "124568031", "start": 7.0, "end": 8.0}, # Good 10+ similar, (had to lower volume to 0.0002)
+    #{"file_id": "431165421", "start": 12.0, "end": 13.0},  # Okay, 3 similar
+    #{"file_id": "58460", "start": 12.0, "end": 13.0},  # Good, 8 similar
+    #{"file_id": "504976401", "start": 4.0, "end": 5.0},  # Great, 9 similar
+    #{"file_id": "122364731", "start": 3.0, "end": 4.0},  # Okay, 3 similar
 
-    {"file_id": "431165421", "start": 12.0, "end": 13.0}, # Okay, 3 similar
-    {"file_id": "58460", "start": 12.0, "end": 13.0}, # Good, 8 similar
-    {"file_id": "504976401", "start": 4.0, "end": 5.0}, # Great, 9 similar
-    {"file_id": "122364731", "start": 3.0, "end": 4.0}, # Okay, 3 similar
+    # Lots of rattles: 347978641, 622623214
+
+    {"file_id": "163637", "start": 1.0, "end": 2.0}, # Okay, 3-4 similar
+    {"file_id": "496356", "start": 9.0, "end": 10.0}, # Good, 5 similar
+    {"file_id": "156527", "start": 30.0, "end": 31.0}, # Okay, 3 or 4 similar
 
     # Sub/Soft Song
     #{"file_id": "408950861", "start": 20.0, "end": 21.0},
     #{"file_id": "13123", "start": 34.0, "end": 35.0},r
-
-
 
     # Juvenile begging
     #{"file_id": "32684421", "start": 39.0, "end": 40.0},

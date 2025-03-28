@@ -16966,5 +16966,807 @@
       "confidence": 0.0,
       "cluster": 61
     }
+  ],
+    "163637": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 0.0,
+      "end_time": 1.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 1.0,
+      "end_time": 2.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 2.0,
+      "end_time": 3.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "307344331": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 5.0,
+      "end_time": 6.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "626687320": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 4.0,
+      "end_time": 5.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 45.0,
+      "end_time": 46.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "194190701": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 111.0,
+      "end_time": 112.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 153.0,
+      "end_time": 154.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 175.0,
+      "end_time": 176.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 180.0,
+      "end_time": 181.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "609838609": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 9.0,
+      "end_time": 10.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "524250": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 19.0,
+      "end_time": 20.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "347978641": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 3.0,
+      "end_time": 4.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "72279331": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 8.0,
+      "end_time": 9.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 9.0,
+      "end_time": 10.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "69065931": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 11.0,
+      "end_time": 12.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 15.0,
+      "end_time": 16.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "66252021": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 254.0,
+      "end_time": 255.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 457.0,
+      "end_time": 458.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 596.0,
+      "end_time": 597.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "92055": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 15.0,
+      "end_time": 16.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "112598": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 99.0,
+      "end_time": 100.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "385341981": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 28.0,
+      "end_time": 29.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "617173126": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 7.0,
+      "end_time": 8.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "69066111": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 51.0,
+      "end_time": 52.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "119489": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 373.0,
+      "end_time": 374.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 462.0,
+      "end_time": 463.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 473.0,
+      "end_time": 474.0,
+      "confidence": 0.0,
+      "cluster": 62
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 478.0,
+      "end_time": 479.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "327612671": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 0.0,
+      "end_time": 1.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "595378111": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 157.0,
+      "end_time": 158.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "436397401": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 36.0,
+      "end_time": 37.0,
+      "confidence": 0.0,
+      "cluster": 62
+    }
+  ],
+  "496356": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 2.0,
+      "end_time": 3.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 9.0,
+      "end_time": 10.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 49.0,
+      "end_time": 50.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 62.0,
+      "end_time": 63.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "320291861": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 35.0,
+      "end_time": 36.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 92.0,
+      "end_time": 93.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "319839771": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 2.0,
+      "end_time": 3.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 35.0,
+      "end_time": 36.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "90173851": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 9.0,
+      "end_time": 10.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "620016013": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 35.0,
+      "end_time": 36.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 62.0,
+      "end_time": 63.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 63.0,
+      "end_time": 64.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "626556030": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 156.0,
+      "end_time": 157.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 162.0,
+      "end_time": 163.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 168.0,
+      "end_time": 169.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 191.0,
+      "end_time": 192.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "622623214": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 116.0,
+      "end_time": 117.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "550846671": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 1.0,
+      "end_time": 2.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 30.0,
+      "end_time": 31.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "64764901": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 4.0,
+      "end_time": 5.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "488189481": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 4.0,
+      "end_time": 5.0,
+      "confidence": 0.0,
+      "cluster": 63
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 37.0,
+      "end_time": 38.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "608802489": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 6.0,
+      "end_time": 7.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "483314081": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 12.0,
+      "end_time": 13.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "540643411": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 57.0,
+      "end_time": 58.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "658087": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 33.0,
+      "end_time": 34.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "551374191": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 2.0,
+      "end_time": 3.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "347468151": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 6.0,
+      "end_time": 7.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "409010": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 47.0,
+      "end_time": 48.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "535783551": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 89.0,
+      "end_time": 90.0,
+      "confidence": 0.0,
+      "cluster": 63
+    }
+  ],
+  "156527": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 6.0,
+      "end_time": 7.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 30.0,
+      "end_time": 31.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 45.0,
+      "end_time": 46.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 89.0,
+      "end_time": 90.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "13141": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 176.0,
+      "end_time": 177.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 209.0,
+      "end_time": 210.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "367165501": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 58.0,
+      "end_time": 59.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "159876": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 4.0,
+      "end_time": 5.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "87647421": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 4.0,
+      "end_time": 5.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 17.0,
+      "end_time": 18.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 30.0,
+      "end_time": 31.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 399.0,
+      "end_time": 400.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "195488461": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 54.0,
+      "end_time": 55.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "127461191": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 21.0,
+      "end_time": 22.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "164831": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 174.0,
+      "end_time": 175.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "530202921": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 23.0,
+      "end_time": 24.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "136466": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 1786.0,
+      "end_time": 1787.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "164832": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 291.0,
+      "end_time": 292.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 393.0,
+      "end_time": 394.0,
+      "confidence": 0.0,
+      "cluster": 64
+    },
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 438.0,
+      "end_time": 439.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "398996681": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 55.0,
+      "end_time": 56.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "132185": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 666.0,
+      "end_time": 667.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "98890": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 33.0,
+      "end_time": 34.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "137486921": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 44.0,
+      "end_time": 45.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
+  ],
+  "486243": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 51.0,
+      "end_time": 52.0,
+      "confidence": 0.0,
+      "cluster": 64
+    }
   ]
 }
