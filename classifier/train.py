@@ -1,14 +1,10 @@
-from lightning_fabric import seed_everything
 from pytorch_lightning.callbacks import ModelCheckpoint
 from torch.utils.data import DataLoader, Subset
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
-from model import CrowClassifier
 from dataset import CrowDataset
+from model import CrowClassifier
 import random
-
-# Seed for reproducibility.
-seed_everything(42, workers=True)
 
 # Create the dataset.
 dataset = CrowDataset()
@@ -27,8 +23,8 @@ train_dataset = Subset(dataset, train_indices)
 val_dataset = Subset(dataset, val_indices)
 
 # Create DataLoaders.
-train_loader = DataLoader(train_dataset, batch_size=16, num_workers=3, shuffle=True)
-val_loader = DataLoader(val_dataset, batch_size=16, num_workers=3, shuffle=False)
+train_loader = DataLoader(train_dataset, batch_size=14, num_workers=3, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=14, num_workers=3, shuffle=False)
 
 # Instantiate the model.
 model = CrowClassifier()
