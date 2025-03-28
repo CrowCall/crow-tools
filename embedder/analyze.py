@@ -70,16 +70,16 @@ def print_segment_stats(segments_dict):
     print(freq_table)
     print()
 
-segments_path = os.path.join("..", ".cache", "segments.json")
+segments_path = os.path.join("..", ".cache", "cluster_segments.json")
 segments_dict = json.load(open(segments_path, encoding='utf-8', mode='r'))
 
-labels_path = os.path.join("..", ".cache", "auto_labels.json")
+labels_path = os.path.join("..", ".cache", "cluster_labels.json")
 labels = json.load(open(labels_path, encoding='utf-8', mode='r'))
 
 print_label_stats(labels)
 print_segment_stats(segments_dict)
 
-denoised = False
+denoised = True
 processed_seconds = 0
 sample_rate = 8000
 chunk_embeddings = []
@@ -114,7 +114,7 @@ for file_id, segments in segments_dict.items():
 
         if os.path.exists(audio_path):
             # check for cached embeddings
-            cached_path = os.path.join(PATH, "..", ".cache", f"embeddings{denoised_suffix}", f"{segment_key}.npy")
+            cached_path = os.path.join(PATH, "..", ".cache", f"embeddings{denoised_suffix}-1-sec", f"{file_id}.npy")
             if os.path.exists(cached_path):
                 feature = np.load(cached_path)
             else:
@@ -139,7 +139,7 @@ for file_id, segments in segments_dict.items():
             else:
                 color = "gray"
 
-            chunk_embeddings.append(feature)
+            chunk_embeddings.append(feature[int(segment.get('start_time')):int(segment.get('end_time'))])
             chunk_info.append({
                 "audio_path": audio_path,
                 "chunk_start_time": segment.get('start_time'),
@@ -160,7 +160,7 @@ print("Total segments plotted:", chunk_embeddings.shape[0])
 
 # Perform PCA: reduce from 768 to 3 dimensions.
 pca = PCA(n_components=3)
-embeddings_3d = pca.fit_transform(chunk_embeddings)
+embeddings_3d = pca.fit_transform(chunk_embeddings.squeeze(1))
 
 # Build output data: for each embedding, store segment_key, 3D coordinates, and color.
 output_data = []
