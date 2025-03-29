@@ -28,6 +28,7 @@ def evaluate_model(model, dataloader, device):
         "crowCount": {"correct": 0, "total": 0},
         "crowAge": {"correct": 0, "total": 0},
         "quality": {"correct": 0, "total": 0},
+        "alert": {"correct": 0, "total": 0},
         "begging": {"correct": 0, "total": 0},
         "softSong": {"correct": 0, "total": 0},
         "rattle": {"correct": 0, "total": 0},
@@ -45,7 +46,7 @@ def evaluate_model(model, dataloader, device):
             breakdown[key] = {cls + 1: [0, 0] for cls in range(num_classes)}
 
     # For binary attributes breakdown.
-    binary_keys = ["begging", "softSong", "rattle", "mob"]
+    binary_keys = ["alert", "begging", "softSong", "rattle", "mob"]
     breakdown_binary = {key: {0: [0, 0], 1: [0, 0]} for key in binary_keys}
 
     with torch.no_grad():
@@ -61,6 +62,7 @@ def evaluate_model(model, dataloader, device):
             pred_crowAge = torch.argmax(outputs["crowAge"], dim=1)
             pred_quality = torch.argmax(outputs["quality"], dim=1)
             # Binary predictions: threshold at 0 and force 1D.
+            pred_alert = (outputs["alert"].squeeze() > 0).long().view(-1)
             pred_begging = (outputs["begging"].squeeze() > 0).long().view(-1)
             pred_softSong = (outputs["softSong"].squeeze() > 0).long().view(-1)
             pred_rattle = (outputs["rattle"].squeeze() > 0).long().view(-1)
@@ -89,6 +91,7 @@ def evaluate_model(model, dataloader, device):
 
             # Update overall metrics for binary attributes.
             for key, pred in [
+                ("alert", pred_alert),
                 ("begging", pred_begging),
                 ("softSong", pred_softSong),
                 ("rattle", pred_rattle),

@@ -27,12 +27,13 @@ class CrowClassifier(pl.LightningModule):
 
         # Output heads for each task.
         self.crowCount_head = nn.Linear(hidden_dim, 5)  # 5 classes (labels: 0,1,2,3,4)
-        self.crowAge_head = nn.Linear(hidden_dim, 2)      # 2 classes: adult vs juvenile
-        self.begging_head = nn.Linear(hidden_dim, 1)        # binary
-        self.softSong_head = nn.Linear(hidden_dim, 1)        # binary
-        self.rattle_head = nn.Linear(hidden_dim, 1)          # binary
-        self.mob_head = nn.Linear(hidden_dim, 1)             # binary
-        self.quality_head = nn.Linear(hidden_dim, 3)         # 3 classes: bad, average, HQ
+        self.crowAge_head = nn.Linear(hidden_dim, 2)    # 2 classes: adult vs juvenile
+        self.alert_head = nn.Linear(hidden_dim, 1)      # binary
+        self.begging_head = nn.Linear(hidden_dim, 1)    # binary
+        self.softSong_head = nn.Linear(hidden_dim, 1)   # binary
+        self.rattle_head = nn.Linear(hidden_dim, 1)     # binary
+        self.mob_head = nn.Linear(hidden_dim, 1)        # binary
+        self.quality_head = nn.Linear(hidden_dim, 3)    # 3 classes: bad, average, HQ
 
         # Loss functions.
         self.loss_fn_class = nn.CrossEntropyLoss()
@@ -43,6 +44,7 @@ class CrowClassifier(pl.LightningModule):
         out = {
             "crowCount": self.crowCount_head(rep),
             "crowAge": self.crowAge_head(rep),
+            "alert": self.alert_head(rep),
             "begging": self.begging_head(rep),
             "softSong": self.softSong_head(rep),
             "rattle": self.rattle_head(rep),
@@ -57,9 +59,10 @@ class CrowClassifier(pl.LightningModule):
         loss = (
                 1.2 * self.loss_fn_class(outputs["crowCount"], labels["crowCount"].long()) +
                 1.0 * self.loss_fn_class(outputs["crowAge"], (labels["crowAge"] - 1).long()) +
+                1.0 * self.loss_fn_bce(outputs["alert"].view(-1), labels["alert"].float().view(-1)) +
                 1.5 * self.loss_fn_bce(outputs["begging"].view(-1), labels["begging"].float().view(-1)) +
                 2.0 * self.loss_fn_bce(outputs["softSong"].view(-1), labels["softSong"].float().view(-1)) +
-                1.2 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
+                1.5 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
                 2.0 * self.loss_fn_bce(outputs["mob"].view(-1), labels["mob"].float().view(-1)) +
                 0.8 * self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
         )
@@ -72,9 +75,10 @@ class CrowClassifier(pl.LightningModule):
         loss = (
                 1.2 * self.loss_fn_class(outputs["crowCount"], labels["crowCount"].long()) +
                 1.0 * self.loss_fn_class(outputs["crowAge"], (labels["crowAge"] - 1).long()) +
+                1.0 * self.loss_fn_bce(outputs["alert"].view(-1), labels["alert"].float().view(-1)) +
                 1.5 * self.loss_fn_bce(outputs["begging"].view(-1), labels["begging"].float().view(-1)) +
                 2.0 * self.loss_fn_bce(outputs["softSong"].view(-1), labels["softSong"].float().view(-1)) +
-                1.2 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
+                1.5 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
                 2.0 * self.loss_fn_bce(outputs["mob"].view(-1), labels["mob"].float().view(-1)) +
                 0.8 * self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
         )

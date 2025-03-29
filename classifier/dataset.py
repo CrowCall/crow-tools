@@ -23,6 +23,7 @@ class CrowDataset(Dataset):
             "crowCount": {},
             "crowAge": {},
             "quality": {},
+            "alert": 0,
             "begging": 0,
             "grief": 0,
             "softSong": 0,
@@ -40,6 +41,7 @@ class CrowDataset(Dataset):
             q = label.get("quality", 2)
             counts["quality"][q] = counts["quality"].get(q, 0) + 1
 
+            counts["alert"] += 1 if label.get("alert", False) else 0
             counts["begging"] += 1 if label.get("begging", False) else 0
             counts["grief"] += 1 if label.get("grief", False) else 0
             counts["softSong"] += 1 if label.get("softSong", False) else 0
@@ -61,7 +63,8 @@ class CrowDataset(Dataset):
         for cls in sorted(counts["quality"]):
             print(f"  Class {cls}: {counts['quality'][cls]}")
 
-        print(f"\nbegging count: {counts['begging']}")
+        print(f"\nalert count: {counts['alert']}")
+        print(f"begging count: {counts['begging']}")
         print(f"grief count: {counts['grief']}")
         print(f"softSong count: {counts['softSong']}")
         print(f"rattle count: {counts['rattle']}")
@@ -87,6 +90,7 @@ class CrowDataset(Dataset):
         label = self.labels[key]
         crowCount = label.get('crowCount', 1)
         crowAge = label.get('crowAge', 1)
+        alert = 1 if label.get('alert', False) else 0
         begging = 1 if label.get('begging', False) else 0
         softSong = 1 if label.get('softSong', False) else 0
         rattle = 1 if label.get('rattle', False) else 0
@@ -96,6 +100,7 @@ class CrowDataset(Dataset):
         return embedding_tensor, {
             "crowCount": crowCount,
             "crowAge": crowAge,
+            "alert": alert,
             "begging": begging,
             "softSong": softSong,
             "rattle": rattle,
