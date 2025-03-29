@@ -11,7 +11,7 @@ from collections import defaultdict
 
 # Paths
 BASE_PATH = os.path.dirname(__file__)
-EMBEDDINGS_DIR = os.path.join(BASE_PATH, "..", ".cache", "embeddings-denoised-1-sec")
+EMBEDDINGS_DIR = os.path.join(BASE_PATH, "..", ".cache", "embeddings-denoised")
 VOLUMES_DIR = os.path.join(BASE_PATH, "..", ".cache", "embeddings-denoised-volumes")
 OUTPUT_SEGMENTS = os.path.join(BASE_PATH, "..", ".cache", "cluster_segments.json")
 OUTPUT_LABELS = os.path.join(BASE_PATH, "..", ".cache", "cluster_labels.json")

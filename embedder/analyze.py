@@ -114,7 +114,7 @@ for file_id, segments in segments_dict.items():
 
         if os.path.exists(audio_path):
             # check for cached embeddings
-            cached_path = os.path.join(PATH, "..", ".cache", f"embeddings{denoised_suffix}-1-sec", f"{file_id}.npy")
+            cached_path = os.path.join(PATH, "..", ".cache", f"embeddings{denoised_suffix}", f"{file_id}.npy")
             if os.path.exists(cached_path):
                 feature = np.load(cached_path)
             else:

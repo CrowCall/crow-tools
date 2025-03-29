@@ -17,7 +17,7 @@ def start_embeddings():
     file_paths = sorted(os.listdir(library_path))
 
     # Where to save the averaged embeddings
-    embeddings_path = os.path.join(PATH, "..", ".cache", f"embeddings{DENOISED_MODE}-1-sec")
+    embeddings_path = os.path.join(PATH, "..", ".cache", f"embeddings{DENOISED_MODE}")
     if not os.path.exists(embeddings_path):
         os.makedirs(embeddings_path)
 
@@ -78,7 +78,7 @@ def start_embeddings():
             print(f"Saved embedding for {file_id} -> {embedding_out_path} shape={final_embedding.shape}")
 
         ############################################################
-        # 2) Compute and save 1-second volume data (if not existing)
+        # 2) Compute and save volume data (if not existing)
         ############################################################
         if not os.path.exists(volume_out_path):
             waveform = waveform.squeeze(0)  # shape now (N,) if single channel

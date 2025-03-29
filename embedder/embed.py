@@ -61,7 +61,7 @@ def generate_embeddings(waveform):
 
 # Example usage:
 if __name__ == "__main__":
-    # For demonstration, create a dummy waveform (e.g. 3 seconds of audio at 8000 Hz).
+    # For demonstration, create a dummy waveform
     sample_rate = 8000
     duration_seconds = 10
     # Generate a random waveform as an example (normally you'd load real audio).
