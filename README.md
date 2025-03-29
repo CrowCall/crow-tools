@@ -115,13 +115,13 @@ enables clearer analysis by isolating individual calls that may be mixed togethe
 ## Directory Structure
 ```
 crow-tools/
-├── classifier/  # classify types of crow calls (alert, count, age, rattle, soft song, bad quality)
+├── classifier/  # classify types of crow calls (alert, count, age, rattle, soft/sub song, quality)
 ├── denoiser/    # denoise crow audio files (remove background noises)
-├── detector/    # detect segments (1 second each) of crow calls (BirdNET)
+├── detector/    # detect crow audio segments (1 second each, uses classifier)
 ├── downloader/  # download library of crow audio files
 ├── embedder/    # embed crow calls into 768 dimensions (AVES embedding model)
-├── labeler/     # human labeling web app (for training the classifier)
-├── separator/   # separate overlapping crow calls into seaparate files (train and inference)
+├── labeler/     # human labeling web app (for training classifier)
+├── separator/   # separate overlapping crow calls into seaparate audio files (train and inference)
 └── .cache/      # all downloaded and generated files (30+ GB)
 ```
 
