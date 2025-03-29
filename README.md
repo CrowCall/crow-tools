@@ -49,19 +49,47 @@ the creation of mixes (overlapping crow sounds) to train our separator.
 
 ![denoiser.png](docs/images/denoiser.png)
 
+### Classifier
+The classifier module analyzes crow call embeddings and categorizes them (i.e. auto labels) into various types such as 
+alert, number of calls, age indicators, rattles, soft songs, and quality of audio. It processes the embedded data and 
+applies machine learning techniques to identify and label crow vocalizations.
+
+```python
+    {
+      "crowCount": int in [1,2,3,4],   # 1 = single, 2 = two crows, 3 = unused, 4 = crowd
+      "crowAge": int in [1,2],         # 1 = adult, 2 = juvenile
+      "alert": bool,                   # alert calls
+      "begging": bool,                 # food related calls
+      "softSong": bool,                # sub songs | soft sounds
+      "rattle": bool,                  # rattle sounds
+      "mob": bool,                     # anger calls | mob | attack
+      "quality": int in [1,2,3],       # 1 = bad, 2 = good, 3 = unused
+    }
+```
+
 ### Detector
-The detector module leverages BirdNET to identify and extract 3-second segments of crow calls from longer audio 
-recordings. By isolating these segments, the module enables more focused analysis and processing of individual 
-crow calls.
+The detector module leverages our custom trained crow classifier, to quickly find all crow sounds across an audio file.
+By isolating these segments, the module enables more focused analysis and processing of individual crow calls and vocalizations.
+We also include an interactive crow timeline app to review and listen to the detections:
+
+![detector-timeline.png](docs/images/detector-timeline.png)
 
 ```json
-    { 
-      "common_name": "American Crow", 
-      "scientific_name": "Corvus brachyrhynchos", 
-      "start_time": 3.0, 
-      "end_time": 6.0, 
-      "confidence": 0.898
-    }
+[
+    {
+        "start_time": 37.0,
+        "end_time": 38.0,
+        "crowCount": 2,
+        "crowAge": 1,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": true,
+        "mob": false,
+        "quality": 2
+    },
+  ...
+]
 ```
 
 ### Embedder
@@ -78,25 +106,6 @@ provides a 3D interactive embedding feature. This web app is created with Vue v3
 
 ![labeler.png](docs/images/labeler.png)
 
-### Classifier
-The classifier module analyzes crow call embeddings and categorizes them (i.e. auto labels) into various types such as 
-alert, number of calls, age indicators, rattles, soft songs, and quality of audio. It processes the embedded data and 
-applies machine learning techniques to identify and label crow vocalizations.
-
-```python
-    {
-      "crowCount": int in [1,2,3,4],   # 1 = single, 2 = two crows, 3 = three crows, 4 = crowd
-      "crowAge": int in [1,2],         # 1 = adult, 2 = juvenile
-      "alert": bool,                   # attack | alert | mob
-      "begging": bool,                 # food related calls
-      "grief": bool,                   # sadness | grief
-      "softSong": bool,                # songs | soft sounds
-      "rattle": bool,                  # rattle sounds
-      "quality": int in [1,2,3],       # 1 = bad/low, 2 = average, 3 = high quality
-      "reviewed": bool                 # human reviewed (else auto labeled)
-    }
-```
-
 ### Separator
 The separator module is responsible for separating overlapping crow calls into distinct audio files. This process 
 enables clearer analysis by isolating individual calls that may be mixed together in the original recordings.
@@ -108,7 +117,7 @@ enables clearer analysis by isolating individual calls that may be mixed togethe
 crow-tools/
 ├── classifier/  # classify types of crow calls (alert, count, age, rattle, soft song, bad quality)
 ├── denoiser/    # denoise crow audio files (remove background noises)
-├── detector/    # detect segments (3 seconds each) of crow calls (BirdNET)
+├── detector/    # detect segments (1 second each) of crow calls (BirdNET)
 ├── downloader/  # download library of crow audio files
 ├── embedder/    # embed crow calls into 768 dimensions (AVES embedding model)
 ├── labeler/     # human labeling web app (for training the classifier)
