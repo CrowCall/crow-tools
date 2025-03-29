@@ -93,8 +93,11 @@ def start_detections():
     print("\n===== Detection Summary =====")
     print(f"Files with detections: {files_with_detections}")
     if files_with_detections > 0:
-        print(f"Average detections per file: {total_detections / files_with_detections:.2f}")
-    print(f"Total detections: {total_detections}")
+        print(f"Average detections per file: {round(total_detections / files_with_detections)}")
+
+    hours = total_detections // 3600
+    minutes = (total_detections % 3600) // 60
+    print(f"Total detections: {total_detections} ({int(hours):02d}:{int(minutes):02d} HH:MM)")
 
     print("\nTotals for non-binary attributes:")
     for attr, counts in grouped_counts.items():
