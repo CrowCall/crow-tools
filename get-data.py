@@ -17,7 +17,7 @@ from downloader.download_backgrounds import start_downloads as start_downloads_b
 from downloader.download_crows_ebird import start_downloads as start_downloads_ebird
 from downloader.download_crows_xeno import start_downloads as start_downloads_xeno
 from denoiser.denoise_crows import start_denoising
-from detector.detect_segments import start_detections
+from detector.detect_all import start_detections
 from classifier.auto_label import start_labeling
 from embedder.embed_all import start_embeddings
 
@@ -28,11 +28,12 @@ for download in [start_downloads_background, start_downloads_ebird, start_downlo
 # Denoise all crow audio
 start_denoising()
 
-# Detect 3 second crow segments (using BirdNET)
-start_detections()
+# Embed all crow audio (both original and denoised)
+start_embeddings(denoised=False)
+start_embeddings(denoised=True)
 
-# Embed all detected segments
-start_embeddings()
+# Detect 1 second crow segments (uses classifier + embeddings)
+start_detections()
 
 # Auto-Label all segments (using classifier)
 start_labeling()

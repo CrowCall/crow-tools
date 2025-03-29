@@ -59,8 +59,8 @@ def evaluate_model(model, dataloader, device):
             outputs = model(embeddings)
             # Multi-class predictions (0-indexed).
             pred_crowCount = torch.argmax(outputs["crowCount"], dim=1)
-            pred_crowAge = torch.argmax(outputs["crowAge"], dim=1)
-            pred_quality = torch.argmax(outputs["quality"], dim=1)
+            pred_crowAge = torch.argmax(outputs["crowAge"], dim=1) + 1
+            pred_quality = torch.argmax(outputs["quality"], dim=1) + 1
             # Binary predictions: threshold at 0 and force 1D.
             pred_alert = (outputs["alert"].squeeze() > 0).long().view(-1)
             pred_begging = (outputs["begging"].squeeze() > 0).long().view(-1)

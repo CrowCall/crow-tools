@@ -43,7 +43,7 @@ def predict_embedding(embedding, device=device):
         outputs = _model(embedding_tensor)
 
     new_pred = {}
-    new_pred["crowCount"] = torch.argmax(outputs["crowCount"], dim=1).item() + 1
+    new_pred["crowCount"] = torch.argmax(outputs["crowCount"], dim=1).item()
     new_pred["crowAge"] = torch.argmax(outputs["crowAge"], dim=1).item() + 1
     new_pred["alert"] = (outputs["alert"].squeeze() > 0).item()
     new_pred["begging"] = (outputs["begging"].squeeze() > 0).item()

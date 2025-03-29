@@ -4,14 +4,14 @@ from embedder.embed import generate_embeddings
 from embedder.ispa import utils
 
 PATH = os.path.dirname(__file__)
-DENOISED = False
-DENOISED_MODE = ""
-EXT = ".mp3"
-if DENOISED:
-    DENOISED_MODE = "-denoised"
-    EXT = ".wav"
 
-def start_embeddings():
+def start_embeddings(denoised=False):
+    DENOISED_MODE = ""
+    EXT = ".mp3"
+    if denoised:
+        DENOISED_MODE = "-denoised"
+        EXT = ".wav"
+
     # Directory with the denoised .wav files
     library_path = os.path.join(PATH, "..", ".cache", f"library{DENOISED_MODE}")
     file_paths = sorted(os.listdir(library_path))
