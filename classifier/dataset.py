@@ -6,7 +6,7 @@ import numpy as np
 
 PATH = os.path.dirname(__file__)
 
-embeddings_dir = os.path.join(PATH, "..", ".cache", "embeddings-denoised")
+embeddings_dir = os.path.join(PATH, "..", ".cache", "embeddings")
 labels_file = os.path.join(PATH, "..", ".cache", "cluster_labels.json")
 
 class CrowDataset(Dataset):
