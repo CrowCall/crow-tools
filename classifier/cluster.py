@@ -42,12 +42,9 @@ SEED_EXAMPLES = [
     #{"file_id": "58460", "start": 12.0, "end": 13.0},  # Good, 8 similar
     #{"file_id": "504976401", "start": 4.0, "end": 5.0},  # Great, 9 similar
     #{"file_id": "122364731", "start": 3.0, "end": 4.0},  # Okay, 3 similar
-
-    # Lots of rattles: 347978641, 622623214
-
-    {"file_id": "163637", "start": 1.0, "end": 2.0}, # Okay, 3-4 similar
-    {"file_id": "496356", "start": 9.0, "end": 10.0}, # Good, 5 similar
-    {"file_id": "156527", "start": 30.0, "end": 31.0}, # Okay, 3 or 4 similar
+    #{"file_id": "163637", "start": 1.0, "end": 2.0}, # Okay, 3-4 similar
+    #{"file_id": "496356", "start": 9.0, "end": 10.0}, # Good, 5 similar
+    #{"file_id": "156527", "start": 30.0, "end": 31.0}, # Okay, 3 or 4 similar
 
     # Sub/Soft Song
     #{"file_id": "408950861", "start": 20.0, "end": 21.0},
