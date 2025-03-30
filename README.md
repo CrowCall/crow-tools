@@ -87,8 +87,7 @@ We also include an interactive crow timeline app to review and listen to the det
         "rattle": true,
         "mob": false,
         "quality": 2
-    },
-  ...
+    }
 ]
 ```
 
@@ -125,3 +124,12 @@ crow-tools/
 └── .cache/      # all downloaded and generated files (30+ GB)
 ```
 
+## Authors
+
+This project is a collaborative effort driven by a shared curiosity and love for crows — with the ultimate goal of better understanding their complex and intelligent vocal language.
+
+- **[Jonathan Thomas](mailto:crows@openshot.org)** is the creator of [OpenShot Video Editor](https://www.openshot.org/) and brings deep experience in software development and artificial intelligence. Through his company, **OpenShot Studios LLC**, he leads the technical development of tools for large-scale audio analysis, machine learning, and crow call classification.
+
+- **[Madeline Thomas](mailto:crows@owlmaddie.com) (@owlmaddie)** is a professional [artist / animator](https://www.owlmaddie.com/) and crow enthusiast. Through **owlmaddie LLC**, she contributes her creative talents to the project — labeling thousands of crow calls, designing expressive crow animations, and helping to communicate the science through visual storytelling.
+
+Together, we're building a **state-of-the-art toolkit for decoding and exploring crow communication**, blending AI, design, and a shared passion for one of nature’s most fascinating birds.
