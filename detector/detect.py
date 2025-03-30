@@ -72,7 +72,7 @@ def detect_file_segments(file_id, public_path=None, volume_threshold=0.0002, dev
         pred = predict_embedding(embedding, device=device)
 
         # A valid detection: quality > 0 and crowCount > 0.
-        if pred["quality"] > 0 and pred["crowCount"] > 0:
+        if pred["quality"] > 1 and pred["crowCount"] > 0:
             detection = {
                 "start_time": float(i),
                 "end_time": float(i + 1),

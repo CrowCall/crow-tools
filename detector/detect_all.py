@@ -17,6 +17,45 @@ library_dir = os.path.join(public_path, "library")
 segments_path = os.path.join(public_path, "segments.json")
 auto_labels_path = os.path.join(public_path, "auto_labels.json")
 
+def compute_contiguous_stats(segments, auto_labels, target_crowCount, tolerance=0.01):
+    """
+    Compute contiguous group stats for segments whose auto_labels have a crowCount equal to target_crowCount.
+    Contiguity is defined as int(curr["start_time"]) == int(prev["end_time"]).
+    Returns a histogram (dict) where keys are the group sizes.
+    """
+    contiguous_group_hist = {}
+    for file_id, seg_list in segments.items():
+        # Filter segments by target crowCount.
+        valid_segs = []
+        for seg in seg_list:
+            seg_key = f"{file_id}-{int(seg['start_time'])}-{int(seg['end_time'])}"
+            label = auto_labels.get(seg_key)
+            if label and label.get("crowCount") == target_crowCount:
+                valid_segs.append(seg)
+        if not valid_segs:
+            continue
+
+        # Sort valid segments by start_time.
+        sorted_segs = sorted(valid_segs, key=lambda x: x["start_time"])
+        groups = []
+        current_group_size = 1
+
+        for i in range(1, len(sorted_segs)):
+            prev = sorted_segs[i - 1]
+            curr = sorted_segs[i]
+            # Using integer conversion as in the segment key.
+            if int(curr["start_time"]) == int(prev["end_time"]):
+                current_group_size += 1
+            else:
+                groups.append(current_group_size)
+                current_group_size = 1
+        groups.append(current_group_size)  # add the final group
+
+        # Update histogram counts.
+        for group_size in groups:
+            contiguous_group_hist[group_size] = contiguous_group_hist.get(group_size, 0) + 1
+
+    return contiguous_group_hist
 
 def start_detections():
     # Load previously processed auto labels if available.
@@ -105,10 +144,7 @@ def start_detections():
     print(f"***** Saved auto labels for {len(auto_labels)} segments to {auto_labels_path}")
 
     # Recalculate summary statistics from auto_labels.
-    files_with_detections = 0
     total_detections = 0
-
-    # For binary attributes, sum up counts.
     binary_totals = {
         "alert": 0,
         "begging": 0,
@@ -153,6 +189,13 @@ def start_detections():
     for attr, total in binary_totals.items():
         print(f"  {attr}: {total}")
 
+    # --- New code: Compute contiguous segments group stats for different crowCount filters ---
+    for target in [1, 2, 4]:
+        stats = compute_contiguous_stats(segments, auto_labels, target_crowCount=target)
+        print(f"\nContiguous Segments Groups (crowCount=={target}):")
+        for group_size in sorted(stats.keys())[:10]:
+            seg_label = "segment" if group_size == 1 else "segments"
+            print(f"  {group_size} {seg_label}: {stats[group_size]}")
 
 if __name__ == "__main__":
     start_detections()
