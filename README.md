@@ -54,7 +54,8 @@ CrowCall relies on openly available datasets for research and development. We gr
 ### Denoiser
 The denoiser module cleans the crow audio files by removing unwanted background noise. This process improves the 
 quality of the audio for subsequent processing steps by focusing on the relevant crow sounds. It also enables
-the creation of mixes (overlapping crow sounds) to train our separator model.
+the creation of mixes (overlapping crow sounds) to train our separator model. This module utilizes the [biodenoising](https://github.com/earthspecies/biodenoising-inference)
+module created by [Earth Species Project](https://earthspecies.org/).
 
 ![denoiser.png](docs/images/denoiser.png)
 
