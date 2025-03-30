@@ -18,11 +18,6 @@ def start_downloads():
         for row in reader:
             # Now this should read the correct field name without BOM
             catalog_number = row["ML Catalog Number"]
-            age_sex = row["Age/Sex"].lower()
-            rating = float(row["Average Community Rating"])
-            lat = float(row["Latitude"] or "0")
-            long = float(row["Longitude"] or "0")
-
             download_url = f"https://cdn.download.ams.birds.cornell.edu/api/v2/asset/{catalog_number}/mp3"
 
             filename = f"{catalog_number}.mp3"

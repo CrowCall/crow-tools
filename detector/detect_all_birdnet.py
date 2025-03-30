@@ -30,8 +30,6 @@ def start_detections():
 
             for row in reader:
                 catalog_number = row["ML Catalog Number"]
-                age_sex = row["Age/Sex"].lower()
-                rating = float(row["Average Community Rating"])
                 lat = float(row["Latitude"] or "0")
                 long = float(row["Longitude"] or "0")
                 if row["Date"]:
