@@ -10,7 +10,7 @@ random.seed(42)
 # ------------------------------
 # Control switches and limits
 # ------------------------------
-PREVIEW = True
+PREVIEW = False
 NUM_MIXES = 100000
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
