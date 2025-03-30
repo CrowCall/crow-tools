@@ -18,7 +18,6 @@ from downloader.download_crows_ebird import start_downloads as start_downloads_e
 from downloader.download_crows_xeno import start_downloads as start_downloads_xeno
 from denoiser.denoise_crows import start_denoising
 from detector.detect_all import start_detections
-from classifier.auto_label import start_labeling
 from embedder.embed_all import start_embeddings
 
 # Download all crow audio and mix-related audio
@@ -33,7 +32,5 @@ start_embeddings(denoised=False)
 start_embeddings(denoised=True)
 
 # Detect 1 second crow segments (uses classifier + embeddings)
+# This also creates the auto_labels.json file
 start_detections()
-
-# Auto-Label all segments (using classifier)
-start_labeling()

@@ -13,7 +13,13 @@ import torch
 from matplotlib.widgets import Button
 from classifier.classify import predict_embedding
 
-matplotlib.use("TkAgg")
+def is_headless():
+    return not os.environ.get("DISPLAY") and os.name != "nt"
+if is_headless():
+    matplotlib.use("Agg")
+else:
+    matplotlib.use("TkAgg")
+
 player = None
 
 

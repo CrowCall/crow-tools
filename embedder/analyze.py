@@ -10,7 +10,13 @@ from sklearn.decomposition import PCA
 from ispa import utils
 
 PATH = os.path.dirname(__file__)
-matplotlib.use("TkAgg")
+
+def is_headless():
+    return not os.environ.get("DISPLAY") and os.name != "nt"
+if is_headless():
+    matplotlib.use("Agg")
+else:
+    matplotlib.use("TkAgg")
 
 
 def print_label_stats(labels):
