@@ -43,7 +43,7 @@ The downloader module retrieves a large collection of crow vocalizations (13+ GB
 It handles the complexities of connecting to each source, downloading the audio files, and storing relevant metadata 
 for proper attribution. Credits and licensing info for all files are saved in the `.cache/csv/` directory.
 
-CrowCall relies on openly available datasets for research and development. We gratefully acknowledge the following sources:
+Crow-tools relies on openly available datasets for research and development. We gratefully acknowledge the following sources:
 
 - [Macaulay Library – American Crow (*Corvus brachyrhynchos*)](https://search.macaulaylibrary.org/catalog?taxonCode=amecro&mediaType=audio)  
   © Cornell Lab of Ornithology. A comprehensive archive of wildlife recordings, used in accordance with licensing terms for non-commercial research.
@@ -125,8 +125,8 @@ enables clearer analysis by isolating individual calls that may be mixed togethe
 ```
 crow-tools/
 ├── classifier/  # classify types of crow calls (alert, count, age, rattle, soft/sub song, quality)
-├── denoiser/    # denoise crow audio files (remove background noises)
-├── detector/    # detect crow audio segments (1 second each, uses classifier)
+├── denoiser/    # denoise crow audio files (remove background noises with biodenoising model)
+├── detector/    # detect crow audio segments (1 second each, uses classifier model)
 ├── downloader/  # download library of crow audio files
 ├── embedder/    # embed crow calls into 768 dimensions (AVES embedding model)
 ├── labeler/     # human labeling web app (for training classifier)
