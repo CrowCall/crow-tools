@@ -11,7 +11,7 @@ random.seed(42)
 # Control switches and limits
 # ------------------------------
 PREVIEW = False
-NUM_MIXES = 100000
+NUM_MIXES = 40000
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
 ENABLE_REVERB = False
@@ -58,30 +58,64 @@ def get_valid_segments(labels_path):
                 segments_by_file.setdefault(file_id, []).append((start_time, end_time))
 
     valid_segments = []
-    # For each file, sort and combine contiguous segments.
+    tolerance = 0.01
+    # For each file, sort and combine contiguous segments into blocks.
+    # Then, for each block, apply the rule:
+    #   - Discard blocks shorter than 2 seconds.
+    #   - If duration is between 2 and 3 seconds, use the block as is.
+    #   - If longer than 3 seconds, split into non-overlapping segments:
+    #         full segments of 3 seconds each, and if the leftover is at least 2 seconds,
+    #         include it as an extra segment.
     for file_id, segs in segments_by_file.items():
         segs.sort(key=lambda x: x[0])
-        i = 0
-        while i < len(segs):
-            current_start, current_end = segs[i]
-            # Combine contiguous segments up to 4 seconds in duration.
-            j = i + 1
-            while j < len(segs):
-                next_start, next_end = segs[j]
-                # Check contiguity (allowing a small tolerance) and max duration.
-                if abs(next_start - current_end) < 0.01 and (next_end - current_start) <= 3.0:
-                    current_end = next_end
-                    j += 1
-                else:
-                    break
-            new_key = f"{file_id}-{current_start:.2f}-{current_end:.2f}"
-            valid_segments.append({
-                "key": new_key,
-                "file_id": file_id,
-                "start_time": current_start,
-                "end_time": current_end
-            })
-            i = j
+        blocks = []
+        block_start, block_end = segs[0]
+        for s, e in segs[1:]:
+            if abs(s - block_end) < tolerance:
+                block_end = e
+            else:
+                blocks.append((block_start, block_end))
+                block_start, block_end = s, e
+        blocks.append((block_start, block_end))
+
+        for b_start, b_end in blocks:
+            block_duration = b_end - b_start
+            if block_duration < 2.0:
+                continue  # Discard blocks shorter than 2 seconds.
+            elif block_duration <= 3.0:
+                # Use the block as is.
+                new_key = f"{file_id}-{b_start:.2f}-{b_end:.2f}"
+                valid_segments.append({
+                    "key": new_key,
+                    "file_id": file_id,
+                    "start_time": b_start,
+                    "end_time": b_end
+                })
+            else:
+                # Split block into full 3-second segments.
+                num_full = int(block_duration // 3)
+                for i in range(num_full):
+                    seg_start = b_start + i * 3
+                    seg_end = seg_start + 3
+                    new_key = f"{file_id}-{seg_start:.2f}-{seg_end:.2f}"
+                    valid_segments.append({
+                        "key": new_key,
+                        "file_id": file_id,
+                        "start_time": seg_start,
+                        "end_time": seg_end
+                    })
+                # Use the remainder if it's at least 2 seconds.
+                remainder = block_duration - num_full * 3
+                if remainder >= 2.0:
+                    seg_start = b_start + num_full * 3
+                    seg_end = b_end
+                    new_key = f"{file_id}-{seg_start:.2f}-{seg_end:.2f}"
+                    valid_segments.append({
+                        "key": new_key,
+                        "file_id": file_id,
+                        "start_time": seg_start,
+                        "end_time": seg_end
+                    })
     return valid_segments
 
 def choose_random_segments(valid_segments, segment_usage, file_id_usage, count=25):
@@ -156,7 +190,7 @@ def add_reverb(audio, sr, ir_length_sec=1.0, scale_rirs=10.0):
         out = out / max_val
     return out
 
-def is_audio_silient(segment_audio, sr, min_duration=1.5, silence_threshold=1e-1, silence_fraction=0.95):
+def is_audio_silient(segment_audio, sr, min_duration=1.5, silence_threshold=1e-2, silence_fraction=0.95):
     # Check if the segment is too short.
     if len(segment_audio) < int(min_duration * sr):
         return True
@@ -291,6 +325,10 @@ def main():
             if is_audio_silient(segment_audio, sr):
                 print("Segment too short or silent: {}".format(crow_path))
                 segment_usage[seg["key"]] = segment_usage.get(seg["key"], 0) + 1
+                if PREVIEW:
+                    print(f"Previewing too-short/silent segment {seg['key']}")
+                    sd.play(segment_audio, sr)
+                    sd.wait()
                 continue
 
             # Apply reverb if enabled
