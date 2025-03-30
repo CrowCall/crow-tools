@@ -10,12 +10,11 @@ random.seed(42)
 # ------------------------------
 # Control switches and limits
 # ------------------------------
-PREVIEW = False
-NUM_MIXES = 100
+PREVIEW = True
+NUM_MIXES = 100000
 SAMPLE_RATE = 8000
 ENABLE_DENOISED = True
 ENABLE_REVERB = False
-ENABLE_VOL_NORMALIZATION = True
 ENABLE_RANDOM_VOLUME = False
 ENABLE_BACKGROUND_SOUNDS = True
 RANDOMIZE_BACKGROUND_VOLUME = True
@@ -25,7 +24,7 @@ OFFSET_SECONDS = (0.0, 0.5)
 MAX_SEGMENT_USES = 1        # Each segment key can be used at most once.
 MAX_FILE_ID_USES = 100      # Each file ID can be used at most once.
 NUM_SEGMENTS_PER_MIX = 2
-BACKGROUND_VOLUME_RANGE = (0.0, 0.9)
+BACKGROUND_VOLUME_RANGE = (0.0, 0.8)
 
 # ------------------------------
 # Helper functions
@@ -39,54 +38,50 @@ def background_audio_generator(directory, min_length=3.0, sr=SAMPLE_RATE):
                 path = os.path.join(directory, file)
                 audio, _ = librosa.load(path, sr=sr)
                 if len(audio) / sr >= min_length:
-                    yield audio[:sr*8], file
+                    yield audio[:sr*4], file
 
 def get_valid_segments(labels_path):
     with open(labels_path, "r", encoding="utf-8") as f:
         labels = json.load(f)
-    valid_segments = []
+
+    # Group valid segments (assumed 1-second each) by file_id.
+    segments_by_file = {}
     for key, attr in labels.items():
-        # Only consider valid entries
-        if attr.get("crowCount") == 1 and not attr.get("quality") == 1:
+        # Only consider valid entries.
+        # (Assume valid if crowCount == 1 and quality != 1)
+        if attr.get("crowCount") == 1 and attr.get("quality") != 1:
             parts = key.split("-")
             if len(parts) == 3:
                 file_id = parts[0]
                 start_time = float(parts[1])
                 end_time = float(parts[2])
-                length = end_time - start_time
+                segments_by_file.setdefault(file_id, []).append((start_time, end_time))
 
-                # Determine how many splits
-                if 15.0 < length < 20.0:
-                    n = 3  # each sub-segment ~5s
-                elif 8.0 < length < 15.0:
-                    n = 2  # each sub-segment up to ~6s
-                elif 4.0 < length < 8.0:
-                    n = 1  # leave it as-is
+    valid_segments = []
+    # For each file, sort and combine contiguous segments.
+    for file_id, segs in segments_by_file.items():
+        segs.sort(key=lambda x: x[0])
+        i = 0
+        while i < len(segs):
+            current_start, current_end = segs[i]
+            # Combine contiguous segments up to 4 seconds in duration.
+            j = i + 1
+            while j < len(segs):
+                next_start, next_end = segs[j]
+                # Check contiguity (allowing a small tolerance) and max duration.
+                if abs(next_start - current_end) < 0.01 and (next_end - current_start) <= 3.0:
+                    current_end = next_end
+                    j += 1
                 else:
-                    n = 1
-
-                # Split the segment into n smaller sub-segments
-                sub_segments = []
-                if n == 1:
-                    sub_segments = [(start_time, end_time)]
-                else:
-                    sub_len = (end_time - start_time) / n
-                    seg_start = start_time
-                    for _ in range(n):
-                        seg_end = seg_start + sub_len
-                        sub_segments.append((seg_start, seg_end))
-                        seg_start = seg_end
-
-                # Create valid entries for each sub-segment
-                for idx, (sub_start, sub_end) in enumerate(sub_segments):
-                    new_key = f"{file_id}-{sub_start:.2f}-{sub_end:.2f}"
-                    valid_segments.append({
-                        "key": new_key,
-                        "file_id": file_id,
-                        "start_time": sub_start,
-                        "end_time": sub_end
-                    })
-
+                    break
+            new_key = f"{file_id}-{current_start:.2f}-{current_end:.2f}"
+            valid_segments.append({
+                "key": new_key,
+                "file_id": file_id,
+                "start_time": current_start,
+                "end_time": current_end
+            })
+            i = j
     return valid_segments
 
 def choose_random_segments(valid_segments, segment_usage, file_id_usage, count=25):
@@ -161,7 +156,7 @@ def add_reverb(audio, sr, ir_length_sec=1.0, scale_rirs=10.0):
         out = out / max_val
     return out
 
-def is_audio_silient(segment_audio, sr, min_duration=1.0, silence_threshold=1e-1, silence_fraction=0.95):
+def is_audio_silient(segment_audio, sr, min_duration=1.5, silence_threshold=1e-1, silence_fraction=0.95):
     # Check if the segment is too short.
     if len(segment_audio) < int(min_duration * sr):
         return True
@@ -169,32 +164,6 @@ def is_audio_silient(segment_audio, sr, min_duration=1.0, silence_threshold=1e-1
     # Compute the fraction of silent samples.
     silent_ratio = np.mean(np.abs(segment_audio) < silence_threshold)
     return silent_ratio > silence_fraction
-
-def normalize_audio_segment(audio, target_peak=0.8, target_rms=0.15, max_peak=1.0):
-    # Convert integer audio to float in [-1, 1] if needed.
-    if np.issubdtype(audio.dtype, np.integer):
-        max_val = np.iinfo(audio.dtype).max
-        audio = audio.astype(np.float32) / max_val
-
-    # Step 1: Peak normalization
-    original_peak = np.max(np.abs(audio))
-    if original_peak == 0:
-        return audio
-    scaling_factor = target_peak / original_peak
-    normalized_audio = audio * scaling_factor
-
-    # Step 2: Check RMS and apply additional gain if needed.
-    rms = np.sqrt(np.mean(normalized_audio ** 2))
-    if rms < target_rms:
-        # Candidate gain to bring RMS up to target_rms.
-        candidate_gain = target_rms / (rms + 1e-8)
-        # But after peak normalization, the maximum is target_peak.
-        # To prevent clipping above max_peak, we limit the extra gain.
-        max_gain = max_peak / target_peak  # maximum multiplier allowed.
-        extra_gain = min(candidate_gain, max_gain)
-        normalized_audio *= extra_gain
-
-    return normalized_audio
 
 def adjust_volume(audio, factor=None):
     # Original volume adjustment function (unused if normalization is enabled)
@@ -305,29 +274,18 @@ def main():
                 continue
 
             crow_audio, _ = librosa.load(crow_path, sr=sr)
-            approx_start = seg['start_time']
-            approx_end = seg['end_time']
-            if int(approx_end * sr) > len(crow_audio):
-                approx_end = len(crow_audio) / sr
+            start_time = seg['start_time']
+            end_time = seg['end_time']
+            if int(end_time * sr) > len(crow_audio):
+                end_time = len(crow_audio) / sr
 
             # Normalize segment volume if enabled (else apply a random volume adjustment)
-            if ENABLE_VOL_NORMALIZATION:
-                crow_audio = normalize_audio_segment(crow_audio, target_peak=0.85)
-            elif ENABLE_RANDOM_VOLUME:
+            if ENABLE_RANDOM_VOLUME:
                 crow_audio = adjust_volume(crow_audio)
 
-            adjusted = adjust_segment(crow_audio, sr, approx_start, approx_end)
-            if adjusted is None:
-                print("Segment could not be adjusted: {}, start: {}, end: {}".format(crow_path, approx_start, approx_end))
-                segment_usage[seg["key"]] = segment_usage.get(seg["key"], 0) + 1
-                continue
-            adj_start, adj_end = adjusted
-            adj_start_sample = int(adj_start * sr)
-            adj_end_sample = int(adj_end * sr)
-            segment_audio = crow_audio[adj_start_sample:adj_end_sample]
-
-            if ENABLE_VOL_NORMALIZATION:
-                segment_audio = normalize_audio_segment(segment_audio, target_peak=0.85)
+            start_sample = int(start_time * sr)
+            end_sample = int(end_time * sr)
+            segment_audio = crow_audio[start_sample:end_sample]
 
             # Skip segment if it's less than 1.0 seconds long or if it contains no nonzero values.
             if is_audio_silient(segment_audio, sr):
@@ -343,8 +301,8 @@ def main():
             segments_details.append({
                 "file_id": seg["file_id"],
                 "original_key": seg["key"],
-                "adjusted_start": adj_start,
-                "adjusted_end": adj_end
+                "adjusted_start": start_time,
+                "adjusted_end": end_time
             })
 
             # Update usage counts

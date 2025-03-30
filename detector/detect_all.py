@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
 import os
 import json
 import csv
+import numpy as np
 from detector.detect import detect_file_segments
+from classifier.classify import predict_embedding
 
 # Define paths.
 PATH = os.path.dirname(__file__)
@@ -12,30 +15,77 @@ csv_paths = [
 ]
 library_dir = os.path.join(public_path, "library")
 segments_path = os.path.join(public_path, "segments.json")
+auto_labels_path = os.path.join(public_path, "auto_labels.json")
+
 
 def start_detections():
+    # Load previously processed auto labels if available.
+    if os.path.exists(auto_labels_path):
+        with open(auto_labels_path, "r", encoding="utf-8") as f:
+            auto_labels = json.load(f)
+    else:
+        auto_labels = {}
+
     # Load previously processed segments if available.
     if os.path.exists(segments_path):
-        with open(segments_path, "r") as f:
+        with open(segments_path, "r", encoding="utf-8") as f:
             segments = json.load(f)
     else:
         segments = {}
 
-    # Using CSV files to get unique file IDs.
-    processed_ids = set(segments.keys())  # already processed file IDs
+    # Use keys from auto_labels as already processed file IDs.
+    processed_ids = set(auto_labels.keys())
+    # (Since auto_labels keys are segment keys, we infer processed file IDs
+    #  by collecting the file_id part from each key.)
+    processed_file_ids = {key.split("-")[0] for key in processed_ids}
+
+    # Iterate through CSVs for unique file IDs.
     for csv_path in csv_paths:
         with open(csv_path, "r", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 file_id = row["ML Catalog Number"]
-                if file_id in processed_ids:
+                if file_id in processed_file_ids:
                     print(f"Skipping file {file_id} (already processed)")
                     continue
-                processed_ids.add(file_id)
+
+                # Run detection for this file.
                 detections = detect_file_segments(file_id, public_path=public_path)
                 if detections:
-                    segments[file_id] = detections
-                    # Count unique boolean features in this file.
+                    # For segments, we create a minimal dictionary per detection.
+                    segments[file_id] = []
+                    # Load the embeddings for the file.
+                    embedding_file = os.path.join(public_path, "embeddings-denoised", f"{file_id}.npy")
+                    if not os.path.exists(embedding_file):
+                        print(f"Embedding file {embedding_file} not found for file {file_id}, skipping.")
+                        continue
+                    embeddings_array = np.load(embedding_file)
+
+                    for det in detections:
+                        st = det.get("start_time")
+                        et = det.get("end_time")
+                        # Construct a segment key (e.g., "fileid-44-45")
+                        segment_key = f"{file_id}-{int(st)}-{int(et)}"
+                        # Save minimal segment info.
+                        seg_min = {
+                            "start_time": st,
+                            "end_time": et,
+                            "confidence": 0.0,
+                            "cluster": 0
+                        }
+                        segments[file_id].append(seg_min)
+
+                        # Get the embedding corresponding to this segment.
+                        idx = int(st)
+                        if idx < 0 or idx >= embeddings_array.shape[0]:
+                            print(f"Index {idx} out of range for file {file_id}, skipping segment {segment_key}.")
+                            continue
+                        emb = embeddings_array[idx]
+                        # Predict the label.
+                        predicted_label = predict_embedding(emb)
+                        auto_labels[segment_key] = predicted_label
+
+                    # Optional: print summary for this file.
                     features_to_report = ["alert", "mob", "begging", "softSong", "rattle"]
                     feature_counts = {feat: sum(1 for det in detections if det.get(feat, False))
                                       for feat in features_to_report}
@@ -45,16 +95,20 @@ def start_detections():
                 else:
                     print(f"<<<<<< No detections in file {file_id}")
 
-    # Save all segments.
-    with open(segments_path, "w") as f:
+    # Save segments and auto labels.
+    with open(segments_path, "w", encoding="utf-8") as f:
         json.dump(segments, f, indent=2)
     print(f"***** Saved segments for {len(segments)} files to {segments_path}")
 
-    # Recalculate summary statistics from the segments data.
+    with open(auto_labels_path, "w", encoding="utf-8") as f:
+        json.dump(auto_labels, f, indent=4)
+    print(f"***** Saved auto labels for {len(auto_labels)} segments to {auto_labels_path}")
+
+    # Recalculate summary statistics from auto_labels.
     files_with_detections = 0
     total_detections = 0
 
-    # For binary attributes, we sum up the counts.
+    # For binary attributes, sum up counts.
     binary_totals = {
         "alert": 0,
         "begging": 0,
@@ -63,50 +117,42 @@ def start_detections():
         "mob": 0,
     }
 
-    # For non-binary attributes, we group counts by each unique value.
+    # For non-binary attributes, group counts by unique value.
     grouped_counts = {
         "crowCount": {},
         "crowAge": {},
         "quality": {}
     }
 
-    for file_id, det_list in segments.items():
-        if det_list:
-            files_with_detections += 1
-            total_detections += len(det_list)
-            for det in det_list:
-                # Update binary attributes.
-                binary_totals["alert"] += int(det.get("alert", False))
-                binary_totals["begging"] += int(det.get("begging", False))
-                binary_totals["softSong"] += int(det.get("softSong", False))
-                binary_totals["rattle"] += int(det.get("rattle", False))
-                binary_totals["mob"] += int(det.get("mob", False))
-                # Update non-binary grouped counts.
-                for attr in ["crowCount", "crowAge", "quality"]:
-                    value = det.get(attr)
-                    if value is None:
-                        continue
-                    # Use the value as-is (no additional +1).
-                    grouped_counts[attr][value] = grouped_counts[attr].get(value, 0) + 1
+    for segment_key, label in auto_labels.items():
+        total_detections += 1
+        # Update binary attributes.
+        binary_totals["alert"] += int(label.get("alert", False))
+        binary_totals["begging"] += int(label.get("begging", False))
+        binary_totals["softSong"] += int(label.get("softSong", False))
+        binary_totals["rattle"] += int(label.get("rattle", False))
+        binary_totals["mob"] += int(label.get("mob", False))
+        # Update non-binary grouped counts.
+        for attr in ["crowCount", "crowAge", "quality"]:
+            value = label.get(attr)
+            if value is None:
+                continue
+            grouped_counts[attr][value] = grouped_counts[attr].get(value, 0) + 1
 
-    # Print summary.
-    print("\n===== Detection Summary =====")
-    print(f"Files with detections: {files_with_detections}")
-    if files_with_detections > 0:
-        print(f"Average detections per file: {round(total_detections / files_with_detections)}")
-
+    # For total detection time, each detection is one second.
     hours = total_detections // 3600
     minutes = (total_detections % 3600) // 60
-    print(f"Total detections: {total_detections} ({int(hours):02d}:{int(minutes):02d} HH:MM)")
 
+    print("\n===== Detection Summary =====")
+    print(f"Total detections: {total_detections} ({int(hours):02d}:{int(minutes):02d} HH:MM)")
     print("\nTotals for non-binary attributes:")
     for attr, counts in grouped_counts.items():
         counts_str = ", ".join(f"{val} = {counts[val]}" for val in sorted(counts.keys()))
         print(f"  {attr}: {counts_str}")
-
     print("\nTotals for binary attributes:")
     for attr, total in binary_totals.items():
         print(f"  {attr}: {total}")
+
 
 if __name__ == "__main__":
     start_detections()

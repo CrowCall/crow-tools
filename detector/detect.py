@@ -277,4 +277,9 @@ def main():
 
 
 if __name__ == "__main__":
+    # Good test file ids
+    # - 609381653 (alert: 17, rattle: 4)
+    # - 490021141 (alert: 12, mob: 5, begging: 6, softSong: 2, rattle: 5)
+    # - 587709701 (mob: 1, softSong: 5, rattle: 5)
+    # - 539582961 (begging: 4, softSong: 1, rattle: 1)
     main()
