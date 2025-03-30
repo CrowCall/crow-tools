@@ -2,12 +2,12 @@
 
 ## Crows are among the most intelligent and vocal birds on the planet. But what exactly are they saying? 
 
-<img src="docs/images/crow-animation.gif" align="left" width="50%">
+<img src="docs/images/crow-animation.gif" align="left" width="50%" title="Original animation by @owlmaddie">
 
 This project aims to **explore** and **decode** the rich and mysterious world of **crow communication** using cutting-edge 
 machine learning and audio analysis.
 
-This repository is your toolkit for working with thousands of crow calls—from downloading and cleaning audio, to 
+This repository is your toolkit for working with thousands of **American crow** ([Corvus brachyrhynchos](https://www.allaboutbirds.org/guide/American_Crow/overview)) **calls**—from downloading and cleaning audio, to 
 detecting individual calls, generating embeddings, classifying vocalizations, and even manually labeling them 
 through a web interface.
 
@@ -38,14 +38,23 @@ python get-data.py
 ## Module Overview
 
 ### Downloader
-The downloader module retrieves a vast library of crow audio files from multiple sources (13+ GB). It manages the 
-complexities of connecting to various data repositories, ensuring that all necessary audio files are collected and stored 
-efficiently. Credits and metadata are located in the `.cache/csv/` folder.
+
+The downloader module retrieves a large collection of crow vocalizations (13+ GB) from multiple public repositories. 
+It handles the complexities of connecting to each source, downloading the audio files, and storing relevant metadata 
+for proper attribution. Credits and licensing info for all files are saved in the `.cache/csv/` directory.
+
+CrowCall relies on openly available datasets for research and development. We gratefully acknowledge the following sources:
+
+- [Macaulay Library – American Crow (*Corvus brachyrhynchos*)](https://search.macaulaylibrary.org/catalog?taxonCode=amecro&mediaType=audio)  
+  © Cornell Lab of Ornithology. A comprehensive archive of wildlife recordings, used in accordance with licensing terms for non-commercial research.
+
+- [Xeno-Canto – American Crow (*Corvus brachyrhynchos*)](https://xeno-canto.org/species/corvus-brachyrhynchos)  
+  A global, community-powered collection of bird calls, shared under various Creative Commons licenses. Many thanks to the recordists who make this work possible.
 
 ### Denoiser
 The denoiser module cleans the crow audio files by removing unwanted background noise. This process improves the 
 quality of the audio for subsequent processing steps by focusing on the relevant crow sounds. It also enables
-the creation of mixes (overlapping crow sounds) to train our separator.
+the creation of mixes (overlapping crow sounds) to train our separator model.
 
 ![denoiser.png](docs/images/denoiser.png)
 
@@ -92,7 +101,7 @@ We also include an interactive crow timeline app to review and listen to the det
 ```
 
 ### Embedder
-The embedder module transforms each crow call into a 768-dimensional vector using the AVES embedding model. This 
+The embedder module transforms each crow call into a 768-dimensional vector using the [AVES](https://github.com/earthspecies/aves?tab=readme-ov-file#birdaves) embedding model. This 
 transformation creates a numerical representation of the audio, which is essential for further analysis and machine 
 learning applications.
 
