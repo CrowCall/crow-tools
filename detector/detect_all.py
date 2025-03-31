@@ -187,7 +187,9 @@ def start_detections():
         print(f"  {attr}: {counts_str}")
     print("\nTotals for binary attributes:")
     for attr, total in binary_totals.items():
-        print(f"  {attr}: {total}")
+        hours = total // 3600
+        minutes = (total % 3600) // 60
+        print(f"  {attr}: {total} ({int(hours):02d}:{int(minutes):02d} HH:MM)")
 
     # --- New code: Compute contiguous segments group stats for different crowCount filters ---
     for target in [1, 2, 4]:
@@ -195,7 +197,11 @@ def start_detections():
         print(f"\nContiguous Segments Groups (crowCount=={target}):")
         for group_size in sorted(stats.keys())[:10]:
             seg_label = "segment" if group_size == 1 else "segments"
-            print(f"  {group_size} {seg_label}: {stats[group_size]}")
+            total_time = stats[group_size]
+            hours = total_time // 3600
+            minutes = (total_time % 3600) // 60
+            print(f"  {group_size} {seg_label}: {total_time} ({int(hours):02d}:{int(minutes):02d} HH:MM)")
+
 
 if __name__ == "__main__":
     start_detections()
