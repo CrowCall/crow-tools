@@ -20,7 +20,7 @@ INDEX_PATH = os.path.join(BASE_PATH, "..", ".cache", "faiss_index.index")
 LABEL_TEMPLATE_FILE = os.path.join(BASE_PATH, "..", ".cache", "cluster_segments_labels.json")
 
 # Parameters
-STARTING_CLUSTER_ID = 62
+STARTING_CLUSTER_ID = 65
 VOLUME_THRESHOLD = 0.0002
 SUBSAMPLE_FACTOR = 1.0
 PCA_COMPONENTS = 64
@@ -48,7 +48,9 @@ SEED_EXAMPLES = [
 
     # Sub/Soft Song
     #{"file_id": "408950861", "start": 20.0, "end": 21.0},
-    #{"file_id": "13123", "start": 34.0, "end": 35.0},r
+    #{"file_id": "13123", "start": 34.0, "end": 35.0},
+    {"file_id": "984442", "start": 33.0, "end": 34.0},
+    {"file_id": "984442", "start": 6.0, "end": 7.0},
 
     # Juvenile begging
     #{"file_id": "32684421", "start": 39.0, "end": 40.0},
