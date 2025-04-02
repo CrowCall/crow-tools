@@ -1,7 +1,10 @@
 window.SegmentCard = {
   props: ['segment', 'labels', 'playbackSpeed', 'prevLabels'],
   template: `
-    <div :class="['card', 'h-100', 'mb-2', 'p-2', cardBorderClass, {'reviewed-card': currentLabels.reviewed}]" :style="[leftBorderStyle, cardBackgroundStyle]">
+    <div :class="['card', 'h-100', 'mb-2', 'p-2', cardBorderClass, {'reviewed-card': currentLabels.reviewed}]" :style="[leftBorderStyle, cardBackgroundStyle, {position: 'relative'}]">
+      <!-- NEW: Delete Button -->
+      <button @click="deleteSegment" class="btn btn-sm delete-btn" style="position: absolute; top: 5px; right: 5px;">X</button>
+      
       <!-- 1) Title Row -->
       <div class="d-flex flex-wrap align-items-center mb-1">
         <strong class="me-2">
@@ -184,26 +187,19 @@ window.SegmentCard = {
       return `${this.segment.id}-${this.segment.start_time}-${this.segment.end_time}`;
     },
     currentLabels() {
-      // If we have labelData directly on the segment, use that
-      if (this.segment.labelData) {
-        // Make sure it's in the labels object for compatibility
-        this.labels[this.segmentKey] = this.segment.labelData;
-        return this.segment.labelData;
-      }
-      
       // Otherwise use the labels object
       if (!this.labels[this.segmentKey]) {
         // Initialize with the new structure
         this.labels[this.segmentKey] = {
-          crowCount: 1,   // integer [1..4]
-          crowAge: 1,     // 1=adult, 2=juvenile
+          crowCount: 1,
+          crowAge: 1,
           scold: false,
           alert: false,
           begging: false,
           softSong: false,
           rattle: false,
           mob: false,
-          quality: 2,     // integer [1..3]
+          quality: 2,
           reviewed: false
         };
       } else if (this.labels[this.segmentKey] && typeof this.labels[this.segmentKey].cluster === 'undefined') {
@@ -272,12 +268,8 @@ window.SegmentCard = {
     onLabelsChanged() {
       // Whenever any label is changed, mark as reviewed and emit update.
       this.currentLabels.reviewed = true;
-      
-      // Add a small delay to ensure this doesn't trigger reactivity too quickly
-      // This prevents UI flickering if filtering would normally remove this item
-      setTimeout(() => {
-        this.$emit('labels-changed', { segmentKey: this.segmentKey, labels: this.currentLabels });
-      }, 10);
+      this.$emit('labels-changed', { segmentKey: this.segmentKey, labels: this.currentLabels });
+
     },
     updateProgress() {
       if (this.audio) {
@@ -305,6 +297,11 @@ window.SegmentCard = {
         this.audio.currentTime = this.segment.start_time;
         this.audio.play();
         this.isPlaying = true;
+      }
+    },
+    deleteSegment() {
+      if (confirm("Are you sure you want to delete this segment? This action cannot be undone.")) {
+        this.$emit('segment-deleted', this.segmentKey);
       }
     }
   },

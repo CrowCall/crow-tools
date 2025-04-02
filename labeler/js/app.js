@@ -2,6 +2,8 @@ const app = Vue.createApp({
     data() {
         return {
             segments: [],
+            // Only a single cached filtered set:
+            filteredSegmentsCache: [],
             labels: {},
             csvData: {},
             currentPage: 1,
@@ -9,7 +11,6 @@ const app = Vue.createApp({
             playbackSpeed: 1,
             totalPagesCached: 0,
             errorMessage: "",
-            visibleSegmentKeys: [], // Keep track of segments that should remain visible even if they don't match filters
             filters: {
                 labelStatus: 'all',
                 reviewStatus: 'all',
@@ -17,7 +18,8 @@ const app = Vue.createApp({
                     rattle: false,
                     softSong: false,
                     mob: false,
-                    alert: false
+                    alert: false,
+                    begging: false
                 },
                 crowCounts: {
                     0: false,
@@ -27,105 +29,28 @@ const app = Vue.createApp({
                     4: false
                 },
                 crowAge: 'all',
-                mediaNotesText: '',
-                cluster: null
+                globalFilter: '',
+                quality: 'all'
             },
             activeFilters: null
         };
     },
     computed: {
         totalPages() {
-            return Math.ceil(this.filteredSegments.length / this.segmentsPerPage);
-        },
-        filteredSegments() {
-            if (!this.activeFilters) return this.segments;
-            
-            return this.segments.filter(segment => {
-                const segKey = `${segment.id}-${segment.start_time}-${segment.end_time}`;
-                
-                // If this segment is in our visible list, always include it
-                if (this.visibleSegmentKeys.includes(segKey)) {
-                    return true;
-                }
-                
-                const labelData = this.labels[segKey];
-                
-                // Label status filter
-                if (this.activeFilters.labelStatus !== 'all') {
-                    const isLabeled = labelData && (labelData.crowCount !== undefined);
-                    if (this.activeFilters.labelStatus === 'labeled' && !isLabeled) return false;
-                    if (this.activeFilters.labelStatus === 'unlabeled' && isLabeled) return false;
-                }
-                
-                // Review status filter
-                if (this.activeFilters.reviewStatus !== 'all') {
-                    const isReviewed = labelData && labelData.reviewed === true;
-                    if (this.activeFilters.reviewStatus === 'reviewed' && !isReviewed) return false;
-                    if (this.activeFilters.reviewStatus === 'unreviewed' && isReviewed) return false;
-                }
-                
-                // Call types
-                if (labelData) {
-                    const callTypeFilters = this.activeFilters.callTypes;
-                    // If any filters are active, the segment must match at least one
-                    const hasActiveCallTypeFilters = Object.values(callTypeFilters).some(val => val);
-                    
-                    if (hasActiveCallTypeFilters) {
-                        const matchesAType = 
-                            (callTypeFilters.rattle && labelData.rattle) ||
-                            (callTypeFilters.softSong && labelData.softSong) ||
-                            (callTypeFilters.mob && labelData.mob) ||
-                            (callTypeFilters.alert && labelData.alert);
-                        
-                        if (!matchesAType) return false;
-                    }
-                }
-                
-                // Crow count
-                if (labelData && labelData.crowCount !== undefined) {
-                    const crowCountFilters = this.activeFilters.crowCounts;
-                    const hasActiveCrowCountFilters = Object.values(crowCountFilters).some(val => val);
-                    
-                    if (hasActiveCrowCountFilters && !crowCountFilters[labelData.crowCount]) {
-                        return false;
-                    }
-                }
-                
-                // Crow age
-                if (this.activeFilters.crowAge !== 'all' && labelData && labelData.crowAge !== undefined) {
-                    if (this.activeFilters.crowAge === 'adult' && labelData.crowAge !== 1) return false;
-                    if (this.activeFilters.crowAge === 'juvenile' && labelData.crowAge !== 2) return false;
-                }
-                
-                // Media notes text
-                if (this.activeFilters.mediaNotesText) {
-                    // If there's a filter for media notes, require that media_notes exists and is not empty
-                    if (!segment.media_notes || segment.media_notes.trim() === '') {
-                        return false;
-                    }
-                    // Also check that it includes the filter text
-                    if (!segment.media_notes.toLowerCase().includes(this.activeFilters.mediaNotesText.toLowerCase())) {
-                        return false;
-                    }
-                }
-                
-                // Cluster
-                if (this.activeFilters.cluster !== null && this.activeFilters.cluster !== '' && segment.cluster !== undefined) {
-                    if (segment.cluster !== this.activeFilters.cluster) return false;
-                }
-                
-                return true;
-            });
+            return Math.ceil(this.filteredSegmentsCache.length / this.segmentsPerPage);
         },
         paginatedSegments() {
             const start = (this.currentPage - 1) * this.segmentsPerPage;
-            return this.filteredSegments.slice(start, start + this.segmentsPerPage);
+            return this.filteredSegmentsCache.slice(start, start + this.segmentsPerPage);
         },
-        // Stats aggregator
+        // Bridge for legacy template references.
+        filteredSegments() {
+            return this.filteredSegmentsCache;
+        },
         stats() {
             const uniqueFileIDs = new Set();
-            // Use filtered segments when filters are active, otherwise use all segments
-            const segmentsToCount = this.activeFilters ? this.filteredSegments : this.segments;
+            // Use filtered segments if active filters are applied, otherwise use all segments.
+            const segmentsToCount = this.activeFilters ? this.filteredSegmentsCache : this.segments;
             let totalSegments = segmentsToCount.length;
             let labeledSegments = 0;
             let totalDurationSec = 0;
@@ -134,12 +59,7 @@ const app = Vue.createApp({
             const isSegmentLabeled = (segKey) => {
                 const lbl = this.labels[segKey];
                 if (!lbl) return false;
-                if (
-                    lbl.reviewed === true
-                ) {
-                    return true;
-                }
-                return false;
+                return lbl.reviewed === true;
             };
             for (const seg of segmentsToCount) {
                 uniqueFileIDs.add(seg.id);
@@ -179,30 +99,121 @@ const app = Vue.createApp({
         segmentKey(segment) {
             return `${segment.id}-${segment.start_time}-${segment.end_time}`;
         },
-        loadCrowsCSV() {
-          const files = ['/cache/csv/crows.csv', '/cache/csv/crows-xeno-canto.csv'];
-          let remaining = files.length;
+        // Rewritten filtering function using only the activeFilters object.
+        applyFiltersToSegments() {
+            return this.segments.filter(segment => {
+                const segKey = this.segmentKey(segment);
+                const labelData = this.labels[segKey];
 
-          files.forEach(file => {
-            Papa.parse(file, {
-              download: true,
-              header: true,
-              complete: (results) => {
-                results.data.forEach(row => {
-                  const id = row['ML Catalog Number'];
-                  if (!id) return;
-                  if (!this.csvData[id]) this.csvData[id] = {};
-                  this.csvData[id].recorder = row['Recordist'] || this.csvData[id].recorder || 'Unknown';
-                  this.csvData[id].mediaNotes = row['Media notes'] || this.csvData[id].mediaNotes || '';
-                });
-                if (!--remaining) this.attachCSVtoSegments();
-              },
-              error: err => {
-                console.error('Error parsing', file, err);
-                if (!--remaining) this.attachCSVtoSegments();
-              }
+                // Label Status Filter
+                if (this.activeFilters.labelStatus !== 'all') {
+                    const isLabeled = labelData && (labelData.crowCount !== undefined);
+                    if (this.activeFilters.labelStatus === 'labeled' && !isLabeled) return false;
+                    if (this.activeFilters.labelStatus === 'unlabeled' && isLabeled) return false;
+                }
+
+                // Review Status Filter
+                if (this.activeFilters.reviewStatus !== 'all') {
+                    const isReviewed = labelData && labelData.reviewed === true;
+                    if (this.activeFilters.reviewStatus === 'reviewed' && !isReviewed) return false;
+                    if (this.activeFilters.reviewStatus === 'unreviewed' && isReviewed) return false;
+                }
+
+                // Call Types Filter (including begging)
+                if (labelData) {
+                    const callTypeFilters = this.activeFilters.callTypes;
+                    const hasActiveCallTypeFilters = Object.values(callTypeFilters).some(val => val);
+                    if (hasActiveCallTypeFilters) {
+                        const matchesAType =
+                            (callTypeFilters.rattle && labelData.rattle) ||
+                            (callTypeFilters.softSong && labelData.softSong) ||
+                            (callTypeFilters.mob && labelData.mob) ||
+                            (callTypeFilters.alert && labelData.alert) ||
+                            (callTypeFilters.begging && labelData.begging);
+                        if (!matchesAType) return false;
+                    }
+                }
+
+                // Crow Count Filter
+                if (labelData && labelData.crowCount !== undefined) {
+                    const crowCountFilters = this.activeFilters.crowCounts;
+                    const hasActiveCrowCountFilters = Object.values(crowCountFilters).some(val => val);
+                    if (hasActiveCrowCountFilters && !crowCountFilters[labelData.crowCount]) {
+                        return false;
+                    }
+                }
+
+                // Crow Age Filter
+                if (this.activeFilters.crowAge !== 'all' && labelData && labelData.crowAge !== undefined) {
+                    if (this.activeFilters.crowAge === 'adult' && labelData.crowAge !== 1) return false;
+                    if (this.activeFilters.crowAge === 'juvenile' && labelData.crowAge !== 2) return false;
+                }
+
+                // Quality Filter
+                if (this.activeFilters.quality !== 'all' && labelData && labelData.quality !== undefined) {
+                    if (Number(labelData.quality) !== Number(this.activeFilters.quality)) return false;
+                }
+
+                // Global Filter: searches across media_notes, recordist (author), file ID and cluster.
+                if (this.activeFilters.globalFilter && this.activeFilters.globalFilter.trim() !== '') {
+                    const searchTerm = this.activeFilters.globalFilter.trim().toLowerCase();
+                    const mediaNotes = (segment.media_notes || '').toLowerCase();
+                    const recordist = (segment.recordist || '').toLowerCase();
+                    const fileId = segment.id.toString().toLowerCase();
+                    const cluster = (segment.cluster !== undefined ? segment.cluster.toString() : '').toLowerCase();
+                    if (
+                        !mediaNotes.includes(searchTerm) &&
+                        !recordist.includes(searchTerm) &&
+                        !fileId.includes(searchTerm) &&
+                        !cluster.includes(searchTerm)
+                    ) {
+                        return false;
+                    }
+                }
+
+                return true;
             });
-          });
+        },
+        updateFilters(newFilters) {
+            // Deep copy new filters.
+            this.activeFilters = JSON.parse(JSON.stringify(newFilters));
+            this.currentPage = 1;
+            localStorage.setItem('activeFilters', JSON.stringify(this.activeFilters));
+
+            // Recalculate the filtered segments.
+            this.filteredSegmentsCache = this.applyFiltersToSegments();
+        },
+        // Initialize filteredSegmentsCache once segments are loaded.
+        initializeFilterCache() {
+            if (this.activeFilters) {
+                this.filteredSegmentsCache = this.applyFiltersToSegments();
+            } else {
+                this.filteredSegmentsCache = this.segments;
+            }
+        },
+        loadCrowsCSV() {
+            const files = ['/cache/csv/crows.csv', '/cache/csv/crows-xeno-canto.csv'];
+            let remaining = files.length;
+            files.forEach(file => {
+                Papa.parse(file, {
+                    download: true,
+                    header: true,
+                    complete: (results) => {
+                        results.data.forEach(row => {
+                            const id = row['ML Catalog Number'];
+                            if (!id) return;
+                            if (!this.csvData[id]) this.csvData[id] = {};
+                            this.csvData[id].recorder = row['Recordist'] || this.csvData[id].recorder || 'Unknown';
+                            this.csvData[id].mediaNotes = row['Media notes'] || this.csvData[id].mediaNotes || '';
+                        });
+                        if (!--remaining) this.attachCSVtoSegments();
+                    },
+                    error: err => {
+                        console.error('Error parsing', file, err);
+                        if (!--remaining) this.attachCSVtoSegments();
+                    }
+                });
+            });
         },
         loadSegments() {
             fetch('/cache/cluster_segments.json')
@@ -226,6 +237,7 @@ const app = Vue.createApp({
                     this.segments = segArray;
                     this.loadCrowsCSV();
                     this.totalPagesCached = Math.ceil(this.segments.length / this.segmentsPerPage);
+                    this.initializeFilterCache();
                 })
                 .catch(err => console.error('Error loading segments:', err));
         },
@@ -252,87 +264,78 @@ const app = Vue.createApp({
                 });
         },
         saveLabelsToServer(payload) {
-          // payload is expected to be: { segmentKey, labels }
-          
-          // Make sure the segment stays visible even if it no longer matches the filter
-          if (!this.visibleSegmentKeys.includes(payload.segmentKey)) {
-            this.visibleSegmentKeys.push(payload.segmentKey);
-          }
-          
-          fetch('/updateLabels', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          })
-          .then(res => {
-            if (!res.ok) {
-              return res.json().then(data => {
-                throw new Error(data.error || "Server error");
-              });
-            }
-            return res.json();
-          })
-          .then(data => {
-            if (!data.success) {
-              throw new Error("Failed to update labels on server.");
-            }
-            
-            // Update the segment's labelData property to reflect the change
-            const segmentToUpdate = this.segments.find(seg => 
-              this.segmentKey(seg) === payload.segmentKey
-            );
-            
-            if (segmentToUpdate) {
-              segmentToUpdate.labelData = payload.labels;
-            }
-            
-            // Clear any previous error message on success.
-            this.errorMessage = "";
-          })
-          .catch(err => {
-            console.error('Error updating labels on server:', err);
-            this.errorMessage = "Error updating labels: " + err.message;
-          });
+            fetch('/updateLabels', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(data => {
+                            throw new Error(data.error || "Server error");
+                        });
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error("Failed to update labels on server.");
+                    }
+                    const segmentToUpdate = this.segments.find(seg => this.segmentKey(seg) === payload.segmentKey);
+                    if (segmentToUpdate) {
+                        segmentToUpdate.labelData = payload.labels;
+                    }
+                    this.errorMessage = "";
+                })
+                .catch(err => {
+                    console.error('Error updating labels on server:', err);
+                    this.errorMessage = "Error updating labels: " + err.message;
+                });
         },
         prevPage() {
             if (this.currentPage > 1) {
-                // Clear the visible segments list when changing pages
-                this.visibleSegmentKeys = [];
                 this.currentPage--;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({top: 0, behavior: 'smooth'});
             }
         },
         nextPage() {
             if (this.currentPage < this.totalPages) {
-                // Clear the visible segments list when changing pages
-                this.visibleSegmentKeys = [];
                 this.currentPage++;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({top: 0, behavior: 'smooth'});
             }
         },
         handleGotoPage(pageNum) {
             if (pageNum >= 1 && pageNum <= this.totalPages) {
-                // Clear the visible segments list when changing pages
-                this.visibleSegmentKeys = [];
                 this.currentPage = pageNum;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({top: 0, behavior: 'smooth'});
             }
         },
         setPlaybackSpeed(speed) {
             this.playbackSpeed = speed;
         },
-        updateFilters(newFilters) {
-            // Deep copy the filters to avoid reference issues
-            this.activeFilters = JSON.parse(JSON.stringify(newFilters));
-            
-            // Reset to page 1 when filters change
-            this.currentPage = 1;
-            
-            // Clear the list of visible segments on filter change
-            this.visibleSegmentKeys = [];
-            
-            // Save filters to localStorage
-            localStorage.setItem('activeFilters', JSON.stringify(this.activeFilters));
+        // Delete segment handling remains the same.
+        handleSegmentDeleted(segmentKey) {
+            this.segments = this.segments.filter(seg => this.segmentKey(seg) !== segmentKey);
+            this.filteredSegmentsCache = this.filteredSegmentsCache.filter(seg => this.segmentKey(seg) !== segmentKey);
+            delete this.labels[segmentKey];
+            this.deleteSegmentFromServer(segmentKey);
+        },
+        deleteSegmentFromServer(segmentKey) {
+            fetch('/deleteSegment', {
+                method: 'DELETE',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({segmentKey})
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error("Failed to delete segment on server.");
+                    }
+                })
+                .catch(err => {
+                    console.error('Error deleting segment on server:', err);
+                    this.errorMessage = "Error deleting segment: " + err.message;
+                });
         }
     },
     watch: {

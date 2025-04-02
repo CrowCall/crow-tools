@@ -96,6 +96,19 @@
             background-color: #00aaff; /* a bright accent color */
         }
 
+        .delete-btn {
+          background-color: #555; /* Dark gray */
+          border-color: #555;
+          color: #fff;
+        }
+
+        .delete-btn:hover {
+          background-color: #dc3545; /* Bootstrap danger red */
+          border-color: #dc3545;
+          color: #fff;
+        }
+
+
     </style>
 </head>
 <body>
@@ -209,26 +222,27 @@
         </div>
         <div v-for="(segment, index) in paginatedSegments" :key="segment.id + '-' + segment.start_time + '-' + segment.end_time" class="col d-flex">
             <segment-card
-                    :segment="segment"
-                    :labels="labels"
-                    :playback-speed="playbackSpeed"
-                    :prev-labels="index > 0
-        ? labels[paginatedSegments[index - 1].id + '-' + paginatedSegments[index - 1].start_time + '-' + paginatedSegments[index - 1].end_time]
-        : null"
-                    @labels-changed="saveLabelsToServer"
-                    class="w-100">
+              :segment="segment"
+              :labels="labels"
+              :playback-speed="playbackSpeed"
+              :prev-labels="index > 0 ? labels[paginatedSegments[index - 1].id + '-' + paginatedSegments[index - 1].start_time + '-' + paginatedSegments[index - 1].end_time] : null"
+              @labels-changed="saveLabelsToServer"
+              @segment-deleted="handleSegmentDeleted"
+              class="w-100">
             </segment-card>
         </div>
     </div>
 
     <!-- Pagination Controls -->
-    <pagination
-            :current-page="currentPage"
-            :total-pages="totalPages"
-            @prev="prevPage"
-            @next="nextPage"
-            @goto="handleGotoPage"
-    ></pagination>
+    <div class="mt-4">
+      <pagination
+              :current-page="currentPage"
+              :total-pages="totalPages"
+              @prev="prevPage"
+              @next="nextPage"
+              @goto="handleGotoPage"
+      ></pagination>
+    </div>
 
 </div>
 

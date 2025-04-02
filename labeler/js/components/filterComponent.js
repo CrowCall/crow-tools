@@ -13,7 +13,7 @@ window.FilterComponent = {
         
         <!-- Filter Modal -->
         <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="filterModalLabel">Filter Segments</h5>
@@ -46,7 +46,7 @@ window.FilterComponent = {
                             </div>
                         </div>
                         
-                        <!-- Call Type -->
+                        <!-- Call Type (includes Begging) -->
                         <div class="mb-3">
                             <label class="form-label">Call Type</label>
                             <div class="d-flex flex-wrap" style="gap: 0.5rem;">
@@ -65,6 +65,10 @@ window.FilterComponent = {
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="alertFilter" v-model="localFilters.callTypes.alert">
                                     <label class="form-check-label" for="alertFilter">Alert</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="beggingFilter" v-model="localFilters.callTypes.begging">
+                                    <label class="form-check-label" for="beggingFilter">Begging</label>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +90,7 @@ window.FilterComponent = {
                             </div>
                         </div>
                         
-                        <!-- Age -->
+                        <!-- Crow Age -->
                         <div class="mb-3">
                             <label class="form-label">Crow Age</label>
                             <div class="btn-group w-100" role="group">
@@ -99,21 +103,30 @@ window.FilterComponent = {
                             </div>
                         </div>
                         
-                        <!-- Media Notes -->
+                        <!-- Quality -->
                         <div class="mb-3">
-                            <label for="mediaNotesFilter" class="form-label">Media Notes</label>
-                            <input type="text" class="form-control" id="mediaNotesFilter" placeholder="Search in media notes" v-model="localFilters.mediaNotesText">
+                            <label class="form-label">Quality</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="quality" id="quality_all" value="all" v-model="localFilters.quality">
+                                <label class="btn btn-outline-primary" for="quality_all">All</label>
+                                <input type="radio" class="btn-check" name="quality" id="quality1" value="1" v-model="localFilters.quality">
+                                <label class="btn btn-outline-primary" for="quality1">Bad</label>
+                                <input type="radio" class="btn-check" name="quality" id="quality2" value="2" v-model="localFilters.quality">
+                                <label class="btn btn-outline-primary" for="quality2">Average</label>
+                                <input type="radio" class="btn-check" name="quality" id="quality3" value="3" v-model="localFilters.quality">
+                                <label class="btn btn-outline-primary" for="quality3">Best</label>
+                            </div>
                         </div>
                         
-                        <!-- Cluster -->
+                        <!-- Global Text Filter: Media Notes, Author, File ID or Cluster -->
                         <div class="mb-3">
-                            <label for="clusterFilter" class="form-label">Cluster</label>
+                            <label for="globalFilter" class="form-label">Media Notes, Author, File ID or Cluster</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="clusterFilter" placeholder="Enter cluster number" v-model.number="localFilters.cluster">
-                                <button class="btn btn-outline-secondary" type="button" @click="localFilters.cluster = null">Clear</button>
+                                <input type="text" class="form-control" id="globalFilter" placeholder="Search..." v-model="localFilters.globalFilter">
+                                <button class="btn btn-outline-secondary" type="button" @click="localFilters.globalFilter = ''">Clear</button>
                             </div>
-                            <small class="form-text text-muted">Leave empty to show all clusters</small>
                         </div>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="resetFilters">Reset Filters</button>
@@ -131,24 +144,15 @@ window.FilterComponent = {
     },
     computed: {
         hasActiveFilters() {
-            return this.activeFilters && Object.keys(this.activeFilters).some(key => {
-                if (key === 'callTypes') {
-                    return Object.values(this.activeFilters.callTypes).some(val => val);
-                } else if (key === 'crowCounts') {
-                    return Object.values(this.activeFilters.crowCounts).some(val => val);
-                } else if (key === 'labelStatus') {
-                    return this.activeFilters.labelStatus !== 'all';
-                } else if (key === 'reviewStatus') {
-                    return this.activeFilters.reviewStatus !== 'all';
-                } else if (key === 'crowAge') {
-                    return this.activeFilters.crowAge !== 'all';
-                } else if (key === 'mediaNotesText') {
-                    return !!this.activeFilters.mediaNotesText;
-                } else if (key === 'cluster') {
-                    return this.activeFilters.cluster !== null;
-                }
-                return false;
-            });
+            return this.activeFilters && (
+                this.activeFilters.labelStatus !== 'all' ||
+                this.activeFilters.reviewStatus !== 'all' ||
+                Object.values(this.activeFilters.callTypes).some(val => val) ||
+                Object.values(this.activeFilters.crowCounts).some(val => val) ||
+                this.activeFilters.crowAge !== 'all' ||
+                this.activeFilters.quality !== 'all' ||
+                (this.activeFilters.globalFilter && this.activeFilters.globalFilter.trim() !== '')
+            );
         }
     },
     methods: {
@@ -160,7 +164,8 @@ window.FilterComponent = {
                     rattle: this.filters?.callTypes?.rattle || false,
                     softSong: this.filters?.callTypes?.softSong || false,
                     mob: this.filters?.callTypes?.mob || false,
-                    alert: this.filters?.callTypes?.alert || false
+                    alert: this.filters?.callTypes?.alert || false,
+                    begging: this.filters?.callTypes?.begging || false
                 },
                 crowCounts: {
                     0: this.filters?.crowCounts?.[0] || false,
@@ -170,8 +175,8 @@ window.FilterComponent = {
                     4: this.filters?.crowCounts?.[4] || false
                 },
                 crowAge: this.filters?.crowAge || 'all',
-                mediaNotesText: this.filters?.mediaNotesText || '',
-                cluster: this.filters?.cluster || null
+                quality: this.filters?.quality || 'all',
+                globalFilter: this.filters?.globalFilter || ''
             };
         },
         openFilterModal() {
@@ -188,7 +193,8 @@ window.FilterComponent = {
                     rattle: false,
                     softSong: false,
                     mob: false,
-                    alert: false
+                    alert: false,
+                    begging: false
                 },
                 crowCounts: {
                     0: false,
@@ -198,8 +204,8 @@ window.FilterComponent = {
                     4: false
                 },
                 crowAge: 'all',
-                mediaNotesText: '',
-                cluster: null
+                quality: 'all',
+                globalFilter: ''
             };
             this.$emit('filters-changed', this.localFilters);
         }
