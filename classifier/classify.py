@@ -14,6 +14,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 if os.path.exists(checkpoint_path):
     _model = CrowClassifier.load_from_checkpoint(checkpoint_path)
 else:
+    print(f"Model checkpoint not found: {checkpoint_path}")
     _model = CrowClassifier()
 _model.to(device)
 _model.eval()
@@ -45,12 +46,13 @@ def predict_embedding(embedding, device=device):
     new_pred = {}
     new_pred["crowCount"] = torch.argmax(outputs["crowCount"], dim=1).item()
     new_pred["crowAge"] = torch.argmax(outputs["crowAge"], dim=1).item() + 1
+    new_pred["quality"] = torch.argmax(outputs["quality"], dim=1).item() + 1
+
     new_pred["alert"] = (outputs["alert"].squeeze() > 0).item()
     new_pred["begging"] = (outputs["begging"].squeeze() > 0).item()
     new_pred["softSong"] = (outputs["softSong"].squeeze() > 0).item()
     new_pred["rattle"] = (outputs["rattle"].squeeze() > 0).item()
     new_pred["mob"] = (outputs["mob"].squeeze() > 0).item()
-    new_pred["quality"] = torch.argmax(outputs["quality"], dim=1).item() + 1
 
     return new_pred
 

@@ -6,12 +6,15 @@ from lightning_fabric import seed_everything
 # Seed for reproducibility.
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
-seed_everything(421, workers=True)
 
 
 class CrowClassifier(pl.LightningModule):
-    def __init__(self, input_dim=768, hidden_dim=256, dropout_rate=0.3):
+    def __init__(self, input_dim=768, hidden_dim=244, dropout_rate=0.26704036009338883, seed=557, lr=0.0007331937958897578):
         super().__init__()
+
+        seed_everything(seed, workers=True)
+        self.lr = lr
+
         # A simple shared backbone.
         self.backbone = nn.Sequential(
             nn.Flatten(),
@@ -57,14 +60,14 @@ class CrowClassifier(pl.LightningModule):
         embeddings, labels = batch
         outputs = self(embeddings)
         loss = (
-                1.2 * self.loss_fn_class(outputs["crowCount"], labels["crowCount"].long()) +
+                1.0 * self.loss_fn_class(outputs["crowCount"], labels["crowCount"].long()) +
                 1.0 * self.loss_fn_class(outputs["crowAge"], (labels["crowAge"] - 1).long()) +
                 1.0 * self.loss_fn_bce(outputs["alert"].view(-1), labels["alert"].float().view(-1)) +
-                1.5 * self.loss_fn_bce(outputs["begging"].view(-1), labels["begging"].float().view(-1)) +
+                1.0 * self.loss_fn_bce(outputs["begging"].view(-1), labels["begging"].float().view(-1)) +
                 2.0 * self.loss_fn_bce(outputs["softSong"].view(-1), labels["softSong"].float().view(-1)) +
-                1.5 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
-                2.0 * self.loss_fn_bce(outputs["mob"].view(-1), labels["mob"].float().view(-1)) +
-                0.8 * self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
+                2.0 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
+                1.0 * self.loss_fn_bce(outputs["mob"].view(-1), labels["mob"].float().view(-1)) +
+                1.0 * self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
         )
         self.log('train_loss', loss)
         return loss
@@ -73,17 +76,17 @@ class CrowClassifier(pl.LightningModule):
         embeddings, labels = batch
         outputs = self(embeddings)
         loss = (
-                1.2 * self.loss_fn_class(outputs["crowCount"], labels["crowCount"].long()) +
+                1.0 * self.loss_fn_class(outputs["crowCount"], labels["crowCount"].long()) +
                 1.0 * self.loss_fn_class(outputs["crowAge"], (labels["crowAge"] - 1).long()) +
                 1.0 * self.loss_fn_bce(outputs["alert"].view(-1), labels["alert"].float().view(-1)) +
-                1.5 * self.loss_fn_bce(outputs["begging"].view(-1), labels["begging"].float().view(-1)) +
+                1.0 * self.loss_fn_bce(outputs["begging"].view(-1), labels["begging"].float().view(-1)) +
                 2.0 * self.loss_fn_bce(outputs["softSong"].view(-1), labels["softSong"].float().view(-1)) +
-                1.5 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
-                2.0 * self.loss_fn_bce(outputs["mob"].view(-1), labels["mob"].float().view(-1)) +
-                0.8 * self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
+                2.0 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
+                1.0 * self.loss_fn_bce(outputs["mob"].view(-1), labels["mob"].float().view(-1)) +
+                1.0 * self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
         )
         self.log('val_loss', loss)
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=5e-4)
+        return torch.optim.Adam(self.parameters(), lr=self.lr)

@@ -59,8 +59,8 @@ def evaluate_model(model, dataloader, device):
             outputs = model(embeddings)
             # Multi-class predictions (0-indexed).
             pred_crowCount = torch.argmax(outputs["crowCount"], dim=1)
-            pred_crowAge = torch.argmax(outputs["crowAge"], dim=1) + 1
-            pred_quality = torch.argmax(outputs["quality"], dim=1) + 1
+            pred_crowAge = torch.argmax(outputs["crowAge"], dim=1)
+            pred_quality = torch.argmax(outputs["quality"], dim=1)
             # Binary predictions: threshold at 0 and force 1D.
             pred_alert = (outputs["alert"].squeeze() > 0).long().view(-1)
             pred_begging = (outputs["begging"].squeeze() > 0).long().view(-1)
@@ -120,16 +120,19 @@ def evaluate_model(model, dataloader, device):
 
 if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = CrowClassifier.load_from_checkpoint(checkpoint_path)
+    model.to(device)
 
+    # Create the dataset.
     dataset = CrowDataset()
+
     train_size = int(0.85 * len(dataset))
     val_size = len(dataset) - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+
+    # Create DataLoaders.
     train_loader = DataLoader(train_dataset, batch_size=1, num_workers=3, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=1, num_workers=3, shuffle=False)
-
-    model = CrowClassifier.load_from_checkpoint(checkpoint_path)
-    model.to(device)
 
     print(f"\nEvaluating on {len(train_loader)} TRAINING samples")
     evaluate_model(model, train_loader, device)
