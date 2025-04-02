@@ -11,9 +11,9 @@ from model import CrowClassifier
 
 def objective(trial: optuna.Trial):
     # Sample hyperparameters.
-    hidden_dim = trial.suggest_int("hidden_dim", 220, 264)
-    dropout_rate = trial.suggest_float("dropout_rate", 0.15, 0.4)
-    random_seed = trial.suggest_int("random_seed", 0, 4096)
+    hidden_dim = trial.suggest_int("hidden_dim", 200, 280)
+    dropout_rate = trial.suggest_float("dropout_rate", 0.1, 0.4)
+    random_seed = trial.suggest_int("random_seed", 0, 9000)
     learning_rate = trial.suggest_float("learning_rate", 0.0006, 0.0008)
     batch_size = trial.suggest_int("batch_size", 18, 24)
 
@@ -44,7 +44,7 @@ def objective(trial: optuna.Trial):
 
     # Initialize the Trainer.
     trainer = pl.Trainer(
-        max_epochs=8,
+        max_epochs=11,
         logger=tb_logger,
         callbacks=[checkpoint_callback],
         enable_progress_bar=False,  # disable progress bar for cleaner logs during tuning

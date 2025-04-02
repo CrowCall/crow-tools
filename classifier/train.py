@@ -19,8 +19,8 @@ val_size = len(dataset) - train_size
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
 # Create DataLoaders.
-train_loader = DataLoader(train_dataset, batch_size=21, num_workers=3, shuffle=True, drop_last=True)
-val_loader = DataLoader(val_dataset, batch_size=21, num_workers=3, shuffle=False, drop_last=True)
+train_loader = DataLoader(train_dataset, batch_size=22, num_workers=3, shuffle=True, drop_last=True)
+val_loader = DataLoader(val_dataset, batch_size=22, num_workers=3, shuffle=False, drop_last=True)
 
 # Create TensorBoard logger.
 tb_logger = TensorBoardLogger("logs", name="crow-classify")

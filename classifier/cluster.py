@@ -23,14 +23,14 @@ LABEL_TEMPLATE_FILE = os.path.join(BASE_PATH, "..", ".cache", "cluster_segments_
 STARTING_CLUSTER_ID = 65
 VOLUME_THRESHOLD = 0.0002
 SUBSAMPLE_FACTOR = 1.0
-PCA_COMPONENTS = 64
+PCA_COMPONENTS = 75
 MAX_CLUSTER_SIZE = 500  # Maximum leaf size before splitting stops.
 MERGE_THRESHOLD = 0.15  # Merge leaves if cosine distance < 0.15 (single pass)
 PREVIEW_SEEDS = False
 PREVIEW_CLUSTERS = False
 ONLY_OUTPUT_SEEDS = True
-PREVIEW_PER_CLUSTER = 15
-NUM_REPRESENTATIVE = 30  # Number of segments per merged cluster for labeling
+PREVIEW_PER_CLUSTER = 10
+NUM_REPRESENTATIVE = 10  # Number of segments per merged cluster for labeling
 
 # Seed examples for new clusters.
 SEED_EXAMPLES = [
@@ -46,11 +46,31 @@ SEED_EXAMPLES = [
     #{"file_id": "496356", "start": 9.0, "end": 10.0}, # Good, 5 similar
     #{"file_id": "156527", "start": 30.0, "end": 31.0}, # Okay, 3 or 4 similar
 
+
+
+{"file_id": "227497211", "start": 48.0, "end": 49.0},
+{"file_id": "365208991", "start": 27.0, "end": 28.0},
+{"file_id": "361178511", "start": 27.0, "end": 28.0},
+{"file_id": "361178511", "start": 13.0, "end": 14.0},
+{"file_id": "156527", "start": 6.0, "end": 7.0},
+{"file_id": "92055", "start": 15.0, "end": 16.0},
+{"file_id": "619206184", "start": 17.0, "end": 18.0},
+
     # Sub/Soft Song
+
+
+{"file_id": "229159", "start": 74.0, "end": 75.0},
+{"file_id": "542024451", "start": 7.0, "end": 8.0},
+{"file_id": "539550101", "start": 12.0, "end": 13.0},
+{"file_id": "535466271", "start": 1.0, "end": 2.0},
+{"file_id": "408950861", "start": 21.0, "end": 22.0},
+{"file_id": "319547721", "start": 100.0, "end": 101.0},
+{"file_id": "167792", "start": 20.0, "end": 21.0},
+
     #{"file_id": "408950861", "start": 20.0, "end": 21.0},
     #{"file_id": "13123", "start": 34.0, "end": 35.0},
-    {"file_id": "984442", "start": 33.0, "end": 34.0},
-    {"file_id": "984442", "start": 6.0, "end": 7.0},
+    #{"file_id": "984442", "start": 33.0, "end": 34.0},
+    #{"file_id": "984442", "start": 6.0, "end": 7.0},
 
     # Juvenile begging
     #{"file_id": "32684421", "start": 39.0, "end": 40.0},
@@ -204,14 +224,33 @@ def process_seed_examples(norm_emb, ids, faiss_index, max_per_file=4):
 def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
     """
     Build segments and labels from both merged clusters and seed clusters.
+    Existing segments and labels are loaded (if available) and new records are
+    appended only if they are not already present.
     - For merged clusters, segments are sorted in similarity order for preview,
       then the top representative segments are chosen.
     - For seed clusters, segments are added if not already present.
     - Segments in each file are sorted by start_time before saving.
     - Duplicate segment keys (file, start, end) are avoided.
     """
-    segments = defaultdict(list)
-    labels = {}
+    from collections import defaultdict
+
+    # Load existing segments and labels if the files exist.
+    if os.path.exists(OUTPUT_SEGMENTS):
+        with open(OUTPUT_SEGMENTS, "r") as f:
+            existing_segments = json.load(f)
+    else:
+        existing_segments = {}
+
+    if os.path.exists(OUTPUT_LABELS):
+        with open(OUTPUT_LABELS, "r") as f:
+            existing_labels = json.load(f)
+    else:
+        existing_labels = {}
+
+    # New segments and labels to add.
+    new_segments = defaultdict(list)
+    new_labels = {}
+
     if os.path.exists(LABEL_TEMPLATE_FILE):
         with open(LABEL_TEMPLATE_FILE, "r") as f:
             label_templates = json.load(f)
@@ -225,7 +264,7 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
     }
     cluster_id = STARTING_CLUSTER_ID
 
-    # Process merged clusters
+    # Process merged clusters.
     for leaf in merged_leaves:
         center = compute_leaf_center(norm_emb, leaf["indices"])
         sorted_indices = sorted(leaf["indices"],
@@ -248,23 +287,24 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
             start_time = float(sec)
             end_time = start_time + 1.0
             seg_key = f"{file_id}-{int(start_time)}-{int(end_time)}"
-            if seg_key in labels:
-                continue  # avoid duplicate keys
+            # Avoid duplicate label keys in new labels.
+            if seg_key in new_labels:
+                continue
             seg = {"common_name": "American Crow",
                    "scientific_name": "Corvus brachyrhynchos",
                    "start_time": start_time,
                    "end_time": end_time,
                    "confidence": 0.0,
                    "cluster": cluster_id}
-            segments[file_id].append(seg)
+            new_segments[file_id].append(seg)
             if str(cluster_id) in label_templates:
-                labels[seg_key] = label_templates[str(cluster_id)]
+                new_labels[seg_key] = label_templates[str(cluster_id)]
             else:
-                labels[seg_key] = default_template.copy()
-            labels[seg_key]["cluster"] = cluster_id
+                new_labels[seg_key] = default_template.copy()
+            new_labels[seg_key]["cluster"] = cluster_id
         cluster_id += 1
 
-    # Process seed clusters
+    # Process seed clusters.
     for seed_id, seg_list in seed_clusters.items():
         current_cluster_id = cluster_id
         for seg in seg_list:
@@ -272,7 +312,7 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
             start_time = float(seg["start_time"])
             end_time = float(seg["end_time"])
             seg_key = f"{file_id}-{int(start_time)}-{int(end_time)}"
-            if seg_key in labels:
+            if seg_key in new_labels:
                 continue
             seg_entry = {"common_name": "American Crow",
                          "scientific_name": "Corvus brachyrhynchos",
@@ -280,12 +320,12 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
                          "end_time": end_time,
                          "confidence": 0.0,
                          "cluster": current_cluster_id}
-            segments[file_id].append(seg_entry)
+            new_segments[file_id].append(seg_entry)
             if str(cluster_id) in label_templates:
-                labels[seg_key] = label_templates[str(cluster_id)]
+                new_labels[seg_key] = label_templates[str(cluster_id)]
             else:
-                labels[seg_key] = default_template.copy()
-            labels[seg_key]["cluster"] = current_cluster_id
+                new_labels[seg_key] = default_template.copy()
+            new_labels[seg_key]["cluster"] = current_cluster_id
         if PREVIEW_SEEDS:
             while True:
                 print(f"\nSeed Cluster {current_cluster_id}:")
@@ -298,19 +338,40 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
                     break
         cluster_id += 1
 
-    # Ensure segments in each file are sorted by start_time
-    for file in segments:
-        segments[file] = sorted(segments[file], key=lambda x: x["start_time"])
+    # Merge new segments with existing segments.
+    for file_id, seg_list in new_segments.items():
+        if file_id not in existing_segments:
+            existing_segments[file_id] = seg_list
+        else:
+            # For each new segment, check if a segment with the same start and end exists.
+            existing_keys = {(seg["start_time"], seg["end_time"]) for seg in existing_segments[file_id]}
+            for seg in seg_list:
+                key = (seg["start_time"], seg["end_time"])
+                if key not in existing_keys:
+                    existing_segments[file_id].append(seg)
+                else:
+                    print(f"Skipping duplicate segment for file {file_id} at {key}")
 
-    # Save JSON outputs
+    # Merge new labels with existing labels.
+    for key, label in new_labels.items():
+        if key in existing_labels:
+            print(f"Skipping duplicate label: {key}")
+        else:
+            existing_labels[key] = label
+
+    # Ensure segments in each file are sorted by start_time.
+    for file_id in existing_segments:
+        existing_segments[file_id] = sorted(existing_segments[file_id], key=lambda x: x["start_time"])
+
+    # Save updated JSON outputs.
     with open(OUTPUT_SEGMENTS, "w") as f:
-        json.dump(dict(segments), f, indent=2)
+        json.dump(existing_segments, f, indent=2)
     with open(OUTPUT_LABELS, "w") as f:
-        json.dump(labels, f, indent=2)
+        json.dump(existing_labels, f, indent=2)
 
     print(f"\nSaved segments to {OUTPUT_SEGMENTS}")
     print(f"Saved cluster labels to {OUTPUT_LABELS}")
-    return segments, labels
+    return existing_segments, existing_labels
 
 
 def main():
