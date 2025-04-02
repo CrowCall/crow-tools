@@ -94,7 +94,7 @@ def start_detections():
                     # For segments, we create a minimal dictionary per detection.
                     segments[file_id] = []
                     # Load the embeddings for the file.
-                    embedding_file = os.path.join(public_path, "embeddings-denoised", f"{file_id}.npy")
+                    embedding_file = os.path.join(public_path, "embeddings", f"{file_id}.npy")
                     if not os.path.exists(embedding_file):
                         print(f"Embedding file {embedding_file} not found for file {file_id}, skipping.")
                         continue

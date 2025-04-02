@@ -1,4 +1,4 @@
-# !/usr/bin/env python3
+#!/usr/bin/env python3
 import json
 import os
 import sys
@@ -10,8 +10,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sounddevice as sd
 import torch
-from matplotlib.widgets import Button
+
 from classifier.classify import predict_embedding
+from embedder.embed import generate_embeddings
 
 def is_headless():
     return not os.environ.get("DISPLAY") and os.name != "nt"
@@ -20,63 +21,128 @@ if is_headless():
 else:
     matplotlib.use("TkAgg")
 
-player = None
-
-
-def detect_file_segments(file_id, public_path=None, volume_threshold=0.0002, device=None):
+###############################################################################
+# Helper function to retrieve embeddings, volumes, audio and sample rate.
+###############################################################################
+def get_data(arg, public_path=None):
     """
-    Process a single file (given by file_id) and return a list of detection segments.
-    Each detection corresponds to a one-second window where:
-      - The volume (from a parallel volume file) exceeds `volume_threshold`
-      - The classifier predicts a valid detection (quality > 0 and crowCount > 0)
+    Given a file identifier or full file path, returns:
+      - embeddings: a 2D numpy array (num_seconds x feature_dim)
+      - volumes: a 1D numpy array of per-second volume metrics
+      - audio: the audio waveform (mono)
+      - sr: sample rate
 
-    Args:
-      file_id (str): the file identifier (used to load the embedding and volume files)
-      public_path (str): base path to the .cache folder; if None, inferred relative to this file.
-      volume_threshold (float): minimum volume required to run detection on a second.
-      device (str): device for inference ("cuda" or "cpu"). If None, auto-detect.
+    If arg is a valid file path, the function will:
+      - Load the audio (forcing a sample rate of 8000 Hz for consistency)
+      - Generate raw embeddings via generate_embeddings()
+      - Average every 25 frames (i.e. ~1 second) into one embedding vector
+      - Compute per‑second volume metrics from the waveform
+      (No files are written to disk.)
 
-    Returns:
-      List[dict]: list of detection dictionaries.
+    Otherwise, it assumes arg is a file ID and attempts to load cached files from:
+      - {public_path}/embeddings-denoised/{file_id}.npy
+      - {public_path}/embeddings-denoised-volumes/{file_id}.npy
+      - {public_path}/library/{file_id}.mp3
     """
     if public_path is None:
         public_path = os.path.join(os.path.dirname(__file__), "..", ".cache")
-    embeddings_dir = os.path.join(public_path, "embeddings-denoised")
-    volumes_dir = os.path.join(public_path, "embeddings-denoised-volumes")
 
-    embedding_path = os.path.join(embeddings_dir, f"{file_id}.npy")
-    volume_path = os.path.join(volumes_dir, f"{file_id}.npy")
+    if os.path.isfile(arg):
+        # Uncached mode: arg is a file path.
+        print(f"Processing uncached file: {arg}")
+        sample_rate = 8000  # force consistent sample rate (as in embed_all.py)
+        try:
+            audio, sr = librosa.load(arg, sr=sample_rate, mono=True)
+        except Exception as e:
+            print(f"Error loading audio from {arg}: {e}")
+            sys.exit(1)
+        # Generate raw embeddings (shape: [num_frames, feature_dim])
+        print("Generating embeddings ...")
+        full_embeddings = generate_embeddings(audio)
+        full_embeddings = np.array(full_embeddings, dtype=np.float32)
+        num_frames = full_embeddings.shape[0]
+        # Average every 25 frames to get one embedding per second.
+        chunk_size = 25
+        num_chunks = int(np.ceil(num_frames / chunk_size))
+        embedding_means = []
+        for i in range(num_chunks):
+            start_idx = i * chunk_size
+            end_idx = min((i + 1) * chunk_size, num_frames)
+            chunk = full_embeddings[start_idx:end_idx]
+            mean_emb = np.mean(chunk, axis=0)
+            embedding_means.append(mean_emb)
+        embeddings = np.stack(embedding_means, axis=0)
 
-    if not os.path.exists(embedding_path):
-        print(f"Embedding file not found for file ID {file_id}")
-        return []
-    if not os.path.exists(volume_path):
-        print(f"Volume file not found for file ID {file_id}")
-        return []
+        # Compute per-second volume metrics (mean absolute amplitude).
+        total_samples = len(audio)
+        total_seconds = int(np.ceil(total_samples / sr))
+        volumes = []
+        for sec in range(total_seconds):
+            start_samp = sec * sr
+            end_samp = min((sec + 1) * sr, total_samples)
+            segment = audio[start_samp:end_samp]
+            mean_amp = np.mean(np.abs(segment)) if len(segment) > 0 else 0.0
+            volumes.append(mean_amp)
+        volumes = np.array(volumes, dtype=np.float32)
+        return embeddings, volumes, audio, sr
 
-    embeddings = np.load(embedding_path)
-    volume_data = np.load(volume_path)
-    if volume_data.ndim > 1:
-        volume_data = volume_data.squeeze(-1)
+    else:
+        # Cached mode: arg is a file ID.
+        file_id = arg
+        embeddings_path = os.path.join(public_path, "embeddings", f"{file_id}.npy")
+        volumes_path = os.path.join(public_path, "embeddings-denoised-volumes", f"{file_id}.npy")
+        library_dir = os.path.join(public_path, "library")
+        audio_path = os.path.join(library_dir, f"{file_id}.mp3")
 
+        if not os.path.exists(embeddings_path):
+            print(f"Embedding file not found for file ID {file_id}")
+            sys.exit(1)
+        if not os.path.exists(volumes_path):
+            print(f"Volume file not found for file ID {file_id}")
+            sys.exit(1)
+        if not os.path.exists(audio_path):
+            print(f"Audio file not found for file ID {file_id}")
+            sys.exit(1)
+
+        embeddings = np.load(embeddings_path)
+        volumes = np.load(volumes_path)
+        if volumes.ndim > 1:
+            volumes = volumes.squeeze(-1)
+        try:
+            audio, sr = librosa.load(audio_path, sr=None, mono=True)
+        except Exception as e:
+            print(f"Error loading audio: {e}")
+            sys.exit(1)
+        return embeddings, volumes, audio, sr
+
+###############################################################################
+# Detection function (common for both cached and uncached data)
+###############################################################################
+def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=None):
+    """
+    Loads embeddings and volume data (and audio) using get_data() and then runs
+    the classifier on each second where the volume exceeds the threshold.
+    Returns:
+      - detections: list of detection dictionaries
+      - audio: the audio waveform
+      - sr: sample rate
+    """
+    embeddings, volumes, audio, sr = get_data(arg, public_path)
     detections = []
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
-    num_seconds = embeddings.shape[0]
-
+    # Process seconds based on the lesser of embeddings length and volume length.
+    num_seconds = min(embeddings.shape[0], len(volumes))
     for i in range(num_seconds):
-        if volume_data[i] <= volume_threshold:
+        if volumes[i] <= volume_threshold:
             continue
-
-        embedding = embeddings[i]
-        pred = predict_embedding(embedding, device=device)
-
-        # A valid detection: quality > 0 and crowCount > 0.
+        emb = embeddings[i]
+        pred = predict_embedding(emb, device=device)
+        # Only consider valid detections (quality > 1 and crowCount > 0).
         if pred["quality"] > 1 and pred["crowCount"] > 0:
             detection = {
                 "start_time": float(i),
                 "end_time": float(i + 1),
-                # Include classifier outputs.
                 "crowCount": pred["crowCount"],
                 "crowAge": pred["crowAge"],
                 "alert": pred["alert"],
@@ -87,48 +153,47 @@ def detect_file_segments(file_id, public_path=None, volume_threshold=0.0002, dev
                 "quality": pred["quality"],
             }
             detections.append(detection)
-    return detections
-
+    return detections, audio, sr
 
 ###############################################################################
-# INTERACTIVE TIMELINE PLAYER
+# INTERACTIVE TIMELINE PLAYER (unchanged)
 ###############################################################################
 class TimelinePlayer:
-    def __init__(self, file_id, detections, audio, sr):
+    def __init__(self, label, detections, audio, sr):
         """
         Args:
-          file_id (str): the file ID.
+          label (str): the file identifier or filename label.
           detections (list): list of detection dicts (per second).
           audio (np.ndarray): the audio waveform (mono).
           sr (int): sample rate.
         """
-        self.file_id = file_id
+        self.label = label
         self.detections = detections
         self.audio = audio
         self.sr = sr
         self.total_duration = len(audio) / sr
         self.playing = False
-        self.play_offset = 0.0  # in seconds; where playback starts
+        self.play_offset = 0.0  # seconds; playback start position
         self.play_start_time = None
 
-        # Define features to plot (only boolean features are shown)
-        self.features = ["alert", "mob", "begging", "softSong", "rattle"]
+        # Define the boolean features to display.
+        # "other" is added for visualization if no standard attribute is detected.
+        self.features = ["alert", "mob", "begging", "softSong", "rattle", "other"]
         self.feature_intervals = self.compute_feature_intervals()
 
-        # Create the figure with two subplots (waveform on top, timeline below)
+        # Create a figure with two subplots: waveform and detection timeline.
         self.fig, (self.ax_wave, self.ax_det) = plt.subplots(2, 1, sharex=True, figsize=(19.2, 8), dpi=100)
-        # Fix the layout so that the detection axis remains stable.
         self.fig.subplots_adjust(left=0.1, right=0.85, top=0.9, bottom=0.2)
-        self.fig.suptitle(f"File ID: {file_id} - Detection Timeline", fontsize=16)
+        self.fig.suptitle(f"File: {label} - Detection Timeline", fontsize=16)
 
-        # Plot waveform in the top subplot.
+        # Plot waveform.
         t = np.linspace(0, self.total_duration, len(self.audio))
         self.ax_wave.plot(t, self.audio, color="blue", lw=0.8)
         self.ax_wave.set_ylabel("Amplitude")
         self.ax_wave.set_xlim(0, self.total_duration)
         self.ax_wave.set_title("Waveform")
 
-        # Plot detection timeline in the bottom subplot.
+        # Plot detection timeline.
         self.ax_det.set_title("Detections")
         self.ax_det.set_ylim(0, len(self.features))
         self.ax_det.set_yticks([i + 0.5 for i in range(len(self.features))])
@@ -138,69 +203,78 @@ class TimelinePlayer:
         self.ax_det.set_xlim(0, self.total_duration)
         self.ax_det.set_autoscale_on(False)
 
-        # Draw detection bars for each feature.
+        # Draw detection bars.
         colors = {"alert": "red", "mob": "green", "begging": "orange",
-                  "softSong": "purple", "rattle": "brown"}
+                  "softSong": "purple", "rattle": "brown", "other": "gray"}
         for i, feat in enumerate(self.features):
             intervals = self.feature_intervals.get(feat, [])
             for (start, end) in intervals:
                 self.ax_det.hlines(y=i + 0.5, xmin=start, xmax=end,
                                    colors=colors.get(feat, "gray"), linewidth=8)
 
-        # Add a vertical playhead line (initially at 0).
+        # Add a vertical playhead.
         self.playhead_line = self.ax_det.axvline(x=0, color="black", linestyle="--", lw=2)
-
-        # Hide playhead before caching background so that it isn't included.
         self.playhead_line.set_visible(False)
         self.fig.canvas.draw()
         self.background = self.fig.canvas.copy_from_bbox(self.ax_det.bbox)
         self.playhead_line.set_visible(True)
 
-        # Add a Play/Pause button in a fixed position outside the main area.
+        # Add a Play/Pause button.
         self.button_ax = self.fig.add_axes([0.87, 0.05, 0.1, 0.05])
-        self.play_button = Button(self.button_ax, "Play")
+        self.play_button = plt.Button(self.button_ax, "Play")
         self.play_button.on_clicked(self.toggle_play)
 
-        # Connect mouse click on the detection axis.
+        # Connect mouse click and draw events.
         self.fig.canvas.mpl_connect("button_press_event", self.on_click)
-        # Update cached background on every draw event.
         self.fig.canvas.mpl_connect("draw_event", self.on_draw)
 
-        # Use a timer with a moderate interval.
+        # Set up a timer to update the playhead.
         self.timer = self.fig.canvas.new_timer(interval=200)
         self.timer.add_callback(self.update_playhead)
         self.timer.start()
 
-    def on_draw(self, event):
-        # Update the cached background whenever the figure is drawn.
-        self.background = self.fig.canvas.copy_from_bbox(self.ax_det.bbox)
-
     def compute_feature_intervals(self):
         """
-        Group contiguous seconds for each feature into intervals.
-        Returns:
-          dict: mapping feature name -> list of (start, end) intervals.
+        Groups contiguous detection seconds for each feature.
+        For each detection, if none of the standard features (alert, mob, begging,
+        softSong, rattle) are true, then that second is grouped under "other".
         """
-        intervals = {feat: [] for feat in self.features}
+        # Initialize lists for each feature.
         feat_seconds = {feat: [] for feat in self.features}
+        standard_feats = {"alert", "mob", "begging", "softSong", "rattle"}
+
         for det in self.detections:
             t = det["start_time"]
-            for feat in self.features:
-                if det.get(feat, False):
-                    feat_seconds[feat].append(t)
+            # Determine if any standard feature is true.
+            has_feature = any(det.get(feat, False) for feat in standard_feats)
+            if has_feature:
+                for feat in standard_feats:
+                    if det.get(feat, False):
+                        feat_seconds[feat].append(t)
+            else:
+                # If no standard feature is present, add to "other".
+                feat_seconds["other"].append(t)
+
+        # Group contiguous seconds into intervals.
+        intervals = {}
         for feat, times in feat_seconds.items():
             times = sorted(times)
             if not times:
                 continue
+            intervals[feat] = []
             start = times[0]
             prev = times[0]
             for current in times[1:]:
-                if current - prev > 1.5:
+                if current - prev > 1.5:  # gap indicates a new interval
                     intervals[feat].append((start, prev + 1))
                     start = current
                 prev = current
             intervals[feat].append((start, prev + 1))
         return intervals
+
+    # (Keep the rest of your TimelinePlayer methods unchanged)
+    def on_draw(self, event):
+        self.background = self.fig.canvas.copy_from_bbox(self.ax_det.bbox)
 
     def toggle_play(self, event):
         if self.playing:
@@ -247,45 +321,28 @@ class TimelinePlayer:
                 sd.stop()
                 self.start_playback()
 
-
+###############################################################################
+# Main entry point.
+###############################################################################
 def main():
     if len(sys.argv) < 2:
-        file_id = input("Enter file ID: ").strip()
+        arg = input("Enter file ID or file path: ").strip()
     else:
-        file_id = sys.argv[1]
+        arg = sys.argv[1]
 
-    # Assume the audio files are stored in .cache/library as MP3s.
-    base_dir = os.path.join(os.path.dirname(__file__), "..", ".cache")
-    library_dir = os.path.join(base_dir, "library")
-    audio_path = os.path.join(library_dir, f"{file_id}.mp3")
-    if not os.path.exists(audio_path):
-        print(f"Audio file not found for file ID {file_id}")
-        sys.exit(1)
-
-    print(f"Processing detections for file ID {file_id} ...")
-    detections = detect_file_segments(file_id, public_path=base_dir)
+    # Use the .cache directory relative to this script.
+    public_path = os.path.join(os.path.dirname(__file__), "..", ".cache")
+    detections, audio, sr = detect_file_segments(arg, public_path=public_path)
     print(f"Found {len(detections)} detection segments.")
     print(json.dumps(detections, indent=4))
-
-    print("Loading audio ...")
-    try:
-        audio, sr = librosa.load(audio_path, sr=None, mono=True)
-    except Exception as e:
-        print(f"Error loading audio: {e}")
-        sys.exit(1)
 
     duration = len(audio) / sr
     print(f"Audio duration: {duration:.2f} seconds, Sample Rate: {sr} Hz")
 
-    # Create the interactive timeline player.
-    player = TimelinePlayer(file_id, detections, audio, sr)
+    # Use the basename (file id or file name) as a label.
+    label = os.path.basename(arg)
+    player = TimelinePlayer(label, detections, audio, sr)
     plt.show()
 
-
 if __name__ == "__main__":
-    # Good test file ids
-    # - 609381653 (alert: 17, rattle: 4)
-    # - 490021141 (alert: 12, mob: 5, begging: 6, softSong: 2, rattle: 5)
-    # - 587709701 (mob: 1, softSong: 5, rattle: 5)
-    # - 539582961 (begging: 4, softSong: 1, rattle: 1)
     main()
