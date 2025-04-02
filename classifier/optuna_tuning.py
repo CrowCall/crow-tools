@@ -1,7 +1,7 @@
 import optuna
 import torch
 from pytorch_lightning.callbacks import ModelCheckpoint
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, random_split, Subset
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
 
@@ -11,23 +11,47 @@ from model import CrowClassifier
 
 def objective(trial: optuna.Trial):
     # Sample hyperparameters.
-    hidden_dim = trial.suggest_int("hidden_dim", 200, 280)
-    dropout_rate = trial.suggest_float("dropout_rate", 0.1, 0.4)
-    random_seed = trial.suggest_int("random_seed", 0, 9000)
-    learning_rate = trial.suggest_float("learning_rate", 0.0006, 0.0008)
-    batch_size = trial.suggest_int("batch_size", 18, 24)
+    hidden_dim = trial.suggest_int("hidden_dim", 200, 320)
+    dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.5)
+    random_seed = trial.suggest_int("random_seed", 0, 9999)
+    learning_rate = trial.suggest_float("learning_rate", 0.0005, 0.0009)
+    batch_size = trial.suggest_int("batch_size", 16, 26)
+    rattle_oversample = trial.suggest_int("rattle_oversample", 1, 5)
+    softsong_oversample = trial.suggest_int("softsong_oversample", 1, 5)
+    begging_oversample = trial.suggest_int("begging_oversample", 1, 5)
+    alert_oversample = trial.suggest_int("alert_oversample", 1, 2)
+    mob_oversample = trial.suggest_int("mob_oversample", 1, 2)
 
     # Instantiate the model with sampled hyperparameters.
     model = CrowClassifier(hidden_dim=hidden_dim, dropout_rate=dropout_rate, seed=random_seed, lr=learning_rate)
 
     # Create the dataset and split into train/validation.
     dataset = CrowDataset()
-    train_size = int(0.85 * len(dataset))
+    train_size = int(0.8 * len(dataset))
     val_size = len(dataset) - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
+    # Oversampling: Duplicate training indices for underrepresented labels.
+    # Define oversampling factors for each label.
+    oversample_factors = {"rattle": rattle_oversample, "softSong": softsong_oversample, "begging": begging_oversample, "alert": alert_oversample, "mob": mob_oversample}
+
+    oversampled_train_indices = []
+    # train_dataset.indices gives the list of indices from the original dataset in the training subset.
+    for idx in train_dataset.indices:
+        _, label = dataset[idx]
+        factor = 1
+        # Multiply factors for each applicable flag.
+        for flag, dup_factor in oversample_factors.items():
+            if label.get(flag, 0) == 1:
+                factor *= dup_factor
+        # Add this index 'factor' times.
+        oversampled_train_indices.extend([idx] * factor)
+
+    # Create a new training subset with the oversampled indices.
+    oversampled_train_dataset = Subset(dataset, oversampled_train_indices)
+
     # Create DataLoaders.
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers=3, shuffle=True, drop_last=True)
+    train_loader = DataLoader(oversampled_train_dataset, batch_size=batch_size, num_workers=3, shuffle=True, drop_last=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers=3, shuffle=False, drop_last=True)
 
     # Set up checkpoint callback (store checkpoints in a trial-specific directory).
@@ -44,7 +68,7 @@ def objective(trial: optuna.Trial):
 
     # Initialize the Trainer.
     trainer = pl.Trainer(
-        max_epochs=11,
+        max_epochs=15,
         logger=tb_logger,
         callbacks=[checkpoint_callback],
         enable_progress_bar=False,  # disable progress bar for cleaner logs during tuning

@@ -9,7 +9,7 @@ torch.backends.cudnn.benchmark = False
 
 
 class CrowClassifier(pl.LightningModule):
-    def __init__(self, input_dim=768, hidden_dim=240, dropout_rate=0.36433033972665974, seed=2804, lr=0.0006822153741450962):
+    def __init__(self, input_dim=768, hidden_dim=256, dropout_rate=0.18, seed=1307, lr=0.0005755857935070291):
         super().__init__()
 
         seed_everything(seed, workers=True)
@@ -64,7 +64,7 @@ class CrowClassifier(pl.LightningModule):
                 1.0 * self.loss_fn_class(outputs["crowAge"], (labels["crowAge"] - 1).long()) +
                 1.0 * self.loss_fn_bce(outputs["alert"].view(-1), labels["alert"].float().view(-1)) +
                 1.0 * self.loss_fn_bce(outputs["begging"].view(-1), labels["begging"].float().view(-1)) +
-                1.5 * self.loss_fn_bce(outputs["softSong"].view(-1), labels["softSong"].float().view(-1)) +
+                1.0 * self.loss_fn_bce(outputs["softSong"].view(-1), labels["softSong"].float().view(-1)) +
                 1.0 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
                 1.0 * self.loss_fn_bce(outputs["mob"].view(-1), labels["mob"].float().view(-1)) +
                 1.0 * self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
@@ -80,7 +80,7 @@ class CrowClassifier(pl.LightningModule):
                 1.0 * self.loss_fn_class(outputs["crowAge"], (labels["crowAge"] - 1).long()) +
                 1.0 * self.loss_fn_bce(outputs["alert"].view(-1), labels["alert"].float().view(-1)) +
                 1.0 * self.loss_fn_bce(outputs["begging"].view(-1), labels["begging"].float().view(-1)) +
-                1.5 * self.loss_fn_bce(outputs["softSong"].view(-1), labels["softSong"].float().view(-1)) +
+                1.0 * self.loss_fn_bce(outputs["softSong"].view(-1), labels["softSong"].float().view(-1)) +
                 1.0 * self.loss_fn_bce(outputs["rattle"].view(-1), labels["rattle"].float().view(-1)) +
                 1.0 * self.loss_fn_bce(outputs["mob"].view(-1), labels["mob"].float().view(-1)) +
                 1.0 * self.loss_fn_class(outputs["quality"], (labels["quality"] - 1).long())
