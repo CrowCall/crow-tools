@@ -37,7 +37,7 @@ def evaluate_model(model, dataloader, device):
 
     # For per-class breakdown.
     # For crowCount, we now have 5 classes (0-4), while crowAge and quality remain 2 and 3 classes (1-indexed)
-    multi_class_keys = {"crowCount": 5, "crowAge": 2, "quality": 3}
+    multi_class_keys = {"crowCount": 5, "crowAge": 2, "quality": 2}
     breakdown = {}
     for key, num_classes in multi_class_keys.items():
         if key == "crowCount":
@@ -130,31 +130,8 @@ if __name__ == "__main__":
     val_size = len(dataset) - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-    # Oversampling: Duplicate training indices for underrepresented labels.
-    # Define oversampling factors for each label.
-    oversample_factors = {"rattle": 2, "softSong": 3, "begging": 1, "alert": 1, "mob": 1}
-
-    oversampled_train_indices = []
-    # train_dataset.indices gives the list of indices from the original dataset in the training subset.
-    for idx in train_dataset.indices:
-        _, label = dataset[idx]
-        factor = 1
-        # Multiply factors for each applicable flag.
-        for flag, dup_factor in oversample_factors.items():
-            if label.get(flag, 0) == 1:
-                factor *= dup_factor
-        # Add this index 'factor' times.
-        oversampled_train_indices.extend([idx] * factor)
-
-    # Create a new training subset with the oversampled indices.
-    oversampled_train_dataset = Subset(dataset, oversampled_train_indices)
-
     # Create DataLoaders.
-    train_loader = DataLoader(oversampled_train_dataset, batch_size=1, num_workers=3, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=1, num_workers=3, shuffle=False)
-
-    print(f"\nEvaluating on {len(train_loader)} TRAINING samples")
-    evaluate_model(model, train_loader, device)
 
     print(f"\nEvaluating on {len(val_loader)} VALIDATE samples")
     evaluate_model(model, val_loader, device)

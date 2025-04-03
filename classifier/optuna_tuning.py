@@ -11,11 +11,11 @@ from model import CrowClassifier
 
 def objective(trial: optuna.Trial):
     # Sample hyperparameters.
-    hidden_dim = trial.suggest_int("hidden_dim", 200, 320)
-    dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.5)
-    random_seed = trial.suggest_int("random_seed", 0, 9999)
-    learning_rate = trial.suggest_float("learning_rate", 0.0005, 0.0009)
-    batch_size = trial.suggest_int("batch_size", 16, 26)
+    hidden_dim = trial.suggest_int("hidden_dim", 256, 256)
+    dropout_rate = trial.suggest_float("dropout_rate", 0.18, 0.18)
+    random_seed = trial.suggest_int("random_seed", 0, 20000)
+    learning_rate = trial.suggest_float("learning_rate", 0.0001, 0.0009)
+    batch_size = trial.suggest_int("batch_size", 23, 23)
     rattle_oversample = trial.suggest_int("rattle_oversample", 1, 5)
     softsong_oversample = trial.suggest_int("softsong_oversample", 1, 5)
     begging_oversample = trial.suggest_int("begging_oversample", 1, 5)
@@ -27,7 +27,7 @@ def objective(trial: optuna.Trial):
 
     # Create the dataset and split into train/validation.
     dataset = CrowDataset()
-    train_size = int(0.8 * len(dataset))
+    train_size = int(0.85 * len(dataset))
     val_size = len(dataset) - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
@@ -68,7 +68,7 @@ def objective(trial: optuna.Trial):
 
     # Initialize the Trainer.
     trainer = pl.Trainer(
-        max_epochs=15,
+        max_epochs=12,
         logger=tb_logger,
         callbacks=[checkpoint_callback],
         enable_progress_bar=False,  # disable progress bar for cleaner logs during tuning
@@ -91,7 +91,7 @@ def objective(trial: optuna.Trial):
 
 if __name__ == "__main__":
     study = optuna.create_study(direction="minimize")
-    study.optimize(objective, n_trials=30)
+    study.optimize(objective, n_trials=60)
 
     print("Number of finished trials: ", len(study.trials))
     print("Best trial:")

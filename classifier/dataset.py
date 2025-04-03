@@ -39,6 +39,8 @@ class CrowDataset(Dataset):
             counts["crowAge"][ca] = counts["crowAge"].get(ca, 0) + 1
 
             q = label.get("quality", 2)
+            if q == 3:
+                q = 2  # Force value 3 (HQ) to be a 2 (for training)
             counts["quality"][q] = counts["quality"].get(q, 0) + 1
 
             counts["alert"] += 1 if label.get("alert", False) else 0
@@ -96,6 +98,8 @@ class CrowDataset(Dataset):
         rattle = 1 if label.get('rattle', False) else 0
         mob = 1 if label.get('mob', False) else 0
         quality = label.get('quality', 2)
+        if quality == 3:
+            quality = 2 # Force value 3 (HQ) to be a 2 (for training)
 
         return embedding_tensor, {
             "crowCount": crowCount,

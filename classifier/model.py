@@ -9,7 +9,7 @@ torch.backends.cudnn.benchmark = False
 
 
 class CrowClassifier(pl.LightningModule):
-    def __init__(self, input_dim=768, hidden_dim=256, dropout_rate=0.18, seed=1307, lr=0.0005755857935070291):
+    def __init__(self, input_dim=768, hidden_dim=256, dropout_rate=0.18, seed=14731, lr=0.0006):
         super().__init__()
 
         seed_everything(seed, workers=True)
@@ -36,7 +36,7 @@ class CrowClassifier(pl.LightningModule):
         self.softSong_head = nn.Linear(hidden_dim, 1)   # binary
         self.rattle_head = nn.Linear(hidden_dim, 1)     # binary
         self.mob_head = nn.Linear(hidden_dim, 1)        # binary
-        self.quality_head = nn.Linear(hidden_dim, 3)    # 3 classes: bad, average, HQ
+        self.quality_head = nn.Linear(hidden_dim, 2)    # 3 classes: bad, average, HQ
 
         # Loss functions.
         self.loss_fn_class = nn.CrossEntropyLoss()

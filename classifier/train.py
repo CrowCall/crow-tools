@@ -20,8 +20,7 @@ val_size = len(dataset) - train_size
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
 # Oversampling: Duplicate training indices for underrepresented labels.
-# Define oversampling factors for each label.
-oversample_factors = {"rattle": 2, "softSong": 3, "begging": 1, "alert": 1, "mob": 1}
+oversample_factors = {"rattle": 2, "softSong": 3, "begging": 3, "alert": 1, "mob": 1}
 
 oversampled_train_indices = []
 # train_dataset.indices gives the list of indices from the original dataset in the training subset.
