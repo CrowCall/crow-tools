@@ -9145,22 +9145,6 @@
         {
             "common_name": "American Crow",
             "scientific_name": "Corvus brachyrhynchos",
-            "start_time": 13,
-            "end_time": 14,
-            "confidence": 0,
-            "cluster": 51
-        },
-        {
-            "common_name": "American Crow",
-            "scientific_name": "Corvus brachyrhynchos",
-            "start_time": 27,
-            "end_time": 28,
-            "confidence": 0,
-            "cluster": 51
-        },
-        {
-            "common_name": "American Crow",
-            "scientific_name": "Corvus brachyrhynchos",
             "start_time": 299,
             "end_time": 300,
             "confidence": 0,
@@ -10140,14 +10124,6 @@
         }
     ],
     "410196151": [
-        {
-            "common_name": "American Crow",
-            "scientific_name": "Corvus brachyrhynchos",
-            "start_time": 27,
-            "end_time": 28,
-            "confidence": 0,
-            "cluster": 23
-        },
         {
             "common_name": "American Crow",
             "scientific_name": "Corvus brachyrhynchos",
