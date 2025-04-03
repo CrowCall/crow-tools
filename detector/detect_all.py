@@ -89,7 +89,8 @@ def start_detections():
                     continue
 
                 # Run detection for this file.
-                detections = detect_file_segments(file_id, public_path=public_path)
+                print(f"Detecting for file {file_id}")
+                detections, audio, sr = detect_file_segments(file_id, public_path=public_path)
                 if detections:
                     # For segments, we create a minimal dictionary per detection.
                     segments[file_id] = []

@@ -59,7 +59,6 @@ for OLD_LABELS_PATH in OLD_LABELS_PATHS:
             "crowAge": crow_age,
             "alert": False,
             "begging": old.get("begging", False),
-            "grief": False,  # No corresponding old field; defaulting to False.
             "softSong": old.get("softSong", False),
             "rattle": old.get("rattle", False),
             "mob": False,  # No corresponding old field; defaulting to False.

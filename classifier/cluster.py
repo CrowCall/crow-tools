@@ -195,7 +195,7 @@ def process_seed_examples(norm_emb, ids, faiss_index, max_per_file=4):
     seed_clusters = {}
     default_template = {
         "crowCount": 1, "crowAge": 1,
-        "alert": False, "begging": False, "grief": False,
+        "alert": False, "begging": False,
         "softSong": False, "rattle": False, "mob": False,
         "quality": 2, "reviewed": False
     }
@@ -258,7 +258,7 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
         label_templates = {}
     default_template = {
         "crowCount": 1, "crowAge": 1,
-        "alert": False, "begging": False, "grief": False,
+        "alert": False, "begging": False,
         "softSong": False, "rattle": False, "mob": False,
         "quality": 2, "reviewed": False
     }

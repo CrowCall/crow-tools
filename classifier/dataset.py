@@ -25,7 +25,6 @@ class CrowDataset(Dataset):
             "quality": {},
             "alert": 0,
             "begging": 0,
-            "grief": 0,
             "softSong": 0,
             "rattle": 0,
             "mob": 0
@@ -45,7 +44,6 @@ class CrowDataset(Dataset):
 
             counts["alert"] += 1 if label.get("alert", False) else 0
             counts["begging"] += 1 if label.get("begging", False) else 0
-            counts["grief"] += 1 if label.get("grief", False) else 0
             counts["softSong"] += 1 if label.get("softSong", False) else 0
             counts["rattle"] += 1 if label.get("rattle", False) else 0
             counts["mob"] += 1 if label.get("mob", False) else 0
@@ -67,7 +65,6 @@ class CrowDataset(Dataset):
 
         print(f"\nalert count: {counts['alert']}")
         print(f"begging count: {counts['begging']}")
-        print(f"grief count: {counts['grief']}")
         print(f"softSong count: {counts['softSong']}")
         print(f"rattle count: {counts['rattle']}")
         print(f"mob count: {counts['mob']}\n")
