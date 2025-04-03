@@ -20,7 +20,7 @@ def save_cluster_labels(cluster_labels, cluster_labels_file):
     print(f"Progress saved to {cluster_labels_file}.")
 
 
-def main(attribute, cluster):
+def main(attribute, cluster, offset):
     base_dir = os.path.join(os.path.dirname(__file__), "..", ".cache")
     auto_labels_file = os.path.join(base_dir, "auto_labels.json")
     cluster_labels_file = os.path.join(base_dir, "cluster_labels.json")
@@ -41,7 +41,7 @@ def main(attribute, cluster):
     filtered_keys = [k for k, v in auto_labels.items() if v.get(attribute, False)]
     print(f"Found {len(filtered_keys)} detections with {attribute}=True.")
 
-    for key in filtered_keys:
+    for key in filtered_keys[offset:]:
         # Skip if already included.
         if key in cluster_labels:
             print(f"Skipped {key}: already in cluster_labels.")
@@ -109,4 +109,5 @@ def main(attribute, cluster):
 if __name__ == "__main__":
     attr = input("Enter detection attribute to filter (e.g., rattle, softSong, begging, mob, alert): ").strip()
     clus = input("Enter cluster number to assign: ").strip()
-    main(attr, int(clus))
+    offset = input("Enter starting offset: ").strip()
+    main(attr, int(clus), int(offset))
