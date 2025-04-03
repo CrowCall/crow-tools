@@ -1782,7 +1782,7 @@
         "softSong": false,
         "rattle": false,
         "mob": true,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 5
     },
@@ -3252,7 +3252,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 9
     },
@@ -4344,7 +4344,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 3,
+        "quality": 2,
         "reviewed": true,
         "cluster": 12
     },
@@ -5184,7 +5184,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 3,
+        "quality": 2,
         "reviewed": true,
         "cluster": 14
     },
@@ -5814,7 +5814,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 16
     },
@@ -8208,7 +8208,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 22
     },
@@ -8691,13 +8691,13 @@
     "228579221-37-38": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": true,
+        "alert": false,
         "scold": false,
         "begging": false,
         "grief": false,
         "softSong": false,
         "rattle": false,
-        "mob": false,
+        "mob": true,
         "quality": 2,
         "reviewed": true,
         "cluster": 24
@@ -8824,7 +8824,7 @@
         "softSong": true,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 24
     },
@@ -9986,7 +9986,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 27
     },
@@ -10476,7 +10476,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 28
     },
@@ -13213,13 +13213,13 @@
     "611833309-12-13": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": true,
+        "alert": false,
         "scold": false,
         "begging": false,
         "grief": false,
         "softSong": false,
         "rattle": false,
-        "mob": false,
+        "mob": true,
         "quality": 2,
         "reviewed": true,
         "cluster": 36
@@ -13381,13 +13381,13 @@
     "611833309-18-19": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": true,
+        "alert": false,
         "scold": false,
         "begging": false,
         "grief": false,
         "softSong": false,
         "rattle": false,
-        "mob": false,
+        "mob": true,
         "quality": 2,
         "reviewed": true,
         "cluster": 36
@@ -15145,13 +15145,13 @@
     "39224171-9-10": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": true,
+        "alert": false,
         "scold": false,
         "begging": false,
         "grief": false,
         "softSong": false,
         "rattle": false,
-        "mob": false,
+        "mob": true,
         "quality": 2,
         "reviewed": true,
         "cluster": 41
@@ -15327,13 +15327,13 @@
     "225642151-12-13": {
         "crowCount": 1,
         "crowAge": 1,
-        "alert": true,
+        "alert": false,
         "scold": false,
         "begging": false,
         "grief": false,
         "softSong": false,
         "rattle": false,
-        "mob": false,
+        "mob": true,
         "quality": 2,
         "reviewed": true,
         "cluster": 41
@@ -16678,7 +16678,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 3,
+        "quality": 2,
         "reviewed": true,
         "cluster": 45
     },
@@ -16692,7 +16692,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 45
     },
@@ -17182,7 +17182,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 46
     },
@@ -17560,7 +17560,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 47
     },
@@ -18022,7 +18022,7 @@
         "softSong": true,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 49
     },
@@ -18071,7 +18071,7 @@
     "165983411-22-23": {
         "crowCount": 1,
         "crowAge": 2,
-        "alert": true,
+        "alert": false,
         "scold": false,
         "begging": true,
         "grief": false,
@@ -18225,7 +18225,7 @@
     "165983361-0-1": {
         "crowCount": 1,
         "crowAge": 2,
-        "alert": true,
+        "alert": false,
         "scold": false,
         "begging": true,
         "grief": false,
@@ -18330,7 +18330,7 @@
         "softSong": true,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 49
     },
@@ -19016,7 +19016,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 51
     },
@@ -19058,7 +19058,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 52
     },
@@ -19170,7 +19170,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 52
     },
@@ -19506,7 +19506,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 53
     },
@@ -19996,7 +19996,7 @@
         "softSong": false,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 54
     },
@@ -21746,7 +21746,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 60
     },
@@ -21774,7 +21774,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 60
     },
@@ -22067,7 +22067,7 @@
         "softSong": true,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 61
     },
@@ -22529,7 +22529,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 62
     },
@@ -22935,7 +22935,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 63
     },
@@ -23572,7 +23572,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 64
     },
@@ -24378,7 +24378,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 66
     },
@@ -24768,7 +24768,7 @@
         "softSong": false,
         "rattle": true,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 71
     },
@@ -25054,7 +25054,7 @@
         "softSong": true,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 73
     },
@@ -25223,7 +25223,7 @@
         "softSong": true,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 75
     },
@@ -25301,7 +25301,7 @@
         "softSong": true,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 75
     },
@@ -25314,7 +25314,7 @@
         "softSong": true,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 76
     },
@@ -25392,7 +25392,7 @@
         "softSong": true,
         "rattle": false,
         "mob": false,
-        "quality": 2,
+        "quality": 3,
         "reviewed": true,
         "cluster": 77
     },
