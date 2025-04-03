@@ -155,6 +155,66 @@ def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=
             detections.append(detection)
     return detections, audio, sr
 
+
+def generate_detection_summary(detections):
+    """
+    Returns a natural language paragraph summarizing high-quality detections
+    that have at least one binary attribute (e.g. begging, rattle, softSong) set to True.
+    For each detection, only the start time (in mm:ss format) is listed.
+    Detections are grouped by attribute and by a natural description (crow count and age),
+    so duplicate information is not repeated.
+    """
+    # Define binary detection attributes.
+    binary_keys = ["alert", "begging", "grief", "softSong", "rattle", "mob"]
+
+    # Filter detections with quality==2 and at least one binary attribute True.
+    filtered = [d for d in detections if d.get("quality") == 2 and any(d.get(attr, False) for attr in binary_keys)]
+    if not filtered:
+        return "No detections with features were found in the audio file."
+
+    # Helper functions for natural language descriptions.
+    def crow_count_desc(count):
+        if count == 1:
+            return "a single crow"
+        elif count == 2:
+            return "a pair of crows"
+        else:
+            return f"a group of crows"
+
+    def crow_age_desc(age):
+        return "adult" if age == 1 else "juvenile" if age == 2 else "of unknown age"
+
+    # Group detections by binary attribute and then by description.
+    groups = {attr: {} for attr in binary_keys}
+    for det in filtered:
+        start = det.get("start_time", 0)
+        # Format the start time as mm:ss.
+        minutes = int(start // 60)
+        seconds = int(start % 60)
+        time_str = f"{minutes:02d}:{seconds:02d}"
+        count = det.get("crowCount", 1)
+        age = det.get("crowAge", 1)
+        description = f"{crow_count_desc(count)}, {crow_age_desc(age)}"
+        for attr in binary_keys:
+            if det.get(attr, False):
+                groups[attr].setdefault(description, []).append(time_str)
+
+    # Build a natural language paragraph.
+    summary_parts = ["The following detections were observed in this recording:"]
+    for attr, desc_dict in groups.items():
+        # Only include an attribute if there are detections.
+        if not desc_dict:
+            continue
+        # Convert the attribute to a more natural label.
+        attr_nl = attr.replace("softSong", "subsong").capitalize()
+        for description, times in desc_dict.items():
+            # Remove duplicates and sort times.
+            unique_times = sorted(set(times))
+            times_str = ", ".join(unique_times)
+            summary_parts.append(f"{len(times)} {attr_nl} calls ({description}) at {times_str}.")
+
+    return " ".join(summary_parts)
+
 ###############################################################################
 # INTERACTIVE TIMELINE PLAYER (unchanged)
 ###############################################################################
@@ -335,6 +395,10 @@ def main():
     detections, audio, sr = detect_file_segments(arg, public_path=public_path)
     print(f"Found {len(detections)} detection segments.")
     print(json.dumps(detections, indent=4))
+
+    # Get clear language description
+    description = generate_detection_summary(detections)
+    print(f"Description:\n{description}")
 
     duration = len(audio) / sr
     print(f"Audio duration: {duration:.2f} seconds, Sample Rate: {sr} Hz")
