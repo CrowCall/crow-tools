@@ -156,23 +156,43 @@ def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=
     return detections, audio, sr
 
 
-def generate_detection_summary(detections):
+def generate_detection_summary(detections, gap=5):
     """
-    Returns a natural language paragraph summarizing high-quality detections
-    that have at least one binary attribute (e.g. begging, rattle, softSong) set to True.
-    For each detection, only the start time (in mm:ss format) is listed.
-    Detections are grouped by attribute and by a natural description (crow count and age),
-    so duplicate information is not repeated.
+    Returns a natural language paragraph summarizing high-quality detections.
+    Only detections with quality==2 and at least one binary attribute True are considered.
+    For each attribute (e.g., "softSong", "rattle", etc.) and for each natural description (crow count and age),
+    only the first start time of each contiguous block (gaps > gap seconds) is listed.
+
+    The start times are formatted as mm:ss.
     """
     # Define binary detection attributes.
     binary_keys = ["alert", "begging", "grief", "softSong", "rattle", "mob"]
 
-    # Filter detections with quality==2 and at least one binary attribute True.
+    # Filter detections.
     filtered = [d for d in detections if d.get("quality") == 2 and any(d.get(attr, False) for attr in binary_keys)]
     if not filtered:
-        return "No detections with features were found in the audio file."
+        return "No high-quality detections with binary features were found in the audio file."
 
-    # Helper functions for natural language descriptions.
+    # Helper: Format seconds as mm:ss.
+    def format_time(seconds):
+        minutes = int(seconds // 60)
+        secs = int(seconds % 60)
+        return f"{minutes:02d}:{secs:02d}"
+
+    # Helper: Collapse contiguous timestamps (sorted ascending) if difference <= gap seconds.
+    def collapse_timestamps(times, gap=5):
+        if not times:
+            return []
+        times = sorted(times)
+        collapsed = [times[0]]
+        last = times[0]
+        for t in times[1:]:
+            if t - last > gap:
+                collapsed.append(t)
+                last = t
+        return collapsed
+
+    # Helper: Natural language description for crow count.
     def crow_count_desc(count):
         if count == 1:
             return "a single crow"
@@ -181,37 +201,39 @@ def generate_detection_summary(detections):
         else:
             return f"a group of crows"
 
+    # Helper: Natural language description for crow age.
     def crow_age_desc(age):
         return "adult" if age == 1 else "juvenile" if age == 2 else "of unknown age"
 
-    # Group detections by binary attribute and then by description.
-    groups = {attr: {} for attr in binary_keys}
+    # Group detections by binary attribute and natural description.
+    # For each (attribute, description) pair, store a list of start times (in seconds).
+    groups = {}  # key: (attribute, description), value: list of start times (floats)
     for det in filtered:
-        start = det.get("start_time", 0)
-        # Format the start time as mm:ss.
-        minutes = int(start // 60)
-        seconds = int(start % 60)
-        time_str = f"{minutes:02d}:{seconds:02d}"
+        start = det.get("start_time")
+        if start is None:
+            continue
         count = det.get("crowCount", 1)
         age = det.get("crowAge", 1)
         description = f"{crow_count_desc(count)}, {crow_age_desc(age)}"
         for attr in binary_keys:
             if det.get(attr, False):
-                groups[attr].setdefault(description, []).append(time_str)
+                key = (attr, description)
+                groups.setdefault(key, []).append(float(start))
 
-    # Build a natural language paragraph.
+    # Build the paragraph summary.
     summary_parts = ["The following detections were observed in this recording:"]
-    for attr, desc_dict in groups.items():
-        # Only include an attribute if there are detections.
-        if not desc_dict:
+    for (attr, description), times in groups.items():
+        # Collapse contiguous start times.
+        collapsed = collapse_timestamps(times, gap)
+        if not collapsed:
             continue
-        # Convert the attribute to a more natural label.
-        attr_nl = attr.replace("softSong", "subsong").capitalize()
-        for description, times in desc_dict.items():
-            # Remove duplicates and sort times.
-            unique_times = sorted(set(times))
-            times_str = ", ".join(unique_times)
-            summary_parts.append(f"{len(times)} {attr_nl} calls ({description}) at {times_str}.")
+        # Format the attribute nicely.
+        attr_nl = attr.replace("softSong", "subsong")
+        # Format collapsed times as mm:ss.
+        times_str = ", ".join(format_time(t) for t in collapsed)
+        num_groups = len(collapsed)
+        summary_parts.append(f"{num_groups} {attr_nl} calls ({description}) at {times_str}.")
+
 
     return " ".join(summary_parts)
 
@@ -398,7 +420,7 @@ def main():
 
     # Get clear language description
     description = generate_detection_summary(detections)
-    print(f"Description:\n{description}")
+    print(f"Description:\n{description}\n")
 
     duration = len(audio) / sr
     print(f"Audio duration: {duration:.2f} seconds, Sample Rate: {sr} Hz")
