@@ -20,10 +20,68 @@ def save_cluster_labels(cluster_labels, cluster_labels_file):
     print(f"Progress saved to {cluster_labels_file}.")
 
 
+def append_missing_segments(cluster_labels_file, cluster_segments_file):
+    # Load cluster_labels.
+    if os.path.exists(cluster_labels_file):
+        with open(cluster_labels_file, "r") as f:
+            cluster_labels = json.load(f)
+    else:
+        print(f"No cluster labels found at {cluster_labels_file}. Skipping appending segments.")
+        return
+
+    # Load or initialize cluster_segments.
+    if os.path.exists(cluster_segments_file):
+        with open(cluster_segments_file, "r") as f:
+            cluster_segments = json.load(f)
+    else:
+        cluster_segments = {}
+
+    # Process each detection in cluster_labels.
+    for key, detection in cluster_labels.items():
+        parts = key.split("-")
+        if len(parts) != 3:
+            print(f"Skipping key with unexpected format: {key}")
+            continue
+        file_id, start_str, end_str = parts
+        try:
+            start_time = float(start_str)
+            end_time = float(end_str)
+        except ValueError:
+            print(f"Invalid start/end times in key: {key}")
+            continue
+
+        # Ensure the file_id exists in cluster_segments.
+        if file_id not in cluster_segments:
+            cluster_segments[file_id] = []
+
+        # Check if the segment (by start and end times) already exists.
+        segment_exists = any(
+            seg.get("start_time") == start_time and seg.get("end_time") == end_time
+            for seg in cluster_segments[file_id]
+        )
+        if not segment_exists:
+            # Build a new segment entry following the correct format.
+            segment_entry = {
+                "common_name": "American Crow",
+                "scientific_name": "Corvus brachyrhynchos",
+                "start_time": start_time,
+                "end_time": end_time,
+                "confidence": detection.get("confidence", 0),
+                "cluster": detection.get("cluster")
+            }
+            cluster_segments[file_id].append(segment_entry)
+            print(f"Appended segment {key} to cluster_segments under file id {file_id}.")
+
+    # Save the updated cluster_segments.
+    with open(cluster_segments_file, "w") as f:
+        json.dump(cluster_segments, f, indent=4)
+    print(f"Updated cluster_segments saved to {cluster_segments_file}.")
+
 def main(attribute, cluster, offset):
     base_dir = os.path.join(os.path.dirname(__file__), "..", ".cache")
     auto_labels_file = os.path.join(base_dir, "auto_labels.json")
     cluster_labels_file = os.path.join(base_dir, "cluster_labels.json")
+    cluster_segments_file = os.path.join(base_dir, "cluster_segments.json")
     library_dir = os.path.join(base_dir, "library")
 
     # Load auto_labels.json.
@@ -71,11 +129,11 @@ def main(attribute, cluster, offset):
         print(detection)
         play_audio_preview(audio_file, start_time, duration)
 
-        response = input(
-            "Include this detection? (Y = include, N = skip, Z = add as garbage, Q = quit): ").strip().lower()
+        response = input("Include this detection? (Y = include, N = skip, Z = add as garbage, Q = quit): ").strip().lower()
         if response in ("q", "quit"):
             print("Quitting early. Saving progress...")
             save_cluster_labels(cluster_labels, cluster_labels_file)
+            append_missing_segments(cluster_labels_file, cluster_segments_file)
             return
         elif response == "y":
             new_detection = detection.copy()
@@ -104,7 +162,7 @@ def main(attribute, cluster, offset):
 
     print("\nAll detections processed.")
     save_cluster_labels(cluster_labels, cluster_labels_file)
-
+    append_missing_segments(cluster_labels_file, cluster_segments_file)
 
 if __name__ == "__main__":
     attr = input("Enter detection attribute to filter (e.g., rattle, softSong, begging, mob, alert): ").strip()
