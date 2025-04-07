@@ -95,23 +95,45 @@ def main(attribute, cluster, offset):
     else:
         cluster_labels = {}
 
-    # Filter for detections with the specified attribute set to True.
-    filtered_keys = [k for k, v in auto_labels.items() if v.get(attribute, False)]
-    print(f"Found {len(filtered_keys)} detections with {attribute}=True.")
+    # Handle filter attribute with optional value.
+    if ":" in attribute:
+        attr_key, attr_val_str = attribute.split(":", 1)
+        if attr_val_str == "":
+            attr_val = True
+        else:
+            try:
+                attr_val = int(attr_val_str)
+            except ValueError:
+                attr_val = attr_val_str
+    else:
+        attr_key = attribute
+        attr_val = True
+
+    # Filter for detections with the specified attribute.
+    filtered_keys = [k for k, v in auto_labels.items() if v.get(attr_key) == attr_val]
+    print(f"Found {len(filtered_keys)} detections with {attr_key} == {attr_val}.")
+
+    # Set to store file_ids that should be skipped.
+    skipped_file_ids = set()
 
     for key in filtered_keys[offset:]:
+        parts = key.split("-")
+        if len(parts) != 3:
+            print(f"Skipping key with unexpected format: {key}")
+            continue
+        file_id, start, end = parts
+
+        # Skip detections from file_ids already marked to be skipped.
+        if file_id in skipped_file_ids:
+            print(f"Skipping detection {key} because file id {file_id} is marked as skipped.")
+            continue
+
         # Skip if already included.
         if key in cluster_labels:
             print(f"Skipped {key}: already in cluster_labels.")
             continue
 
         detection = auto_labels[key]
-        parts = key.split("-")
-        if len(parts) != 3:
-            print(f"Skipping key with unexpected format: {key}")
-            continue
-
-        file_id, start, end = parts
         audio_file = os.path.join(library_dir, f"{file_id}.mp3")
         if not os.path.exists(audio_file):
             print(f"Audio file not found: {audio_file}")
@@ -129,12 +151,16 @@ def main(attribute, cluster, offset):
         print(detection)
         play_audio_preview(audio_file, start_time, duration)
 
-        response = input("Include this detection? (Y = include, N = skip, Z = add as garbage, Q = quit): ").strip().lower()
+        response = input("Include this detection? (Y = include, N = skip, Z = add as garbage, S = skip file, Q = quit): ").strip().lower()
         if response in ("q", "quit"):
             print("Quitting early. Saving progress...")
             save_cluster_labels(cluster_labels, cluster_labels_file)
             append_missing_segments(cluster_labels_file, cluster_segments_file)
             return
+        elif response == "s":
+            skipped_file_ids.add(file_id)
+            print(f"Skipping all further detections for file id {file_id}.")
+            continue
         elif response == "y":
             new_detection = detection.copy()
             new_detection["cluster"] = cluster
@@ -165,7 +191,27 @@ def main(attribute, cluster, offset):
     append_missing_segments(cluster_labels_file, cluster_segments_file)
 
 if __name__ == "__main__":
-    attr = input("Enter detection attribute to filter (e.g., rattle, softSong, begging, mob, alert): ").strip()
-    clus = input("Enter cluster number to assign: ").strip()
-    offset = input("Enter starting offset: ").strip()
-    main(attr, int(clus), int(offset))
+    attr = input("Enter detection attribute to filter (e.g., rattle, softSong, begging, mob, alert, quality:1, crowCount:2, crowAge:1): ").strip()
+
+    # Calculate default cluster value based on the largest existing cluster value + 1.
+    base_dir = os.path.join(os.path.dirname(__file__), "..", ".cache")
+    cluster_labels_file = os.path.join(base_dir, "cluster_labels.json")
+    default_cluster = 1
+    if os.path.exists(cluster_labels_file):
+        with open(cluster_labels_file, "r") as f:
+            existing_cluster_labels = json.load(f)
+        cluster_values = []
+        for detection in existing_cluster_labels.values():
+            cluster_val = detection.get("cluster")
+            if isinstance(cluster_val, int):
+                cluster_values.append(cluster_val)
+        if cluster_values:
+            default_cluster = max(cluster_values) + 1
+
+    clus_input = input(f"Enter cluster number to assign [default: {default_cluster}]: ").strip()
+    clus = int(clus_input) if clus_input else default_cluster
+
+    offset_input = input("Enter starting offset: ").strip()
+    offset = int(offset_input) if offset_input else 0
+
+    main(attr, clus, offset)
