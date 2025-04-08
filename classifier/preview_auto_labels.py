@@ -211,7 +211,7 @@ if __name__ == "__main__":
     clus_input = input(f"Enter cluster number to assign [default: {default_cluster}]: ").strip()
     clus = int(clus_input) if clus_input else default_cluster
 
-    offset_input = input("Enter starting offset: ").strip()
+    offset_input = input("Enter starting offset [default: 0]: ").strip()
     offset = int(offset_input) if offset_input else 0
 
     main(attr, clus, offset)
