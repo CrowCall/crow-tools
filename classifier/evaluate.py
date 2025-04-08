@@ -126,7 +126,7 @@ if __name__ == "__main__":
     # Create the dataset.
     dataset = CrowDataset()
 
-    train_size = int(0.85 * len(dataset))
+    train_size = int(0.88 * len(dataset))
     val_size = len(dataset) - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 

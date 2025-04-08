@@ -15,12 +15,12 @@ model.to(device)
 dataset = CrowDataset()
 
 # Split dataset into training and validation (ensuring unique records in each).
-train_size = int(0.85 * len(dataset))
+train_size = int(0.88 * len(dataset))
 val_size = len(dataset) - train_size
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
 # Oversampling: Duplicate training indices for underrepresented labels.
-oversample_factors = {"rattle": 1, "softSong": 3, "begging": 2, "alert": 1, "mob": 1}
+oversample_factors = {"rattle": 2, "softSong": 2, "begging": 3, "alert": 3, "mob": 1}
 
 oversampled_train_indices = []
 # train_dataset.indices gives the list of indices from the original dataset in the training subset.
@@ -54,5 +54,5 @@ checkpoint_callback = ModelCheckpoint(
 )
 
 # Initialize the Trainer.
-trainer = pl.Trainer(max_epochs=20, logger=tb_logger, callbacks=[checkpoint_callback])
+trainer = pl.Trainer(max_epochs=30, logger=tb_logger, callbacks=[checkpoint_callback])
 trainer.fit(model, train_loader, val_loader)
