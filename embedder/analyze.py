@@ -1,5 +1,7 @@
 import json
 import os
+import random
+import argparse
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -7,6 +9,7 @@ import numpy as np
 import pandas as pd
 import sounddevice as sd
 from sklearn.decomposition import PCA
+from matplotlib.widgets import RadioButtons
 from ispa import utils
 
 PATH = os.path.dirname(__file__)
@@ -25,10 +28,7 @@ def print_label_stats(labels):
 
     # Define quality based on badQuality and human flags.
     def determine_quality(row):
-        if row.get('quality') == 1:
-            return 'bad'
-        else:
-            return 'good'
+        return 'bad' if row.get('quality') == 1 else 'good'
 
     df['quality_label'] = df.apply(determine_quality, axis=1)
 
@@ -41,9 +41,7 @@ def print_label_stats(labels):
     print()
 
     # For each feature, compute frequency (number of True values) and percentages.
-    features = ['rattle', 'begging', 'softSong']
-    for feat in features:
-        # Frequency: since booleans sum to counts.
+    for feat in ['rattle', 'begging', 'softSong', 'mob', 'alert']:
         feat_freq = df.groupby(['quality_label', 'crowCount'])[feat].sum().unstack()
         print(f"{feat.capitalize()} Counts (True):")
         print(feat_freq.fillna(0).astype(int))
@@ -53,182 +51,259 @@ def print_label_stats(labels):
     print()
 
 def print_segment_stats(segments_dict):
-    total_files = len(segments_dict)
     segments_list = []
-
     for segs in segments_dict.values():
-        # Ensure we have a list.
         seg_list = segs if isinstance(segs, list) else [segs]
         for seg in seg_list:
             duration = seg["end_time"] - seg["start_time"]
             segments_list.append(duration)
-
-    total_segments = len(segments_list)
     durations_series = pd.Series(segments_list)
     freq = durations_series.value_counts().sort_index()
     pct = durations_series.value_counts(normalize=True).sort_index() * 100
     freq_table = pd.DataFrame({'Count': freq, 'Percentage': pct.round(1)})
 
     print("=== SEGMENT SUMMARY ===")
-    print(f"Total files   : {total_files}")
-    print(f"Total segments: {total_segments}")
+    print(f"Total files   : {len(segments_dict)}")
+    print(f"Total segments: {len(segments_list)}")
     print("\nSegment Duration Distribution (seconds):")
     print(freq_table)
     print()
 
-segments_path = os.path.join("..", ".cache", "cluster_segments.json")
-segments_dict = json.load(open(segments_path, encoding='utf-8', mode='r'))
+def choose_color(label, mode='quality'):
+    # For non-quality modes, hide bad quality points (make transparent)
+    if mode != 'quality' and label.get('quality') == 1:
+        return (0, 0, 0, 0)  # Invisible
 
-labels_path = os.path.join("..", ".cache", "cluster_labels.json")
-labels = json.load(open(labels_path, encoding='utf-8', mode='r'))
+    if mode == 'quality':
+        if label.get('quality') == 1:
+            return "red"
+        else:
+            return "limegreen"  # bright, but not overly neon
 
-print_label_stats(labels)
-print_segment_stats(segments_dict)
+    elif mode == 'crowAge':
+        age = label.get('crowAge')
+        if age == 1:
+            return "dodgerblue"  # a friendly, bright blue
+        elif age == 2:
+            return "gold"        # a warm, appealing yellow
+        else:
+            return "gray"
 
-denoised = True
-processed_seconds = 0
-sample_rate = 8000
-chunk_embeddings = []
-chunk_info = []
+    elif mode == 'crowCount':
+        count = label.get('crowCount', 0)
+        if count == 0:
+            return "lightgray"
+        elif count == 1:
+            return "#00bfff"
+        elif count == 2:
+            return "orange"
+        elif count == 4:
+            return "orchid"          # soft purple
+        else:
+            return "gray"
 
-# Loop through all segments
-for file_id, segments in segments_dict.items():
-    for segment in segments:
-        # Compute segment key using file_id only (as in "225318321-0-3")
-        segment_key = f"{file_id}-{segment.get('start_time'):.0f}-{segment.get('end_time'):.0f}"
-        label = labels.get(segment_key)
+    elif mode == 'features':
+        # Priority order for binary features: alert > mob > begging > softSong > rattle.
+        features_priority = ['alert', 'mob', 'begging', 'softSong', 'rattle']
+        features_colors = {
+            'alert': "dodgerblue",       # bright blue
+            'mob': "mediumorchid",       # appealing purple
+            'begging': "goldenrod",      # warm golden tone
+            'softSong': "mediumseagreen",# calm green
+            'rattle': "tomato"           # pleasant red-orange
+        }
+        for feat in features_priority:
+            if label.get(feat):
+                return features_colors[feat]
+        return "gray"
 
-        # Get labeled segment (if any)
-        # if not (label and label.get('crowCount') == 'single'
-        #         and label.get('badQuality') == False
-        #         and label.get('human') == False):
-        #     continue
-        if not label:
-            continue
+    return "gray"
 
-        # Get segment length
+
+def main(sample_size):
+    segments_path = os.path.join("..", ".cache", "segments.json")
+    with open(segments_path, encoding='utf-8', mode='r') as f:
+        segments_dict = json.load(f)
+
+    labels_path = os.path.join("..", ".cache", "auto_labels.json")
+    with open(labels_path, encoding='utf-8', mode='r') as f:
+        labels = json.load(f)
+
+    print_label_stats(labels)
+    print_segment_stats(segments_dict)
+
+    denoised = True
+    processed_seconds = 0
+
+    valid_segments = []
+    for file_id, segs in segments_dict.items():
+        for segment in segs:
+            segment_key = f"{file_id}-{segment.get('start_time'):.0f}-{segment.get('end_time'):.0f}"
+            if segment_key not in labels:
+                continue
+
+            valid_segments.append({
+                "file_id": file_id,
+                "segment": segment,
+                "segment_key": segment_key,
+                "label": labels[segment_key]
+            })
+
+    if sample_size < len(valid_segments):
+        valid_segments = random.sample(valid_segments, sample_size)
+        print(f"Randomly sampled {sample_size} segments from available data.")
+    else:
+        print(f"Processing all {len(valid_segments)} available segments.")
+
+    chunk_embeddings = []
+    chunk_info = []  # Each item holds audio path, times, initial color, segment_key, and label.
+    sample_rate = 8000
+
+    for entry in valid_segments:
+        file_id = entry["file_id"]
+        segment = entry["segment"]
+        segment_key = entry["segment_key"]
+        label = entry["label"]
+
         segment_length = segment.get('end_time') - segment.get('start_time')
         processed_seconds += segment_length
 
-        # Get file audio file
-        denoised_suffix = ""
-        audio_extension = "mp3"
-        if denoised:
-            denoised_suffix = "-denoised"
-            audio_extension = "wav"
+        denoised_suffix = "-denoised" if denoised else ""
+        audio_extension = "wav" if denoised else "mp3"
         audio_path = os.path.join(PATH, "..", ".cache", f"library{denoised_suffix}", f"{file_id}.{audio_extension}")
 
-        if os.path.exists(audio_path):
-            # check for cached embeddings
-            cached_path = os.path.join(PATH, "..", ".cache", f"embeddings{denoised_suffix}", f"{file_id}.npy")
-            if os.path.exists(cached_path):
-                feature = np.load(cached_path)
-            else:
-                print(f"Skipping {segment_key}, no cached file found")
-                continue
-
-            if label:
-                if label.get('quality') == 1:
-                    color = "red"
-                elif label.get('crowAge') == 2:
-                    color = "yellow"
-                elif label.get('crowCount') == 2:
-                    color = "green"
-                # elif label.get('softSong'):
-                #     color = "pink"
-                elif label.get('rattle'):
-                    color = "purple"
-                elif label.get('crowCount') == 1:
-                    color = "blue"
-                else:
-                    color = "gray"
-            else:
-                color = "gray"
-
-            chunk_embeddings.append(feature[int(segment.get('start_time')):int(segment.get('end_time'))])
-            chunk_info.append({
-                "audio_path": audio_path,
-                "chunk_start_time": segment.get('start_time'),
-                "chunk_end_time": segment.get('end_time'),
-                "color": color,
-                "segment_key": segment_key
-            })
-        else:
+        if not os.path.exists(audio_path):
             print(f"Audio file {audio_path} not found, skipping")
+            continue
 
-hours = int(processed_seconds // 3600)
-minutes = int((processed_seconds % 3600) // 60)
-print(f"Processed time: {hours:02d}:{minutes:02d} (HH:MM)")
-print(f"Average time per segment: {processed_seconds/len(chunk_embeddings)} seconds")
+        cached_path = os.path.join(PATH, "..", ".cache", f"embeddings{denoised_suffix}", f"{file_id}.npy")
+        if not os.path.exists(cached_path):
+            print(f"Skipping {segment_key}, no cached embedding file found")
+            continue
 
-chunk_embeddings = np.array(chunk_embeddings)
-print("Total segments plotted:", chunk_embeddings.shape[0])
+        try:
+            feature = np.load(cached_path, mmap_mode='r')
+        except Exception as e:
+            print(f"Error loading {cached_path}: {e}")
+            continue
 
-# Perform PCA: reduce from 768 to 3 dimensions.
-pca = PCA(n_components=3)
-embeddings_3d = pca.fit_transform(chunk_embeddings.squeeze(1))
+        # Set initial color using 'quality' mode.
+        color = choose_color(label, mode='quality')
 
-# Build output data: for each embedding, store segment_key, 3D coordinates, and color.
-output_data = []
-embeddings_3d_list = embeddings_3d.tolist()
-for i, coords in enumerate(embeddings_3d_list):
-    seg_key = chunk_info[i].get("segment_key")
-    color = chunk_info[i].get("color")
-    output_data.append({
-         "segment_key": seg_key,
-         "coordinates": coords,
-         "color": color
-    })
+        start_idx = int(segment.get('start_time'))
+        end_idx = int(segment.get('end_time'))
+        chunk = feature[start_idx:end_idx]
+        chunk_embeddings.append(chunk)
+        chunk_info.append({
+            "audio_path": audio_path,
+            "chunk_start_time": segment.get('start_time'),
+            "chunk_end_time": segment.get('end_time'),
+            "color": color,
+            "segment_key": segment_key,
+            "label": label
+        })
 
-# Save the output data to JSON.
-output_json_path = os.path.join(PATH, "..", ".cache", "embeddings-3d.json")
-with open(output_json_path, "w") as f:
-    json.dump(output_data, f, indent=2)
-print(f"Saved 3D embeddings to {output_json_path}")
-
-# Proceed with plotting.
-colors = [info.get('color') for info in chunk_info]
-
-fig = plt.figure(figsize=(10, 8))
-ax = fig.add_subplot(111, projection='3d')
-
-# Set picker=True so points can be clicked
-sc = ax.scatter(embeddings_3d[:, 0],
-                embeddings_3d[:, 1],
-                embeddings_3d[:, 2],
-                s=10, c=colors, picker=5)
-
-ax.set_title("3D PCA of AVES Embedding Chunks (Interactive)")
-ax.set_xlabel("PC 1")
-ax.set_ylabel("PC 2")
-ax.set_zlabel("PC 3")
-
-def on_pick(event):
-    # event.ind is an array of the point indices that were clicked
-    ind = event.ind
-    if len(ind) == 0:
+    if len(chunk_embeddings) == 0:
+        print("No segments to process after filtering. Exiting.")
         return
 
-    idx = ind[0]  # Just take the first index if multiple
-    info = chunk_info[idx]
+    hours = int(processed_seconds // 3600)
+    minutes = int((processed_seconds % 3600) // 60)
+    print(f"Processed time: {hours:02d}:{minutes:02d} (HH:MM)")
+    print(f"Average time per segment: {processed_seconds / len(chunk_embeddings):.2f} seconds")
 
-    audio_path = info["audio_path"]
-    start_t = info["chunk_start_time"]
-    end_t = info["chunk_end_time"]
+    chunk_embeddings = np.array(chunk_embeddings)
+    print("Total segments for PCA:", chunk_embeddings.shape[0])
+    if len(chunk_embeddings.shape) != 2:
+        chunk_embeddings = chunk_embeddings.squeeze(1)
 
-    # Print info to console
-    print(f"\nClicked chunk #{idx}")
-    print(f"File: {audio_path}")
-    print(f"Time: {start_t:.2f}s to {end_t:.2f}s")
+    pca = PCA(n_components=3)
+    embeddings_3d = pca.fit_transform(chunk_embeddings)
 
-    # Reload just this chunk for playback
-    chunk_waveform, _ = utils.load_waveform(audio_path, tgt_sr=sample_rate, start_sec=start_t, end_sec=end_t)
+    output_json_path = os.path.join(PATH, "..", ".cache", "embeddings-3d.json")
+    output_data = []
+    for i, coords in enumerate(embeddings_3d.tolist()):
+        output_data.append({
+            "segment_key": chunk_info[i]["segment_key"],
+            "coordinates": coords,
+            "color": chunk_info[i]["color"]
+        })
 
-    # Convert to a NumPy array if needed for sounddevice
-    chunk_np = chunk_waveform.squeeze(0).detach().numpy()
-    sd.play(chunk_np, sample_rate)  # Playback using sounddevice
+    with open(output_json_path, "w") as f:
+        json.dump(output_data, f, indent=2)
+    print(f"Saved 3D embeddings to {output_json_path}")
 
-# Connect the pick event to the callback
-fig.canvas.mpl_connect('pick_event', on_pick)
-plt.show()
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.add_subplot(111, projection='3d')
+    base_marker_size = 10
+    colors = [info["color"] for info in chunk_info]
+    sc = ax.scatter(embeddings_3d[:, 0], embeddings_3d[:, 1], embeddings_3d[:, 2],
+                    s=base_marker_size, c=colors, picker=True)
 
+    ax.set_title("3D PCA of AVES Embedding Chunks (Interactive)")
+    ax.set_xlabel("PC 1")
+    ax.set_ylabel("PC 2")
+    ax.set_zlabel("PC 3")
+
+    def update_output_json(new_colors):
+        updated_data = []
+        for i, coords in enumerate(embeddings_3d.tolist()):
+            updated_data.append({
+                "segment_key": chunk_info[i]["segment_key"],
+                "coordinates": coords,
+                "color": new_colors[i]
+            })
+        with open(output_json_path, "w") as f:
+            json.dump(updated_data, f, indent=2)
+        print(f"Re-saved updated output JSON to {output_json_path}")
+
+    def update_mode(mode):
+        new_colors = [choose_color(info["label"], mode=mode) for info in chunk_info]
+        sc.set_color(new_colors)
+        plt.draw()
+        update_output_json(new_colors)
+
+    ax_mode = plt.axes([0.05, 0.8, 0.12, 0.08])
+    radio = RadioButtons(ax_mode, ('quality', 'crowAge', 'crowCount', 'features'), active=0)
+    radio.on_clicked(update_mode)
+
+    def on_scroll(event):
+        if event.button == 'up':
+            ax.dist = max(ax.dist / 1.1, 1)
+        elif event.button == 'down':
+            ax.dist = ax.dist * 1.1
+
+        factor = 1.2 if event.button == 'up' else 1 / 1.2 if event.button == 'down' else 1
+        current_sizes = sc.get_sizes()
+        new_sizes = current_sizes * factor
+        sc.set_sizes(new_sizes)
+        plt.draw()
+
+    fig.canvas.mpl_connect('scroll_event', on_scroll)
+
+    def on_pick(event):
+        ind = event.ind
+        if len(ind) == 0:
+            return
+        idx = ind[0]
+        info = chunk_info[idx]
+        print(f"\nClicked segment #{idx}")
+        print(f"File: {info['audio_path']}")
+        print(f"Time: {info['chunk_start_time']:.2f}s to {info['chunk_end_time']:.2f}s")
+        chunk_waveform, _ = utils.load_waveform(info["audio_path"],
+                                                tgt_sr=sample_rate,
+                                                start_sec=info["chunk_start_time"],
+                                                end_sec=info["chunk_end_time"])
+        chunk_np = chunk_waveform.squeeze(0).detach().numpy()
+        sd.play(chunk_np, sample_rate)
+
+    fig.canvas.mpl_connect('pick_event', on_pick)
+    plt.show()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Analyze Embedding Detections with Interactive Color Modes")
+    parser.add_argument("--sample_size", type=int, default=10000,
+                        help="Number of segments to sample (default: 10000)")
+    args = parser.parse_args()
+    main(args.sample_size)
