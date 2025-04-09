@@ -20,7 +20,7 @@ val_size = len(dataset) - train_size
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
 # Oversampling: Duplicate training indices for underrepresented labels.
-oversample_factors = {"rattle": 2, "softSong": 2, "begging": 3, "alert": 3, "mob": 1}
+oversample_factors = {"rattle": 3, "softSong": 3, "begging": 4, "alert": 3, "mob": 1}
 
 oversampled_train_indices = []
 # train_dataset.indices gives the list of indices from the original dataset in the training subset.
@@ -38,8 +38,8 @@ for idx in train_dataset.indices:
 oversampled_train_dataset = Subset(dataset, oversampled_train_indices)
 
 # Create DataLoaders.
-train_loader = DataLoader(oversampled_train_dataset, batch_size=23, num_workers=3, shuffle=True, drop_last=True)
-val_loader = DataLoader(val_dataset, batch_size=23, num_workers=3, shuffle=False, drop_last=True)
+train_loader = DataLoader(oversampled_train_dataset, batch_size=20, num_workers=3, shuffle=True, drop_last=True)
+val_loader = DataLoader(val_dataset, batch_size=20, num_workers=3, shuffle=False, drop_last=True)
 
 # Create TensorBoard logger.
 tb_logger = TensorBoardLogger("logs", name="crow-classify")
@@ -48,11 +48,11 @@ tb_logger = TensorBoardLogger("logs", name="crow-classify")
 checkpoint_callback = ModelCheckpoint(
     dirpath="logs/checkpoints",
     filename="best_model",
-    monitor="val_loss",
-    mode="min",
+    monitor="val_composite_score",
+    mode="max",
     save_top_k=3
 )
 
 # Initialize the Trainer.
-trainer = pl.Trainer(max_epochs=30, logger=tb_logger, callbacks=[checkpoint_callback])
+trainer = pl.Trainer(max_epochs=20, logger=tb_logger, callbacks=[checkpoint_callback])
 trainer.fit(model, train_loader, val_loader)

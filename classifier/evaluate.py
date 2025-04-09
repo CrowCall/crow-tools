@@ -1,5 +1,5 @@
 import torch
-from torch.utils.data import DataLoader, random_split, Subset
+from torch.utils.data import DataLoader, random_split
 from dataset import CrowDataset
 from model import CrowClassifier
 import os
@@ -39,11 +39,8 @@ def evaluate_model(model, dataloader, device):
     # For crowCount, we now have 5 classes (0-4), while crowAge and quality remain 2 and 3 classes (1-indexed)
     multi_class_keys = {"crowCount": 5, "crowAge": 2, "quality": 2}
     breakdown = {}
-    for key, num_classes in multi_class_keys.items():
-        if key == "crowCount":
-            breakdown[key] = {cls: [0, 0] for cls in range(num_classes)}
-        else:
-            breakdown[key] = {cls + 1: [0, 0] for cls in range(num_classes)}
+    for key, num in multi_class_keys.items():
+        breakdown[key] = {cls: [0, 0] for cls in (range(num) if key == "crowCount" else [i + 1 for i in range(num)])}
 
     # For binary attributes breakdown.
     binary_keys = ["alert", "begging", "softSong", "rattle", "mob"]
@@ -99,7 +96,6 @@ def evaluate_model(model, dataloader, device):
             ]:
                 metrics[key]["correct"] += (pred == labels[key]).sum().item()
                 metrics[key]["total"] += labels[key].size(0)
-                # Breakdown per value.
                 for val in [0, 1]:
                     mask = (labels[key] == val)
                     total = mask.sum().item()
@@ -114,8 +110,7 @@ def evaluate_model(model, dataloader, device):
 
     for key in binary_keys:
         print_breakdown(key, breakdown_binary[key], label_prefix="Value")
-
-    return metrics
+    return metrics, breakdown, breakdown_binary
 
 
 if __name__ == "__main__":
@@ -127,11 +122,16 @@ if __name__ == "__main__":
     dataset = CrowDataset()
 
     train_size = int(0.88 * len(dataset))
-    val_size = len(dataset) - train_size
-    train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-
-    # Create DataLoaders.
+    _, val_dataset = random_split(dataset, [train_size, len(dataset) - train_size])
     val_loader = DataLoader(val_dataset, batch_size=1, num_workers=3, shuffle=False)
 
     print(f"\nEvaluating on {len(val_loader)} VALIDATE samples")
-    evaluate_model(model, val_loader, device)
+    metrics, breakdown, breakdown_binary = evaluate_model(model, val_loader, device)
+
+    # Instead of duplicating the composite score code, use the model's compute_composite_score
+    composite, task_scores = model.compute_composite_score(breakdown, breakdown_binary)
+    print("\n=== Composite Score ===")
+    print(f"Overall composite score: {composite * 100:.2f}%")
+    print("Individual task scores:")
+    for task, score in task_scores.items():
+        print(f"  {task:10s}: {score * 100:.2f}%")
