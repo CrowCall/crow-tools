@@ -106,7 +106,10 @@ The embedder module transforms each crow call into a 768-dimensional vector usin
 transformation creates a numerical representation of the audio, which is essential for further analysis and machine 
 learning applications.
 
-[embeddings.mp4](docs/videos/embeddings.mp4)
+<video width="640" controls>
+  <source src="docs/videos/embeddings.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 ### Labeler
 The labeler module provides a web interface for manual labeling of crow calls. This interface is designed for 
