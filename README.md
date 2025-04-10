@@ -111,9 +111,16 @@ learning applications.
 ### Labeler
 The labeler module provides a web interface for manual labeling of crow calls. This interface is designed for 
 human labeling and review, ensuring that the training data for the classifier is accurate and reliable. It also
-provides a 3D interactive embedding feature. This web app is created with Vue v3 and Node.js.
+provides a 3D interactive embedding feature. Built with Vue v3 and Node.js.
 
 ![labeler.png](docs/images/labeler.png)
+
+### Transcriber
+The transcriber module provides a web interface for segmenting crow audio and labeling calls with a custom notation 
+system. It supports waveform and spectrogram views, audio playback, and SRT export for training crow-to-text models. 
+Built with Vue v3 and Node.js.
+
+![transcriber.png](docs/images/transcriber.png)
 
 ### Separator
 The separator module is responsible for separating overlapping crow calls into distinct audio files. This process 
@@ -129,7 +136,7 @@ crow-tools/
 ├── detector/    # detect crow audio segments (1 second each, uses classifier model)
 ├── downloader/  # download library of crow audio files
 ├── embedder/    # embed crow calls into 768 dimensions (AVES embedding model)
-├── labeler/     # human labeling web app (for training classifier)
+├── labeler/     # human labeling web app (for training classifier, vieweing embeddings, and transcribing crow language)
 ├── separator/   # separate overlapping crow calls into seaparate audio files (train and inference)
 └── .cache/      # all downloaded and generated files (30+ GB)
 ```
