@@ -19,13 +19,13 @@
             "editing": false
         },
         {
-            "timestamp": 6.4694444338480634,
+            "timestamp": 6.481944490362097,
             "token": "ka",
             "top": 5,
             "editing": false
         },
         {
-            "timestamp": 7.055092652638754,
+            "timestamp": 7.054629661418773,
             "token": "kaaw",
             "top": 5,
             "editing": false
@@ -39,6 +39,36 @@
         {
             "timestamp": 8.622685132203278,
             "token": "ka",
+            "top": 5,
+            "editing": false
+        },
+        {
+            "timestamp": 9.388425915329545,
+            "token": "kraaw",
+            "top": 5,
+            "editing": false
+        },
+        {
+            "timestamp": 10.24768520284582,
+            "token": "kraaw",
+            "top": 5,
+            "editing": false
+        },
+        {
+            "timestamp": 525,
+            "token": "ko",
+            "top": 5,
+            "editing": false
+        },
+        {
+            "timestamp": 525.68055567918,
+            "token": "ka",
+            "top": 5,
+            "editing": false
+        },
+        {
+            "timestamp": 526.3356481658088,
+            "token": "kaa",
             "top": 5,
             "editing": false
         }

@@ -230,7 +230,7 @@
     const app = Vue.createApp({
       data() {
         return {
-          fileId: "",
+          fileId: "13130",
           audioLoaded: false,
           audioLoading: false,
           wavesurfer: null,
@@ -243,14 +243,22 @@
           isLooping: false,
           dragInfo: { dragging: false, entryIndex: null, offsetX: 0 },
           playheadDragging: false,
-          vocabulary: ["ca", "ka", "w", "aw", "aaw", "kl", "aa", "ee", "rrr"],
+          vocabulary: [
+              "ca", "ka", "cr", "kr", "w", "ugh", "a", "h",    // caw calls
+              "wa", "we", "wo",                                // juvenile
+              "ah", "oh", "uh", "ee", "kl",                    // vowels
+              "rrr", "k",                                      // rattles
+              "ta", "ak", "t",                                 // clacks
+              "u", "g"                                         // gurgles
+          ],
           tokenColors: {
-            "ca": "#4caf50",
-            "ka": "#2196f3",
-            "w": "#ff9800",
-            "aw": "#9c27b0",
-            "aaw": "#e91e63",
-            "klee": "#00bcd4"
+              "ca": "#4caf50", "ka": "#2196f3", "cr": "#388e3c", "kr": "#1976d2",
+              "w": "#ff9800", "ugh": "#9c27b0", "a": "#8bc34a", "h": "#66bb6a",
+              "wa": "#e91e63", "we": "#e91e63", "wo": "#e91e63",
+              "ah": "#ff5722", "oh": "#ff5722", "uh": "#ff5722", "ee": "#ff5722", "kl": "#ff5722",
+              "rrr": "#9e9e9e", "k": "#9e9e9e",
+              "ta": "#3f51b5", "ak": "#3f51b5", "t": "#3f51b5",
+              "u": "#009688", "g": "#009688"
           },
           contextMenu: { visible: false, x: 0, y: 0, entryIndex: null }
         };
