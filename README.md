@@ -144,9 +144,7 @@ This project is a collaborative effort driven by a shared curiosity and love for
 
 Together, we're building a **state-of-the-art toolkit for decoding and exploring crow communication**, blending AI, design, and a shared passion for one of nature’s most fascinating birds.
 
-## Citation
+## Citations
 
-Give our crows a shout-out — cite `crow-tools` in your work!
-
-GitHub provides a citation file — just click the **Cite this repository** button in the sidebar at the top of this page.
+Give our crows a shout-out — cite `crow-tools` in your work! GitHub provides a citation file — just click the **Cite this repository** button in the sidebar at the top of this page.
 
