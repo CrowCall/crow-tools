@@ -143,3 +143,10 @@ This project is a collaborative effort driven by a shared curiosity and love for
 - **[Madeline Thomas](mailto:crows@owlmaddie.com) (@owlmaddie)** is a professional [artist / animator](https://www.owlmaddie.com/) and crow enthusiast. Through **owlmaddie LLC**, she contributes her creative talents to the project — labeling thousands of crow calls, designing expressive crow animations, and helping to communicate the science through visual storytelling.
 
 Together, we're building a **state-of-the-art toolkit for decoding and exploring crow communication**, blending AI, design, and a shared passion for one of nature’s most fascinating birds.
+
+## Citation
+
+Give our crows a shout-out — cite `crow-tools` in your work!
+
+GitHub provides a citation file — just click the **Cite this repository** button in the sidebar at the top of this page.
+
