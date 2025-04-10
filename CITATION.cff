@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If crow-tools was useful for your research, we'd love a citation!"
+title: "crow-tools: Open-source tools for analyzing crow vocalizations"
+authors:
+  - family-names: Thomas
+    given-names: Jonathan
+    email: crows@openshot.org
+  - family-names: Thomas
+    given-names: Madeline
+    email: crows@owlmaddie.com
+date-released: 2025-03-10
+version: "1.0.0"
+repository-code: https://github.com/CrowCall/crow-tools
+keywords:
+  - crows
+  - bioacoustics
+  - machine learning
+  - audio analysis
+  - animal communication
