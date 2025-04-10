@@ -378,4 +378,11 @@ app.component('pagination', window.Pagination);
 app.component('segment-card', window.SegmentCard);
 app.component('filter-component', window.FilterComponent);
 
+// Custom directive for auto focus
+app.directive("focus", {
+  mounted(el) {
+    el.focus();
+  }
+});
+
 app.mount('#app');

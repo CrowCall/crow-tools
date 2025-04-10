@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crow Transcriber</title>
+  <!-- Bootstrap Dark Theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/darkly/bootstrap.min.css">
+  <!-- Optional Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+    /* Waveform container (always in DOM) */
+    #waveform {
+      height: 80px;
+      width: 100%;
+      margin-bottom: 15px;
+      position: relative;
+      cursor: pointer;
+    }
+    /* Spectrogram container: its parent defines a fixed height */
+    #spectrogram {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #444;
+      background-color: #222;
+    }
+    /* Parent container for spectrogram */
+    #spectrogram-container {
+      width: 100%;
+      height: 200px;
+      margin-bottom: 15px;
+      position: relative;
+      cursor: pointer;
+    }
+    /* Transcription track container – in its own row */
+    #transcription-track {
+      width: 100%;
+      height: 37px;
+      border: 1px solid #444;
+      background-color: #222;
+      position: relative;
+      cursor: pointer;
+    }
+    /* Playhead style – vertical line */
+    .playhead {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background-color: red;
+      pointer-events: none;
+      z-index: 100;
+    }
+    /* Notation entry styling */
+    .notation-entry {
+      position: absolute;
+      top: 0;
+      height: 25px;
+      padding: 2px 4px 2px 12px;
+      border: 2px solid #666;
+      border-radius: 3px;
+      background-color: #555;
+      color: #fff;
+      white-space: nowrap;
+      user-select: none;
+      font-size: 0.8em;
+    }
+    /* Extend left edge marker upward above the spectrogram */
+    .notation-entry::before {
+      content: "";
+      position: absolute;
+      top: -360px;
+      left: 0;
+      width: 1.5px;
+      height: 383px;
+      background-color: gold;
+      z-index: 100;
+    }
+    /* Input styling for labels */
+    .notation-entry input {
+      border: none;
+      background: transparent;
+      color: #fff;
+      width: 50px;
+      font-size: 0.8em;
+      padding: 2px;
+    }
+    /* Token styles */
+    .token-valid {
+      padding: 0 2px;
+      border-radius: 2px;
+      margin-right: 1px;
+    }
+    .token-invalid {
+      background-color: darkred;
+      text-decoration: line-through;
+      padding: 0 2px;
+      border-radius: 2px;
+      margin-right: 1px;
+    }
+    /* Drag handle: only the left 10px is draggable */
+    .drag-handle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 10px;
+      height: 100%;
+      cursor: move;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 10;
+    }
+    /* Context menu styling */
+    .context-menu {
+      position: fixed;
+      background-color: #444;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      z-index: 200;
+    }
+  </style>
+</head>
+<body class="bg-dark text-light">
+  <div id="app" class="container">
+    <!-- Header Row -->
+    <div class="row mb-3">
+      <div class="col">
+        <h1 class="text-center">Crow Transcriber</h1>
+      </div>
+    </div>
+    <!-- File ID Input Row -->
+    <div class="row mb-3">
+      <div class="col">
+        <label for="fileIdInput" class="form-label">Enter File ID:</label>
+        <div class="input-group">
+          <input type="text" id="fileIdInput" class="form-control" v-model="fileId" placeholder="e.g. 12345">
+          <button class="btn btn-primary" @click="initAudio">Load Audio</button>
+        </div>
+      </div>
+    </div>
+    <!-- Zoom & Navigation Controls Row (visible when audio is loaded) -->
+    <div class="row mb-3" v-show="audioLoaded">
+      <div class="col-12 col-md-6">
+        <label for="zoomSlider" class="form-label">Zoom (visible seconds):</label>
+        <input type="range" id="zoomSlider" class="form-range" v-model.number="chunkDuration" min="3" max="30" step="1" @input="updateChunk">
+        <span>{{ chunkDuration }} seconds</span>
+      </div>
+      <div class="col-12 col-md-6 d-flex justify-content-end align-items-end">
+        <!-- Previous Chunk button -->
+        <button class="btn btn-secondary me-2" @click="prevChunk" :disabled="currentChunkStart === 0">Previous Chunk</button>
+
+        <!-- NEW: Dropdown for chunk selection -->
+        <select class="form-select me-2" style="width: auto;" v-model.number="currentChunkStart" @change="chunkSelectChanged">
+          <option v-for="chunk in chunkOptions" :key="chunk" :value="chunk">
+            {{ formatTimestamp(chunk) }}
+          </option>
+        </select>
+
+        <!-- Next Chunk button -->
+        <button class="btn btn-secondary" @click="nextChunk" :disabled="currentChunkStart + chunkDuration >= fileDuration">Next Chunk</button>
+      </div>
+    </div>
+    <!-- Waveform Row -->
+    <div class="row mb-3" v-show="audioLoading">
+      <div class="col">
+        <!-- Added mousedown handler for playhead drag -->
+        <div id="waveform" @click="jumpToTime" @mousedown="startPlayheadDrag">
+          <div id="playhead-waveform" class="playhead"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Spectrogram Row -->
+    <div class="row mb-3" v-show="audioLoading">
+      <div class="col">
+        <div id="spectrogram-container" @click="jumpToTime">
+          <div id="spectrogram"></div>
+          <div id="playhead-spectrogram" class="playhead"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Transcription Track Row -->
+    <div class="row mb-3" v-show="audioLoaded">
+      <div class="col">
+        <div id="transcription-track" @click="trackClick($event)">
+          <!-- Display computed visible notations using their original indices -->
+          <div v-for="item in visibleNotations" :key="item.fullIndex"
+               class="notation-entry"
+               :style="{ left: item.computedPosition + 'px', top: item.entry.top + 'px' }"
+               @contextmenu.prevent="showContextMenu(item.fullIndex, $event)">
+            <div class="drag-handle" @mousedown.prevent="startDragging(item.fullIndex, $event)"></div>
+            <div class="label-content" @dblclick="editEntry(item.fullIndex)">
+              <template v-if="item.entry.editing">
+                <input type="text" v-model="item.entry.token" v-focus
+                       @keyup.enter="finishEditing(item.fullIndex)"
+                       @blur="finishEditing(item.fullIndex)" @click.stop>
+              </template>
+              <template v-else>
+                <span v-html="tokenizeAndColor(item.entry.token)"></span>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Control Buttons Row -->
+    <div class="row mb-3" v-show="audioLoaded">
+      <div class="col d-flex justify-content-between align-items-center">
+        <div>
+          <button class="btn btn-primary" @click="togglePlayPause">{{ isPlaying ? 'Pause' : 'Play' }}</button>&nbsp;
+        </div>
+        <button class="btn btn-success" @click="copySRT">Copy SRT</button>
+      </div>
+    </div>
+    <!-- Context Menu -->
+    <div v-if="contextMenu.visible" class="context-menu"
+         :style="{ top: contextMenu.y + 'px', left: contextMenu.x + 'px' }">
+      <button class="btn btn-sm btn-danger me-2" @click="deleteEntry(contextMenu.entryIndex)">Delete</button>
+      <button class="btn btn-sm btn-info" @click="duplicateEntry(contextMenu.entryIndex)">Duplicate</button>
+    </div>
+  </div>
+
+  <!-- Load Vue 3 -->
+  <script src="https://unpkg.com/vue@3"></script>
+  <!-- Load Wavesurfer.js v6.6.4 and its spectrogram plugin -->
+  <script src="https://unpkg.com/wavesurfer.js@6.6.4"></script>
+  <script src="https://unpkg.com/wavesurfer.js@6.6.4/dist/plugin/wavesurfer.spectrogram.min.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          fileId: "",
+          audioLoaded: false,
+          audioLoading: false,
+          wavesurfer: null,
+          fullBuffer: null,
+          chunkDuration: 3,      // visible seconds
+          currentChunkStart: 0,  // current chunk start (seconds)
+          fileDuration: 0,
+          notations: [],
+          isPlaying: false,
+          isLooping: false,
+          dragInfo: { dragging: false, entryIndex: null, offsetX: 0 },
+          playheadDragging: false,
+          vocabulary: ["ca", "ka", "w", "aw", "aaw", "kl", "aa", "ee", "rrr"],
+          tokenColors: {
+            "ca": "#4caf50",
+            "ka": "#2196f3",
+            "w": "#ff9800",
+            "aw": "#9c27b0",
+            "aaw": "#e91e63",
+            "klee": "#00bcd4"
+          },
+          contextMenu: { visible: false, x: 0, y: 0, entryIndex: null }
+        };
+      },
+      computed: {
+        zoomLevel() {
+          const container = document.getElementById("spectrogram");
+          return container ? container.offsetWidth / this.chunkDuration : 100;
+        },
+        // Compute visible notations with their full (original) indices and computed positions.
+        visibleNotations() {
+          const trackEl = document.getElementById("transcription-track");
+          const trackWidth = trackEl ? trackEl.offsetWidth : 0;
+          return this.notations
+            .map((entry, fullIndex) => ({ entry, fullIndex }))
+            .filter(({ entry }) =>
+              entry.timestamp >= this.currentChunkStart &&
+              entry.timestamp < this.currentChunkStart + this.chunkDuration
+            )
+            .map(({ entry, fullIndex }) => ({
+              entry,
+              fullIndex,
+              computedPosition: ((entry.timestamp - this.currentChunkStart) / this.chunkDuration) * trackWidth
+            }));
+        },
+        // NEW: Compute available chunk start times as options for the dropdown.
+        chunkOptions() {
+          const options = [];
+          for (let t = 0; t < this.fileDuration; t += this.chunkDuration) {
+            options.push(t);
+          }
+          return options;
+        }
+      },
+      methods: {
+        initAudio() {
+          if (!this.fileId) {
+            alert("Please enter a File ID");
+            return;
+          }
+          if (this.wavesurfer) {
+            this.wavesurfer.destroy();
+          }
+          this.audioLoading = true;
+          this.wavesurfer = WaveSurfer.create({
+            container: "#waveform",
+            waveColor: "#888",
+            progressColor: "#555",
+            height: 80,
+            scrollParent: true,
+            plugins: [
+              WaveSurfer.spectrogram.create({
+                container: "#spectrogram",
+                labels: true,
+                height: 200,
+                splitChannels: false,
+                scale: "mel",
+                frequencyMax: 8000,
+                frequencyMin: 0,
+                fftSamples: 1024,
+                labelsBackground: "rgba(0, 0, 0, 0.1)"
+              })
+            ]
+          });
+          this.wavesurfer.on("error", (err) => {
+            console.error("Wavesurfer loading error:", err);
+          });
+          this.wavesurfer.on("play", () => {
+            this.isPlaying = true;
+            this.updatePlayhead();
+          });
+          this.wavesurfer.on("pause", () => {
+            this.isPlaying = false;
+            this.updatePlayhead();
+            if (this.isLooping) {
+              this.wavesurfer.play(0);
+            }
+          });
+          // Update playhead during audio processing.
+          this.wavesurfer.on("audioprocess", () => {
+            this.updatePlayhead();
+          });
+          // Load full audio file.
+          const audioUrl = `/cache/library/${this.fileId}.mp3`;
+          fetch(audioUrl)
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => {
+              const AudioContext = window.AudioContext || window.webkitAudioContext;
+              const audioCtx = new AudioContext();
+              return audioCtx.decodeAudioData(arrayBuffer);
+            })
+            .then(decodedBuffer => {
+              this.fullBuffer = decodedBuffer;
+              this.fileDuration = this.fullBuffer.duration;
+              this.audioLoaded = true;
+              this.currentChunkStart = 0;
+              this.loadChunk();
+              this.updateZoom();
+              this.loadNotations();
+            })
+            .catch(e => console.error("Audio fetch/decode error:", e));
+        },
+        getChunkBuffer() {
+          if (!this.fullBuffer) return null;
+          const sampleRate = this.fullBuffer.sampleRate;
+          const startSample = Math.floor(this.currentChunkStart * sampleRate);
+          const chunkSamples = Math.floor(this.chunkDuration * sampleRate);
+          const numChannels = this.fullBuffer.numberOfChannels;
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          const tempCtx = new AudioContext();
+          const newBuffer = tempCtx.createBuffer(numChannels, chunkSamples, sampleRate);
+          for (let ch = 0; ch < numChannels; ch++) {
+            const fullData = this.fullBuffer.getChannelData(ch);
+            const newData = newBuffer.getChannelData(ch);
+            for (let i = 0; i < chunkSamples; i++) {
+              const sourceIndex = startSample + i;
+              newData[i] = (sourceIndex < fullData.length) ? fullData[sourceIndex] : 0;
+            }
+          }
+          tempCtx.close();
+          return newBuffer;
+        },
+        loadChunk() {
+          const chunkBuffer = this.getChunkBuffer();
+          if (chunkBuffer) {
+            this.wavesurfer.once("ready", () => { this.updateZoom(); });
+            this.wavesurfer.loadDecodedBuffer(chunkBuffer);
+            this.wavesurfer.seekTo(0);
+          }
+        },
+        updateChunk() {
+          this.loadChunk();
+          this.updateZoom();
+        },
+        nextChunk() {
+          if (this.currentChunkStart + this.chunkDuration < this.fileDuration) {
+            this.currentChunkStart += this.chunkDuration;
+            this.loadChunk();
+            this.updateZoom();
+            this.loadNotations();
+            this.wavesurfer.play();
+          }
+        },
+        prevChunk() {
+          if (this.currentChunkStart - this.chunkDuration >= 0) {
+            this.currentChunkStart -= this.chunkDuration;
+            this.loadChunk();
+            this.updateZoom();
+            this.loadNotations();
+          }
+        },
+        // NEW: Method triggered by manual chunk selection via the dropdown.
+        chunkSelectChanged() {
+          this.loadChunk();
+          this.updateZoom();
+          this.loadNotations();
+        },
+        updateZoom() {
+          const zoom = this.zoomLevel;
+          if (this.wavesurfer) {
+            this.wavesurfer.zoom(zoom);
+          }
+        },
+        updatePlayhead() {
+          const currentTime = this.wavesurfer.getCurrentTime();
+          const ratio = currentTime / this.chunkDuration;
+          const wf = document.getElementById("waveform");
+          const phw = document.getElementById("playhead-waveform");
+          if (wf && phw) {
+            phw.style.left = (ratio * wf.offsetWidth) + "px";
+          }
+          const spec = document.getElementById("spectrogram");
+          const phs = document.getElementById("playhead-spectrogram");
+          if (spec && phs) {
+            phs.style.left = (ratio * spec.offsetWidth) + "px";
+          }
+        },
+        togglePlayPause() {
+          this.wavesurfer?.playPause();
+        },
+        toggleLoop() {
+          this.isLooping = !this.isLooping;
+          if (this.isLooping && !this.isPlaying) {
+            this.wavesurfer.play();
+          }
+        },
+        formatTimestamp(time) {
+          const date = new Date(null);
+          date.setSeconds(time);
+          return date.toISOString().substr(11, 8) + ",000";
+        },
+        copySRT() {
+          let srtText = "";
+          let index = 1;
+          for (let t = 0; t < this.fileDuration; t += this.chunkDuration) {
+            const start = t;
+            const end = Math.min(t + this.chunkDuration, this.fileDuration);
+            const groupEntries = this.notations.filter(n => n.timestamp >= start && n.timestamp < end);
+            const textLine = groupEntries.map(n => n.token).join(" ");
+            srtText += `${index}\n${this.formatTimestamp(start)} --> ${this.formatTimestamp(end)}\n${textLine}\n\n`;
+            index++;
+          }
+          navigator.clipboard.writeText(srtText).then(() => {
+            alert("SRT copied to clipboard!");
+          });
+        },
+        // When clicking the transcription track, create a new notation at the calculated timestamp.
+        trackClick(event) {
+          if (event.target.closest(".notation-entry")) return;
+          const trackRect = event.currentTarget.getBoundingClientRect();
+          const x = event.clientX - trackRect.left;
+          const newTimestamp = this.currentChunkStart + (x / trackRect.width) * this.chunkDuration;
+          this.notations.push({ timestamp: newTimestamp, token: "", top: 5, editing: true });
+          this.saveNotations();
+        },
+        editEntry(fullIndex) {
+          this.notations[fullIndex].editing = true;
+        },
+        finishEditing(fullIndex) {
+          const updated = { ...this.notations[fullIndex] };
+          updated.token = updated.token.trim();
+          updated.editing = false;
+          this.notations.splice(fullIndex, 1, updated);
+          this.saveNotations();
+        },
+        tokenizeAndColor(text) {
+          let html = "";
+          let remaining = text;
+          const sortedVocab = [...this.vocabulary].sort((a, b) => b.length - a.length);
+          while (remaining.length > 0) {
+            let found = false;
+            for (let token of sortedVocab) {
+              if (remaining.startsWith(token)) {
+                const color = this.tokenColors[token] || "#777";
+                html += `<span class="token-valid" style="background-color: ${color};">${token}</span>`;
+                remaining = remaining.slice(token.length);
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              html += `<span class="token-invalid">${remaining[0]}</span>`;
+              remaining = remaining.slice(1);
+            }
+          }
+          return html;
+        },
+        startDragging(fullIndex, event) {
+          if (this.dragInfo.dragging) return;
+          this.dragInfo.dragging = true;
+          // Use the original index (fullIndex) for updating this.notations.
+          this.dragInfo.entryIndex = fullIndex;
+          const handleEl = event.currentTarget;
+          const rect = handleEl.getBoundingClientRect();
+          this.dragInfo.offsetX = event.clientX - rect.left;
+          document.addEventListener("mousemove", this.onDrag);
+          document.addEventListener("mouseup", this.stopDragging);
+        },
+        // Update dragging to compute the timestamp based on the new X position without saving continuously.
+        onDrag(event) {
+          if (!this.dragInfo.dragging) return;
+          const trackEl = document.getElementById("transcription-track");
+          const trackRect = trackEl.getBoundingClientRect();
+          let newX = event.clientX - trackRect.left - this.dragInfo.offsetX;
+          newX = Math.max(0, Math.min(newX, trackRect.width));
+          const newTimestamp = this.currentChunkStart + (newX / trackRect.width) * this.chunkDuration;
+          // Update the notation's timestamp without triggering a save.
+          this.notations[this.dragInfo.entryIndex].timestamp = newTimestamp;
+        },
+        // When the drag stops, remove event listeners and save once.
+        stopDragging() {
+          this.dragInfo.dragging = false;
+          document.removeEventListener("mousemove", this.onDrag);
+          document.removeEventListener("mouseup", this.stopDragging);
+          this.saveNotations();
+        },
+        showContextMenu(fullIndex, event) {
+          this.contextMenu.visible = true;
+          this.contextMenu.x = event.clientX;
+          this.contextMenu.y = event.clientY;
+          this.contextMenu.entryIndex = fullIndex;
+        },
+        deleteEntry(fullIndex) {
+          this.notations.splice(fullIndex, 1);
+          this.contextMenu.visible = false;
+          this.saveNotations();
+        },
+        duplicateEntry(fullIndex) {
+          const entry = this.notations[fullIndex];
+          const newEntry = { ...entry, timestamp: entry.timestamp + 0.1, editing: false };
+          this.notations.splice(fullIndex + 1, 0, newEntry);
+          this.contextMenu.visible = false;
+          this.saveNotations();
+        },
+        saveNotations() {
+          console.log("Saving notations:", this.notations);
+          fetch('/updateNotationLabels', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fileId: this.fileId,
+              notations: this.notations
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              console.log("Notations saved successfully.");
+            } else {
+              console.error("Error saving notations:", data.error);
+            }
+          })
+          .catch(err => console.error("Error saving notations:", err));
+        },
+        loadNotations() {
+          fetch(`/getNotationLabels?fileId=${this.fileId}`)
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                this.notations = Array.isArray(data.notations) ? data.notations : [];
+              } else {
+                console.error("Error loading notations:", data.error);
+              }
+            })
+            .catch(error => console.error("Error loading notations:", error));
+        },
+        jumpToTime(event) {
+          // If a playhead drag is in progress, ignore clicks.
+          if (this.playheadDragging) return;
+          const rect = event.currentTarget.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const ratio = x / rect.width;
+          this.wavesurfer.seekTo(ratio);
+          this.updatePlayhead();
+          if (this.isPlaying) {
+            this.wavesurfer.play(ratio);
+          }
+        },
+        // START PLAYHEAD DRAG HANDLERS
+        startPlayheadDrag(event) {
+          event.preventDefault();
+          this.playheadDragging = true;
+          document.addEventListener("mousemove", this.onPlayheadDrag);
+          document.addEventListener("mouseup", this.stopPlayheadDrag);
+        },
+        onPlayheadDrag(event) {
+          const wfElem = document.getElementById("waveform");
+          if (!wfElem) return;
+          const rect = wfElem.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const ratio = Math.min(Math.max(x / rect.width, 0), 1);
+          this.wavesurfer.seekTo(ratio);
+          this.updatePlayhead();
+        },
+        stopPlayheadDrag(event) {
+          this.playheadDragging = false;
+          document.removeEventListener("mousemove", this.onPlayheadDrag);
+          document.removeEventListener("mouseup", this.stopPlayheadDrag);
+        },
+        // END PLAYHEAD DRAG HANDLERS
+        // Global keydown handler: SPACE toggles play/pause.
+        onKeyDown(e) {
+          if (e.code === "Space") {
+            e.preventDefault();
+            this.togglePlayPause();
+          }
+        },
+        // Hide context menu when clicking outside.
+        onWindowClick(e) {
+          if (this.contextMenu.visible) {
+            this.contextMenu.visible = false;
+          }
+        }
+      },
+      mounted() {
+        window.addEventListener("keydown", this.onKeyDown);
+        window.addEventListener("click", this.onWindowClick);
+      },
+      beforeUnmount() {
+        window.removeEventListener("keydown", this.onKeyDown);
+        window.removeEventListener("click", this.onWindowClick);
+      }
+    });
+
+    // Custom directive to auto-focus inputs.
+    app.directive("focus", {
+      mounted(el) {
+        el.focus();
+      }
+    });
+
+    app.mount("#app");
+
+    function generateBluePalette() {
+      const palette = [];
+      for (let i = 0; i < 256; i++) {
+        const t = i / 255;
+        const blue = Math.floor(100 + t * (255 - 100));
+        const r = 30;
+        const g = 30;
+        const b = blue;
+        const hex = '#' +
+          r.toString(16).padStart(2, '0') +
+          g.toString(16).padStart(2, '0') +
+          b.toString(16).padStart(2, '0');
+        palette.push(hex);
+      }
+      return palette;
+    }
+  </script>
+</body>
+</html>

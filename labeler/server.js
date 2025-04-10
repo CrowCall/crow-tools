@@ -35,6 +35,49 @@ app.post('/updateLabels', (req, res) => {
   }
 });
 
+// Add below your updateLabels endpoint in server.js
+app.post('/updateNotationLabels', (req, res) => {
+  // Expecting: { fileId: 'xxx', notations: { <timestamp>: "transcription text", ... } }
+  const update = req.body;
+  const notationFile = path.join(__dirname, '../', '.cache', 'notation_labels.json');
+  let allNotations = {};
+  try {
+    if (fs.existsSync(notationFile)) {
+      const data = fs.readFileSync(notationFile, 'utf8');
+      allNotations = JSON.parse(data);
+    }
+  } catch (e) {
+    console.error("Error reading existing notation labels:", e);
+  }
+
+  // Update the notation for the file
+  allNotations[update.fileId] = update.notations;
+
+  try {
+    fs.writeFileSync(notationFile, JSON.stringify(allNotations, null, 4));
+    res.json({ success: true });
+  } catch (e) {
+    console.error("Error writing notation labels:", e);
+    res.status(500).json({ success: false, error: 'Failed to update notations.' });
+  }
+});
+
+app.get('/getNotationLabels', (req, res) => {
+  const fileId = req.query.fileId;
+  const notationFile = path.join(__dirname, '../', '.cache', 'notation_labels.json');
+  let allNotations = {};
+  try {
+    if (fs.existsSync(notationFile)) {
+      const data = fs.readFileSync(notationFile, 'utf8');
+      allNotations = JSON.parse(data);
+    }
+  } catch (e) {
+    console.error("Error reading notation labels:", e);
+    return res.status(500).json({ success: false, error: 'Error reading notation labels.' });
+  }
+  res.json({ success: true, notations: allNotations[fileId] || {} });
+});
+
 app.get('/api/embeddings', (req, res) => {
     const embeddingsFile = path.join(__dirname, '../', '.cache', 'embeddings-3d.json');
     if (fs.existsSync(embeddingsFile)) {
