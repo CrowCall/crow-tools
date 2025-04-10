@@ -117,8 +117,8 @@ provides a 3D interactive embedding feature. Built with Vue v3 and Node.js.
 
 ### Transcriber
 The transcriber module provides a web interface for segmenting crow audio and labeling calls with a custom notation 
-system. It supports waveform and spectrogram views, audio playback, and SRT export for training crow-to-text models. 
-Built with Vue v3 and Node.js.
+system and limited vocabulary tokenizer. It supports waveform and spectrogram views, audio playback, and SRT export 
+for training crow-to-text models. Built with Vue v3 and Node.js.
 
 ![transcriber.png](docs/images/transcriber.png)
 
