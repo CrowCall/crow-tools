@@ -180,12 +180,12 @@ def generate_detection_summary(detections, gap=5):
     The start times are formatted as mm:ss.
     """
     # Define binary detection attributes.
-    binary_keys = ["alert", "begging", "grief", "softSong", "rattle", "mob"]
+    binary_keys = ["alert", "begging", "softSong", "rattle", "mob"]
 
     # Filter detections.
     filtered = [d for d in detections if d.get("quality") == 2 and any(d.get(attr, False) for attr in binary_keys)]
     if not filtered:
-        return "No high-quality detections with binary features were found in the audio file."
+        return "No crow detections were found in the audio file."
 
     # Helper: Format seconds as mm:ss.
     def format_time(seconds):
@@ -243,7 +243,7 @@ def generate_detection_summary(detections, gap=5):
         times_str = ", ".join(format_time(t) for t in collapsed)
         num_groups = len(collapsed)
         summary_parts.append(f"{num_groups} {attr_nl} calls ({description}) at {times_str}.")
-    return " ".join(summary_parts)
+    return "\n".join(summary_parts)
 
 ###############################################################################
 # INTERACTIVE TIMELINE PLAYER
