@@ -146,16 +146,21 @@
     </div>
     <!-- Zoom & Navigation Controls Row (visible when audio is loaded) -->
     <div class="row mb-3" v-show="audioLoaded">
-      <div class="col-12 col-md-6">
-        <label for="zoomSlider" class="form-label">Zoom (visible seconds):</label>
+      <div class="col-12 col-md-6 d-flex align-items-center">
+        <label for="zoomSlider" class="form-label me-2">Zoom:</label>
         <input type="range" id="zoomSlider" class="form-range" v-model.number="chunkDuration" min="3" max="30" step="1" @input="updateChunk">
-        <span>{{ chunkDuration }} seconds</span>
+        <span class="ms-2 text-nowrap">{{ chunkDuration }} seconds</span>
       </div>
-      <div class="col-12 col-md-6 d-flex justify-content-end align-items-end">
+
+      <div class="col-12 col-md-2 d-flex justify-content-end align-items-end">
+        <!-- Vocabulary Modal Trigger Button -->
+        <button class="btn btn-info ms-2" @click="openVocabModal">Vocabulary</button>
+      </div>
+
+      <div class="col-12 col-md-4 d-flex justify-content-end align-items-end">
         <!-- Previous Chunk button -->
         <button class="btn btn-secondary me-2" @click="prevChunk" :disabled="currentChunkStart === 0">Previous Chunk</button>
-
-        <!-- NEW: Dropdown for chunk selection -->
+        <!-- Dropdown for chunk selection -->
         <select class="form-select me-2" style="width: auto;" v-model.number="currentChunkStart" @change="chunkSelectChanged">
           <option v-for="chunk in chunkOptions" :key="chunk" :value="chunk">
             {{ formatTimestamp(chunk) }}
@@ -169,7 +174,6 @@
     <!-- Waveform Row -->
     <div class="row mb-3" v-show="audioLoading">
       <div class="col">
-        <!-- Added mousedown handler for playhead drag -->
         <div id="waveform" @click="jumpToTime" @mousedown="startPlayheadDrag">
           <div id="playhead-waveform" class="playhead"></div>
         </div>
@@ -188,7 +192,7 @@
     <div class="row mb-3" v-show="audioLoaded">
       <div class="col">
         <div id="transcription-track" @click="trackClick($event)">
-          <!-- Display computed visible notations using their original indices -->
+          <!-- Display computed visible notations with computed positions and timestamp -->
           <div v-for="item in visibleNotations" :key="item.fullIndex"
                class="notation-entry"
                :style="{ left: item.computedPosition + 'px', top: item.entry.top + 'px' }"
@@ -202,6 +206,8 @@
               </template>
               <template v-else>
                 <span v-html="tokenizeAndColor(item.entry.token)"></span>
+                <br>
+                <small>{{ formatSeconds(item.entry.timestamp) }} sec</small>
               </template>
             </div>
           </div>
@@ -212,7 +218,7 @@
     <div class="row mb-3" v-show="audioLoaded">
       <div class="col d-flex justify-content-between align-items-center">
         <div>
-          <button class="btn btn-primary" @click="togglePlayPause">{{ isPlaying ? 'Pause' : 'Play' }}</button>&nbsp;
+          <button class="btn btn-primary" @click="togglePlayPause">{{ isPlaying ? 'Pause' : 'Play' }}</button>
         </div>
         <button class="btn btn-success" @click="copySRT">Copy SRT</button>
       </div>
@@ -222,6 +228,61 @@
          :style="{ top: contextMenu.y + 'px', left: contextMenu.x + 'px' }">
       <button class="btn btn-sm btn-danger me-2" @click="deleteEntry(contextMenu.entryIndex)">Delete</button>
       <button class="btn btn-sm btn-info" @click="duplicateEntry(contextMenu.entryIndex)">Duplicate</button>
+    </div>
+
+    <!-- Vocabulary Modal -->
+    <div v-if="vocabModalVisible" class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content text-dark">
+          <div class="modal-header">
+            <h5 class="modal-title">Vocabulary</h5>
+            <button type="button" class="btn-close" @click="closeVocabModal"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Individual Vocabulary Tokens -->
+            <h6>Individual Tokens</h6>
+            <div class="d-flex flex-wrap mb-3">
+              <button v-for="(v, index) in vocabSegments" :key="index"
+                      class="btn btn-sm m-1"
+                      :style="{ 'background-color': tokenColors[v.token] || '#777', color: '#fff' }"
+                      @click="playVocabSegment(v)">
+                {{ v.token }} ({{ (v.end - v.start).toFixed(1) }} sec)
+              </button>
+            </div>
+            <!-- Combination Examples using a Table and Button Group -->
+            <h6>Combination Examples</h6>
+            <table class="table table-dark table-bordered">
+              <tbody>
+                <tr v-for="(group, idx) in vocabExampleGroups" :key="idx">
+                  <td style="width: 200px;">{{ group.label }}</td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <button
+                        v-for="(tokenObj, tIdx) in group.tokens" :key="tIdx"
+                        type="button"
+                        class="btn btn-sm"
+                        :style="{ backgroundColor: tokenColors[tokenObj.token] || '#777', color: '#fff' }"
+                        @click="playVocabSegment(tokenObj)">
+                        {{ tokenObj.token }} ({{ (tokenObj.end - tokenObj.start).toFixed(1) }} sec)
+                      </button>
+                      <button
+                        v-if="group.tokens.length > 0"
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary"
+                        @click="playVocabSegment(group.all)">
+                        ALL ({{ (group.all.end - group.all.start).toFixed(1) }} sec)
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeVocabModal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -264,7 +325,54 @@
               "ta": "#3f51b5", "ak": "#3f51b5", "t": "#3f51b5",
               "u": "#009688", "g": "#009688"
           },
-          contextMenu: { visible: false, x: 0, y: 0, entryIndex: null }
+          contextMenu: { visible: false, x: 0, y: 0, entryIndex: null },
+          // Data for individual vocab segments (update start/end as needed)
+          vocabSegments: [
+            { token: "ca", start: 0.0, end: 0.0 },
+            { token: "ka", start: 5.32, end: 5.5 },
+            { token: "cr", start: 0.0, end: 0.0 },
+            { token: "kr", start: 0.0, end: 0.0 },
+            { token: "w", start: 0.0, end: 0.0 },
+            { token: "ugh", start: 0.0, end: 0.0 },
+            { token: "a", start: 0.0, end: 0.0 },
+            { token: "h", start: 0.0, end: 0.0 }
+          ],
+          // New data for example call groups using a table and button group:
+          vocabExampleGroups: [
+            {
+              label: "Short Call",
+              tokens: [
+                { token: "ca", start: 11.12, end: 11.4 },
+              ],
+              all: { start: 11.12, end: 11.4 }
+            },
+            { label: "Short-Medium", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Medium Call (Harsh)", tokens: [
+                { token: "ka", start: 12.76, end: 13.0 },
+                { token: "w", start: 13.0, end: 13.2 },
+              ],
+              all: { start: 12.76, end: 13.2 } },
+            { label: "Long Call", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Harsh Call", tokens: [
+                { token: "ka", start: 5.3, end: 5.6 },
+                { token: "a", start: 5.6, end: 5.9 },
+                { token: "a", start: 5.9, end: 6.2 },
+                { token: "w", start: 6.2, end: 6.4 }
+              ],
+              all: { start: 5.3, end: 6.4 }
+            },
+            { label: "Ko Call", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Two-Syllable Call", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Double Short Call", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Rattle", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Juvenile Begging", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Adult Begging", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Subsong", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Klee-oh-ow", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Gurgle", tokens: [], all: { start: 0.0, end: 0.0 } },
+            { label: "Snaps/Clacks", tokens: [], all: { start: 0.0, end: 0.0 } }
+          ],
+          vocabModalVisible: false
         };
       },
       computed: {
@@ -272,7 +380,7 @@
           const container = document.getElementById("spectrogram");
           return container ? container.offsetWidth / this.chunkDuration : 100;
         },
-        // Compute visible notations with their full (original) indices and computed positions.
+        // Compute visible notations with computed positions.
         visibleNotations() {
           const trackEl = document.getElementById("transcription-track");
           const trackWidth = trackEl ? trackEl.offsetWidth : 0;
@@ -288,7 +396,7 @@
               computedPosition: ((entry.timestamp - this.currentChunkStart) / this.chunkDuration) * trackWidth
             }));
         },
-        // NEW: Compute available chunk start times as options for the dropdown.
+        // Compute available chunk start times as dropdown options.
         chunkOptions() {
           const options = [];
           for (let t = 0; t < this.fileDuration; t += this.chunkDuration) {
@@ -303,9 +411,7 @@
             alert("Please enter a File ID");
             return;
           }
-          if (this.wavesurfer) {
-            this.wavesurfer.destroy();
-          }
+          if (this.wavesurfer) { this.wavesurfer.destroy(); }
           this.audioLoading = true;
           this.wavesurfer = WaveSurfer.create({
             container: "#waveform",
@@ -327,9 +433,7 @@
               })
             ]
           });
-          this.wavesurfer.on("error", (err) => {
-            console.error("Wavesurfer loading error:", err);
-          });
+          this.wavesurfer.on("error", (err) => { console.error("Wavesurfer loading error:", err); });
           this.wavesurfer.on("play", () => {
             this.isPlaying = true;
             this.updatePlayhead();
@@ -337,15 +441,9 @@
           this.wavesurfer.on("pause", () => {
             this.isPlaying = false;
             this.updatePlayhead();
-            if (this.isLooping) {
-              this.wavesurfer.play(0);
-            }
+            if (this.isLooping) { this.wavesurfer.play(0); }
           });
-          // Update playhead during audio processing.
-          this.wavesurfer.on("audioprocess", () => {
-            this.updatePlayhead();
-          });
-          // Load full audio file.
+          this.wavesurfer.on("audioprocess", () => { this.updatePlayhead(); });
           const audioUrl = `/cache/library/${this.fileId}.mp3`;
           fetch(audioUrl)
             .then(response => response.arrayBuffer())
@@ -414,7 +512,6 @@
             this.loadNotations();
           }
         },
-        // NEW: Method triggered by manual chunk selection via the dropdown.
         chunkSelectChanged() {
           this.loadChunk();
           this.updateZoom();
@@ -422,37 +519,33 @@
         },
         updateZoom() {
           const zoom = this.zoomLevel;
-          if (this.wavesurfer) {
-            this.wavesurfer.zoom(zoom);
-          }
+          if (this.wavesurfer) { this.wavesurfer.zoom(zoom); }
         },
         updatePlayhead() {
           const currentTime = this.wavesurfer.getCurrentTime();
           const ratio = currentTime / this.chunkDuration;
           const wf = document.getElementById("waveform");
           const phw = document.getElementById("playhead-waveform");
-          if (wf && phw) {
-            phw.style.left = (ratio * wf.offsetWidth) + "px";
-          }
+          if (wf && phw) { phw.style.left = (ratio * wf.offsetWidth) + "px"; }
           const spec = document.getElementById("spectrogram");
           const phs = document.getElementById("playhead-spectrogram");
-          if (spec && phs) {
-            phs.style.left = (ratio * spec.offsetWidth) + "px";
-          }
+          if (spec && phs) { phs.style.left = (ratio * spec.offsetWidth) + "px"; }
         },
         togglePlayPause() {
           this.wavesurfer?.playPause();
         },
         toggleLoop() {
           this.isLooping = !this.isLooping;
-          if (this.isLooping && !this.isPlaying) {
-            this.wavesurfer.play();
-          }
+          if (this.isLooping && !this.isPlaying) { this.wavesurfer.play(); }
         },
         formatTimestamp(time) {
           const date = new Date(null);
           date.setSeconds(time);
           return date.toISOString().substr(11, 8) + ",000";
+        },
+        // New helper to format a timestamp (in seconds) with 2 decimals.
+        formatSeconds(value) {
+          return parseFloat(value).toFixed(2);
         },
         copySRT() {
           let srtText = "";
@@ -465,11 +558,8 @@
             srtText += `${index}\n${this.formatTimestamp(start)} --> ${this.formatTimestamp(end)}\n${textLine}\n\n`;
             index++;
           }
-          navigator.clipboard.writeText(srtText).then(() => {
-            alert("SRT copied to clipboard!");
-          });
+          navigator.clipboard.writeText(srtText).then(() => { alert("SRT copied to clipboard!"); });
         },
-        // When clicking the transcription track, create a new notation at the calculated timestamp.
         trackClick(event) {
           if (event.target.closest(".notation-entry")) return;
           const trackRect = event.currentTarget.getBoundingClientRect();
@@ -513,7 +603,6 @@
         startDragging(fullIndex, event) {
           if (this.dragInfo.dragging) return;
           this.dragInfo.dragging = true;
-          // Use the original index (fullIndex) for updating this.notations.
           this.dragInfo.entryIndex = fullIndex;
           const handleEl = event.currentTarget;
           const rect = handleEl.getBoundingClientRect();
@@ -521,7 +610,6 @@
           document.addEventListener("mousemove", this.onDrag);
           document.addEventListener("mouseup", this.stopDragging);
         },
-        // Update dragging to compute the timestamp based on the new X position without saving continuously.
         onDrag(event) {
           if (!this.dragInfo.dragging) return;
           const trackEl = document.getElementById("transcription-track");
@@ -529,10 +617,8 @@
           let newX = event.clientX - trackRect.left - this.dragInfo.offsetX;
           newX = Math.max(0, Math.min(newX, trackRect.width));
           const newTimestamp = this.currentChunkStart + (newX / trackRect.width) * this.chunkDuration;
-          // Update the notation's timestamp without triggering a save.
           this.notations[this.dragInfo.entryIndex].timestamp = newTimestamp;
         },
-        // When the drag stops, remove event listeners and save once.
         stopDragging() {
           this.dragInfo.dragging = false;
           document.removeEventListener("mousemove", this.onDrag);
@@ -562,10 +648,7 @@
           fetch('/updateNotationLabels', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              fileId: this.fileId,
-              notations: this.notations
-            })
+            body: JSON.stringify({ fileId: this.fileId, notations: this.notations })
           })
           .then(response => response.json())
           .then(data => {
@@ -590,18 +673,14 @@
             .catch(error => console.error("Error loading notations:", error));
         },
         jumpToTime(event) {
-          // If a playhead drag is in progress, ignore clicks.
           if (this.playheadDragging) return;
           const rect = event.currentTarget.getBoundingClientRect();
           const x = event.clientX - rect.left;
           const ratio = x / rect.width;
           this.wavesurfer.seekTo(ratio);
           this.updatePlayhead();
-          if (this.isPlaying) {
-            this.wavesurfer.play(ratio);
-          }
+          if (this.isPlaying) { this.wavesurfer.play(ratio); }
         },
-        // START PLAYHEAD DRAG HANDLERS
         startPlayheadDrag(event) {
           event.preventDefault();
           this.playheadDragging = true;
@@ -617,24 +696,48 @@
           this.wavesurfer.seekTo(ratio);
           this.updatePlayhead();
         },
-        stopPlayheadDrag(event) {
+        stopPlayheadDrag() {
           this.playheadDragging = false;
           document.removeEventListener("mousemove", this.onPlayheadDrag);
           document.removeEventListener("mouseup", this.stopPlayheadDrag);
         },
-        // END PLAYHEAD DRAG HANDLERS
-        // Global keydown handler: SPACE toggles play/pause.
         onKeyDown(e) {
           if (e.code === "Space") {
             e.preventDefault();
             this.togglePlayPause();
           }
         },
-        // Hide context menu when clicking outside.
         onWindowClick(e) {
-          if (this.contextMenu.visible) {
-            this.contextMenu.visible = false;
+          if (this.contextMenu.visible) { this.contextMenu.visible = false; }
+        },
+        // Methods for Vocabulary Modal
+        openVocabModal() {
+          this.vocabModalVisible = true;
+          // Optionally, preload or re-read the audio buffer here.
+        },
+        closeVocabModal() {
+          this.vocabModalVisible = false;
+        },
+        // Plays a given vocab segment (can be from individual tokens or from example groups)
+        playVocabSegment(segment) {
+          if (!this.fullBuffer) return;
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          const ctx = new AudioContext();
+          const source = ctx.createBufferSource();
+          source.buffer = this.fullBuffer;
+          source.connect(ctx.destination);
+          const startTime = segment.start || 0;
+          const endTime = segment.end || 0;
+          const segmentDuration = endTime - startTime;
+          if (segmentDuration <= 0) {
+            alert("Vocab segment duration is not set. Please update the start and end times.");
+            return;
           }
+          source.start(0, startTime, segmentDuration);
+          setTimeout(() => {
+            source.stop();
+            ctx.close();
+          }, segmentDuration * 1000);
         }
       },
       mounted() {
@@ -649,9 +752,7 @@
 
     // Custom directive to auto-focus inputs.
     app.directive("focus", {
-      mounted(el) {
-        el.focus();
-      }
+      mounted(el) { el.focus(); }
     });
 
     app.mount("#app");
@@ -661,9 +762,7 @@
       for (let i = 0; i < 256; i++) {
         const t = i / 255;
         const blue = Math.floor(100 + t * (255 - 100));
-        const r = 30;
-        const g = 30;
-        const b = blue;
+        const r = 30, g = 30, b = blue;
         const hex = '#' +
           r.toString(16).padStart(2, '0') +
           g.toString(16).padStart(2, '0') +
