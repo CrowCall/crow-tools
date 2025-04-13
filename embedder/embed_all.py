@@ -1,4 +1,5 @@
 import os
+import librosa
 import numpy as np
 from embedder.embed import generate_embeddings
 from embedder.ispa import utils
@@ -51,7 +52,7 @@ def start_embeddings(denoised=False):
             continue
 
         print(f"Loading {audio_path} at {sample_rate} Hz.")
-        waveform, sr = utils.load_waveform(audio_path, tgt_sr=sample_rate)
+        waveform, sr = librosa.load(audio_path, sr=sample_rate, mono=True)
         if sr != sample_rate:
             print(f"Warning: Sample rate mismatch for {file_id}. Using SR={sr}.")
 
@@ -81,14 +82,14 @@ def start_embeddings(denoised=False):
         # 2) Compute and save volume data (if not existing)
         ############################################################
         if not os.path.exists(volume_out_path):
-            waveform = waveform.squeeze(0)  # shape now (N,) if single channel
-            waveform = waveform.detach().cpu().numpy()
-            total_samples = waveform.shape[-1]
+            # Ensure waveform is 1D. librosa.load returns a 1D array if mono=True,
+            # but in case it ends up 2D, squeeze the first axis.
+            if waveform.ndim > 1:
+                waveform = np.squeeze(waveform, axis=0)
+            total_samples = waveform.shape[0]
 
-            # Compute 1 volume metric per second (mean abs amplitude)
-            # We'll handle partial last second as well
+            # Compute 1 volume metric per second (mean absolute amplitude)
             total_seconds = int(np.ceil(total_samples / sr))
-
             volumes = []
             for sec in range(total_seconds):
                 start_samp = sec * sr
@@ -96,9 +97,9 @@ def start_embeddings(denoised=False):
                 segment = waveform[start_samp:end_samp]
                 if len(segment) == 0:
                     volumes.append(0.0)
-                    continue
-                mean_amp = np.mean(np.abs(segment))
-                volumes.append(mean_amp)
+                else:
+                    mean_amp = np.mean(np.abs(segment))
+                    volumes.append(mean_amp)
 
             volumes = np.array(volumes, dtype=np.float32)
             np.save(volume_out_path, volumes)
