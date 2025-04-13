@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+from tqdm import tqdm
 from embedder.ispa.features import FeatureBasedISPAPredictor
 import os
 
@@ -42,7 +43,7 @@ def generate_embeddings(waveform):
 
     # Process the waveform in chunks (so large files don't crash)
     num_samples = waveform.shape[0]
-    for start in range(0, num_samples, chunk_size):
+    for start in tqdm(range(0, num_samples, chunk_size)):
         # Take a chunk (if the final chunk is shorter, that's fine)
         chunk = waveform[start:start + chunk_size]
         # Add batch dimension back for feature extraction.

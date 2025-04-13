@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sounddevice as sd
 import torch
+from tqdm import tqdm
+import tempfile
 
 from classifier.classify import predict_embedding
 from embedder.embed import generate_embeddings
@@ -51,33 +53,36 @@ def get_data(arg, public_path=None):
         # Uncached mode: arg is a file path.
         print(f"Processing uncached file: {arg}")
         sample_rate = 8000  # force consistent sample rate (as in embed_all.py)
+        cache_path = os.path.join(tempfile.gettempdir(), os.path.basename(arg) + ".avg_embeddings.npy")
         try:
             audio, sr = librosa.load(arg, sr=sample_rate, mono=True)
         except Exception as e:
             print(f"Error loading audio from {arg}: {e}")
             sys.exit(1)
-        # Generate raw embeddings (shape: [num_frames, feature_dim])
-        print("Generating embeddings ...")
-        full_embeddings = generate_embeddings(audio)
-        full_embeddings = np.array(full_embeddings, dtype=np.float32)
-        num_frames = full_embeddings.shape[0]
-        # Average every 25 frames to get one embedding per second.
-        chunk_size = 25
-        num_chunks = int(np.ceil(num_frames / chunk_size))
-        embedding_means = []
-        for i in range(num_chunks):
-            start_idx = i * chunk_size
-            end_idx = min((i + 1) * chunk_size, num_frames)
-            chunk = full_embeddings[start_idx:end_idx]
-            mean_emb = np.mean(chunk, axis=0)
-            embedding_means.append(mean_emb)
-        embeddings = np.stack(embedding_means, axis=0)
-
+        if os.path.exists(cache_path):
+            embeddings = np.load(cache_path)
+        else:
+            print("Generating embeddings ...")
+            full_embeddings = generate_embeddings(audio)
+            full_embeddings = np.array(full_embeddings, dtype=np.float32)
+            num_frames = full_embeddings.shape[0]
+            # Average every 25 frames to get one embedding per second.
+            chunk_size = 25
+            num_chunks = int(np.ceil(num_frames / chunk_size))
+            embedding_means = []
+            for i in tqdm(range(num_chunks)):
+                start_idx = i * chunk_size
+                end_idx = min((i + 1) * chunk_size, num_frames)
+                chunk = full_embeddings[start_idx:end_idx]
+                mean_emb = np.mean(chunk, axis=0)
+                embedding_means.append(mean_emb)
+            embeddings = np.stack(embedding_means, axis=0)
+            np.save(cache_path, embeddings)
         # Compute per-second volume metrics (mean absolute amplitude).
         total_samples = len(audio)
         total_seconds = int(np.ceil(total_samples / sr))
         volumes = []
-        for sec in range(total_seconds):
+        for sec in tqdm(range(total_seconds)):
             start_samp = sec * sr
             end_samp = min((sec + 1) * sr, total_samples)
             segment = audio[start_samp:end_samp]
@@ -133,7 +138,7 @@ def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=
         device = "cuda" if torch.cuda.is_available() else "cpu"
     # Process seconds based on the lesser of embeddings length and volume length.
     num_seconds = min(embeddings.shape[0], len(volumes))
-    for i in range(num_seconds):
+    for i in tqdm(range(num_seconds)):
         if volumes[i] <= volume_threshold:
             continue
         emb = embeddings[i]
@@ -268,9 +273,16 @@ class TimelinePlayer:
         self.fig.subplots_adjust(left=0.1, right=0.85, top=0.9, bottom=0.2)
         self.fig.suptitle(f"File: {label} - Detection Timeline", fontsize=16)
 
-        # Plot waveform.
-        t = np.linspace(0, self.total_duration, len(self.audio))
-        self.ax_wave.plot(t, self.audio, color="blue", lw=0.8)
+        # <<-- MODIFIED: Downsample waveform for efficiency.
+        target_points = 1920
+        if len(self.audio) > target_points:
+            indices = np.linspace(0, len(self.audio) - 1, target_points).astype(int)
+            downsampled_audio = self.audio[indices]
+            t = np.linspace(0, self.total_duration, target_points)
+        else:
+            downsampled_audio = self.audio
+            t = np.linspace(0, self.total_duration, len(self.audio))
+        self.ax_wave.plot(t, downsampled_audio, color="blue", lw=0.8)
         self.ax_wave.set_ylabel("Amplitude")
         self.ax_wave.set_xlim(0, self.total_duration)
         self.ax_wave.set_title("Waveform")
