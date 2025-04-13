@@ -192,7 +192,7 @@ const app = Vue.createApp({
             }
         },
         loadCrowsCSV() {
-            const files = ['/cache/csv/crows.csv', '/cache/csv/crows-xeno-canto.csv'];
+            const files = ['/cache/csv/crows.csv', '/cache/csv/crows-xeno-canto.csv', '/cache/csv/local.csv' ];
             let remaining = files.length;
             files.forEach(file => {
                 Papa.parse(file, {

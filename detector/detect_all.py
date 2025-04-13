@@ -11,7 +11,8 @@ PATH = os.path.dirname(__file__)
 public_path = os.path.join(PATH, "..", ".cache")
 csv_paths = [
     os.path.join(public_path, "csv", "crows.csv"),
-    os.path.join(public_path, "csv", "crows-xeno-canto.csv")
+    os.path.join(public_path, "csv", "crows-xeno-canto.csv"),
+    os.path.join(public_path, "csv", "local.csv"),
 ]
 library_dir = os.path.join(public_path, "library")
 segments_path = os.path.join(public_path, "segments.json")
