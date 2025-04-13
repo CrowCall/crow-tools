@@ -3,6 +3,10 @@ import json
 import os
 import sys
 import time
+import uuid
+import shutil
+from datetime import datetime
+import tempfile
 
 import librosa
 import matplotlib
@@ -11,7 +15,10 @@ import numpy as np
 import sounddevice as sd
 import torch
 from tqdm import tqdm
-import tempfile
+
+# Import tkinter components for UI dialogs.
+import tkinter as tk
+from tkinter import messagebox, simpledialog
 
 from classifier.classify import predict_embedding
 from embedder.embed import generate_embeddings
@@ -160,7 +167,9 @@ def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=
             detections.append(detection)
     return detections, audio, sr
 
-
+###############################################################################
+# Generate detection summary (unchanged)
+###############################################################################
 def generate_detection_summary(detections, gap=5):
     """
     Returns a natural language paragraph summarizing high-quality detections.
@@ -211,7 +220,6 @@ def generate_detection_summary(detections, gap=5):
         return "adult" if age == 1 else "juvenile" if age == 2 else "of unknown age"
 
     # Group detections by binary attribute and natural description.
-    # For each (attribute, description) pair, store a list of start times (in seconds).
     groups = {}  # key: (attribute, description), value: list of start times (floats)
     for det in filtered:
         start = det.get("start_time")
@@ -228,31 +236,30 @@ def generate_detection_summary(detections, gap=5):
     # Build the paragraph summary.
     summary_parts = ["The following detections were observed in this recording:"]
     for (attr, description), times in groups.items():
-        # Collapse contiguous start times.
         collapsed = collapse_timestamps(times, gap)
         if not collapsed:
             continue
-        # Format the attribute nicely.
         attr_nl = attr.replace("softSong", "subsong")
-        # Format collapsed times as mm:ss.
         times_str = ", ".join(format_time(t) for t in collapsed)
         num_groups = len(collapsed)
         summary_parts.append(f"{num_groups} {attr_nl} calls ({description}) at {times_str}.")
-
-
     return " ".join(summary_parts)
 
 ###############################################################################
-# INTERACTIVE TIMELINE PLAYER (unchanged)
+# INTERACTIVE TIMELINE PLAYER
 ###############################################################################
 class TimelinePlayer:
-    def __init__(self, label, detections, audio, sr):
+    def __init__(self, label, detections, audio, sr, public_path=None, raw_file=None):
         """
         Args:
-          label (str): the file identifier or filename label.
-          detections (list): list of detection dicts (per second).
-          audio (np.ndarray): the audio waveform (mono).
+          label (str): file identifier or base filename.
+          detections (list): list of detection dictionaries.
+          audio (np.ndarray): audio waveform (mono).
           sr (int): sample rate.
+          public_path (str): base path for .cache directory.
+          raw_file (str): original file path if uncached raw file was provided;
+                          if None, then a cached file ID was provided and the
+                          "Add to Labeler" functionality is disabled.
         """
         self.label = label
         self.detections = detections
@@ -263,8 +270,15 @@ class TimelinePlayer:
         self.play_offset = 0.0  # seconds; playback start position
         self.play_start_time = None
 
+        if public_path is None:
+            self.public_path = os.path.join(os.path.dirname(__file__), "..", ".cache")
+        else:
+            self.public_path = public_path
+
+        # Store the original raw file (if provided).
+        self.source_file = raw_file
+
         # Define the boolean features to display.
-        # "other" is added for visualization if no standard attribute is detected.
         self.features = ["alert", "mob", "begging", "softSong", "rattle", "other"]
         self.feature_intervals = self.compute_feature_intervals()
 
@@ -273,7 +287,7 @@ class TimelinePlayer:
         self.fig.subplots_adjust(left=0.1, right=0.85, top=0.9, bottom=0.2)
         self.fig.suptitle(f"File: {label} - Detection Timeline", fontsize=16)
 
-        # <<-- MODIFIED: Downsample waveform for efficiency.
+        # Downsample waveform for efficiency.
         target_points = 1920
         if len(self.audio) > target_points:
             indices = np.linspace(0, len(self.audio) - 1, target_points).astype(int)
@@ -318,6 +332,12 @@ class TimelinePlayer:
         self.play_button = plt.Button(self.button_ax, "Play")
         self.play_button.on_clicked(self.toggle_play)
 
+        # Only add the "Add to Labeler" button if a raw file path was provided.
+        if self.source_file is not None:
+            self.add_button_ax = self.fig.add_axes([0.87, 0.12, 0.1, 0.05])
+            self.add_button = plt.Button(self.add_button_ax, "Add to Labeler")
+            self.add_button.on_clicked(self.add_to_labeler)
+
         # Connect mouse click and draw events.
         self.fig.canvas.mpl_connect("button_press_event", self.on_click)
         self.fig.canvas.mpl_connect("draw_event", self.on_draw)
@@ -330,26 +350,22 @@ class TimelinePlayer:
     def compute_feature_intervals(self):
         """
         Groups contiguous detection seconds for each feature.
-        For each detection, if none of the standard features (alert, mob, begging,
-        softSong, rattle) are true, then that second is grouped under "other".
+        If no standard feature (alert, mob, begging, softSong, rattle) is true,
+        the second is grouped under "other".
         """
-        # Initialize lists for each feature.
         feat_seconds = {feat: [] for feat in self.features}
         standard_feats = {"alert", "mob", "begging", "softSong", "rattle"}
 
         for det in self.detections:
             t = det["start_time"]
-            # Determine if any standard feature is true.
             has_feature = any(det.get(feat, False) for feat in standard_feats)
             if has_feature:
                 for feat in standard_feats:
                     if det.get(feat, False):
                         feat_seconds[feat].append(t)
             else:
-                # If no standard feature is present, add to "other".
                 feat_seconds["other"].append(t)
 
-        # Group contiguous seconds into intervals.
         intervals = {}
         for feat, times in feat_seconds.items():
             times = sorted(times)
@@ -359,14 +375,13 @@ class TimelinePlayer:
             start = times[0]
             prev = times[0]
             for current in times[1:]:
-                if current - prev > 1.5:  # gap indicates a new interval
+                if current - prev > 1.5:
                     intervals[feat].append((start, prev + 1))
                     start = current
                 prev = current
             intervals[feat].append((start, prev + 1))
         return intervals
 
-    # (Keep the rest of your TimelinePlayer methods unchanged)
     def on_draw(self, event):
         self.background = self.fig.canvas.copy_from_bbox(self.ax_det.bbox)
 
@@ -415,6 +430,144 @@ class TimelinePlayer:
                 sd.stop()
                 self.start_playback()
 
+    def add_to_labeler(self, event):
+        """Callback for the 'Add to Labeler' button for uncached files."""
+        base_path = self.public_path
+
+        # --- Determine suggested cluster (largest existing cluster + 1) ---
+        labels_file = os.path.join(base_path, "cluster_labels.json")
+        suggestion = 1
+        if os.path.exists(labels_file):
+            try:
+                with open(labels_file, "r") as f:
+                    data = json.load(f)
+                    clusters = [entry.get("cluster", 0) for entry in data.values()]
+                    if clusters:
+                        suggestion = max(clusters) + 1
+            except Exception as e:
+                print(f"Error reading {labels_file}: {e}")
+
+        # Prompt the user via UI for a cluster number.
+        root = tk.Tk()
+        root.withdraw()
+        cluster_int = simpledialog.askinteger("Cluster Input",
+                                               f"Enter cluster number (suggested: {suggestion}):",
+                                               initialvalue=suggestion,
+                                               parent=root)
+        root.destroy()
+        if cluster_int is None:
+            print("Cluster input cancelled. Operation aborted.")
+            return
+
+        # --- Generate GUID and add CSV record first ---
+        short_guid = str(uuid.uuid4())[:8]
+        csv_dir = os.path.join(base_path, "csv")
+        os.makedirs(csv_dir, exist_ok=True)
+        csv_file = os.path.join(csv_dir, "local.csv")
+        header = "ML Catalog Number,Date,Latitude,Longitude,Recordist,Media notes,Age/Sex,Average Community Rating,Filename\n"
+        today_date = datetime.now().strftime("%Y-%m-%d")
+        # Use the GUID as the file ID for the CSV record.
+        csv_row = f"{short_guid},{today_date},0,0,Unknown,N/A,N/A,0.0,{short_guid}\n"
+        if not os.path.exists(csv_file):
+            with open(csv_file, "w") as f:
+                f.write(header)
+                f.write(csv_row)
+        else:
+            with open(csv_file, "a") as f:
+                f.write(csv_row)
+
+        # --- Update cluster_labels.json using the new GUID for each detection ---
+        if os.path.exists(labels_file):
+            with open(labels_file, "r") as f:
+                try:
+                    cluster_labels = json.load(f)
+                except json.JSONDecodeError:
+                    cluster_labels = {}
+        else:
+            cluster_labels = {}
+
+        for det in self.detections:
+            if det['quality'] > 0:
+                key = f"{short_guid}-{int(det['start_time'])}-{int(det['end_time'])}"
+                det['cluster'] = cluster_int
+                cluster_labels[key] = det
+        with open(labels_file, "w") as f:
+            json.dump(cluster_labels, f, indent=4)
+        labels_count = len(self.detections)
+
+        # --- Update cluster_segments.json using the GUID as key ---
+        segments_file = os.path.join(base_path, "cluster_segments.json")
+        if os.path.exists(segments_file):
+            with open(segments_file, "r") as f:
+                try:
+                    cluster_segments = json.load(f)
+                except json.JSONDecodeError:
+                    cluster_segments = {}
+        else:
+            cluster_segments = {}
+
+        segments_list = cluster_segments.get(short_guid, [])
+        for det in self.detections:
+            if det['quality'] > 0:
+                segment = {
+                    "common_name": "American Crow",
+                    "scientific_name": "Corvus brachyrhynchos",
+                    "start_time": det["start_time"],
+                    "end_time": det["end_time"],
+                    "confidence": 0,
+                    "cluster": cluster_int
+                }
+                segments_list.append(segment)
+        cluster_segments[short_guid] = segments_list
+        with open(segments_file, "w") as f:
+            json.dump(cluster_segments, f, indent=4)
+        segments_count = len(segments_list)
+
+        # --- File copy: copy the original raw file to .cache/library/GUID.mp3 ---
+        library_dir = os.path.join(base_path, "library")
+        os.makedirs(library_dir, exist_ok=True)
+        dest_file = os.path.join(library_dir, f"{short_guid}.mp3")
+        if os.path.exists(self.source_file):
+            try:
+                shutil.copy(self.source_file, dest_file)
+                file_copy_msg = f"File copied from '{self.source_file}' to '{dest_file}'."
+            except Exception as e:
+                file_copy_msg = f"Failed to copy file: {e}"
+        else:
+            file_copy_msg = f"Source file '{self.source_file}' not found. File not copied."
+
+        # --- Save embeddings to .cache/embeddings/GUID.npy ---
+        try:
+            # Reload embeddings (from the raw file) using get_data.
+            embeddings, volumes, audio, sr = get_data(self.source_file, self.public_path)
+            embeddings_dir = os.path.join(base_path, "embeddings")
+            os.makedirs(embeddings_dir, exist_ok=True)
+            emb_dest_file = os.path.join(embeddings_dir, f"{short_guid}.npy")
+            np.save(emb_dest_file, embeddings)
+            embeddings_msg = f"Embeddings saved to '{emb_dest_file}'."
+        except Exception as e:
+            embeddings_msg = f"Failed to save embeddings: {e}"
+
+        # --- Summary Output ---
+        print("\n=== Add to Labeler Summary ===")
+        print(f"New File ID (GUID): {short_guid}")
+        print(f"Cluster used: {cluster_int}")
+        print(f"CSV record added for file ID: {short_guid}")
+        print(f"Labels added: {labels_count}")
+        print(f"Segments added: {segments_count}")
+        print(file_copy_msg)
+        print(embeddings_msg)
+        print("==============================\n")
+
+        # --- Confirmation Popup ---
+        try:
+            root = tk.Tk()
+            root.withdraw()
+            messagebox.showinfo("Confirmation", "All detections successfully added to Labeler")
+            root.destroy()
+        except Exception as e:
+            print(f"Confirmation popup failed: {e}")
+
 ###############################################################################
 # Main entry point.
 ###############################################################################
@@ -426,20 +579,22 @@ def main():
 
     # Use the .cache directory relative to this script.
     public_path = os.path.join(os.path.dirname(__file__), "..", ".cache")
+    # Determine if arg is an uncached file path.
+    if os.path.isfile(arg):
+        raw_file = arg
+    else:
+        raw_file = None
     detections, audio, sr = detect_file_segments(arg, public_path=public_path)
     print(f"Found {len(detections)} detection segments.")
     print(json.dumps(detections, indent=4))
 
-    # Get clear language description
     description = generate_detection_summary(detections)
     print(f"Description:\n{description}\n")
-
     duration = len(audio) / sr
     print(f"Audio duration: {duration:.2f} seconds, Sample Rate: {sr} Hz")
 
-    # Use the basename (file id or file name) as a label.
     label = os.path.basename(arg)
-    player = TimelinePlayer(label, detections, audio, sr)
+    player = TimelinePlayer(label, detections, audio, sr, public_path=public_path, raw_file=raw_file)
     plt.show()
 
 if __name__ == "__main__":
