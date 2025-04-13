@@ -13,7 +13,8 @@ class CrowDataset(Dataset):
     def __init__(self):
         # Load the labels from the JSON file.
         with open(labels_file, 'r') as f:
-            self.labels = json.load(f)
+            self.raw_labels = json.load(f)
+            self.labels = { key: label for key, label in self.raw_labels.items() if "reviewed" in label and label["reviewed"] }
         self.keys = list(self.labels.keys())
         self.print_label_stats()
 
