@@ -106,4 +106,5 @@ def start_embeddings(denoised=False):
             print(f"Saved volume data for {file_id} -> {volume_out_path} shape={volumes.shape}")
 
 if __name__ == "__main__":
-    start_embeddings()
+    start_embeddings(denoised=False)
+    start_embeddings(denoised=True)
