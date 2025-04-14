@@ -9,7 +9,7 @@ torch.backends.cudnn.benchmark = False
 
 
 class CrowClassifier(pl.LightningModule):
-    def __init__(self, input_dim=768, hidden_dim=237, dropout_rate=0.3, seed=7204, lr=0.000145):
+    def __init__(self, input_dim=768, hidden_dim=237, dropout_rate=0.3, seed=18202, lr=0.000145):
         super().__init__()
 
         seed_everything(seed, workers=True)

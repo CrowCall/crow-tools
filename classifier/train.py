@@ -20,7 +20,7 @@ val_size = len(dataset) - train_size
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
 # Oversampling: Duplicate training indices for underrepresented labels.
-oversample_factors = {"rattle": 3, "softSong": 3, "begging": 4, "alert": 3, "mob": 1}
+oversample_factors = {"rattle": 4, "softSong": 4, "begging": 1, "alert": 3, "mob": 1}
 
 oversampled_train_indices = []
 # train_dataset.indices gives the list of indices from the original dataset in the training subset.
@@ -38,8 +38,8 @@ for idx in train_dataset.indices:
 oversampled_train_dataset = Subset(dataset, oversampled_train_indices)
 
 # Create DataLoaders.
-train_loader = DataLoader(oversampled_train_dataset, batch_size=20, num_workers=3, shuffle=True, drop_last=True)
-val_loader = DataLoader(val_dataset, batch_size=20, num_workers=3, shuffle=False, drop_last=True)
+train_loader = DataLoader(oversampled_train_dataset, batch_size=21, num_workers=3, shuffle=True, drop_last=True)
+val_loader = DataLoader(val_dataset, batch_size=21, num_workers=3, shuffle=False, drop_last=True)
 
 # Create TensorBoard logger.
 tb_logger = TensorBoardLogger("logs", name="crow-classify")

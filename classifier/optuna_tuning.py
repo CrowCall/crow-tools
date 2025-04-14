@@ -15,7 +15,7 @@ def objective(trial: optuna.Trial):
     dropout_rate = trial.suggest_float("dropout_rate", 0.3, 0.3)
     random_seed = trial.suggest_int("random_seed", 0, 20000)
     learning_rate = trial.suggest_float("learning_rate", 0.000145, 0.000145)
-    batch_size = trial.suggest_int("batch_size", 18, 24)
+    batch_size = trial.suggest_int("batch_size", 16, 30)
     rattle_oversample = trial.suggest_int("rattle_oversample", 1, 4)
     softsong_oversample = trial.suggest_int("softsong_oversample", 1, 4)
     begging_oversample = trial.suggest_int("begging_oversample", 1, 4)
@@ -59,7 +59,7 @@ def objective(trial: optuna.Trial):
     tb_logger = TensorBoardLogger("logs", name=f"crow-classify_trial_{trial.number}")
 
     trainer = pl.Trainer(
-        max_epochs=12,
+        max_epochs=16,
         logger=tb_logger,
         callbacks=[checkpoint_callback],
         enable_progress_bar=False,
