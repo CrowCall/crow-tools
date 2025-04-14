@@ -1,8 +1,10 @@
 import os
 import torch
 import torchaudio
+import librosa
 from biodenoising import pretrained
 from biodenoising.denoiser.dsp import convert_audio
+from tqdm import tqdm
 
 # Set device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -33,33 +35,39 @@ def start_denoising():
             input_file = os.path.join(library_dir, filename)
             print(f"Processing: {input_file}")
 
-            # Load the MP3 file
-            wav, sr = torchaudio.load(input_file)
+            # Load the MP3 file using librosa at 16kHz mono.
+            # librosa.load returns a NumPy array of shape (samples,)
+            audio_np, sr = librosa.load(input_file, sr=16000, mono=True)
+            if sr != 16000:
+                print(f"Warning: Sample rate mismatch for {filename}. Using SR={sr}.")
+            # Convert the NumPy array to a torch tensor and add a channel dimension.
+            wav = torch.from_numpy(audio_np).unsqueeze(0)
 
-            # Convert audio to the model's expected sample rate and channel configuration
+            # Convert audio to the model's expected sample rate and channel configuration.
             wav = convert_audio(wav, sr, model.sample_rate, model.chin).to(device)
 
-            # Determine if we need to split the file (if longer than 1 minute)
+            # Determine if we need to split the file (if longer than 1 minute).
             total_samples = wav.size(1)
             chunk_size = model.sample_rate * 60  # samples in 60 seconds
             if total_samples > chunk_size:
                 print(f"Splitting {filename} into chunks...")
                 denoised_chunks = []
-                # Process each chunk individually
-                for start in range(0, total_samples, chunk_size):
+                # Process each chunk individually.
+                for start in tqdm(range(0, total_samples, chunk_size)):
                     end = min(start + chunk_size, total_samples)
                     chunk = wav[:, start:end]
                     with torch.no_grad():
-                        chunk_denoised = model(chunk[None])[0]
+                        # Add a batch dimension before denoising.
+                        chunk_denoised = model(chunk.unsqueeze(0))[0]
                     denoised_chunks.append(chunk_denoised)
-                # Reassemble the denoised chunks along the time dimension
+                # Reassemble the denoised chunks along the time dimension.
                 denoised = torch.cat(denoised_chunks, dim=1)
             else:
-                # Process the whole file if it is 1 minute or shorter
+                # Process the whole file if it is 1 minute or shorter.
                 with torch.no_grad():
-                    denoised = model(wav[None])[0]
+                    denoised = model(wav.unsqueeze(0))[0]
 
-            # Save the denoised audio as a WAV file
+            # Save the denoised audio as a WAV file.
             torchaudio.save(output_file, denoised.cpu(), model.sample_rate)
             print(f"Saved denoised audio to: {output_file}")
 
