@@ -1,0 +1,85 @@
+/home/jonathan/apps/earthspecies/crow-tools/.venv/bin/python /home/jonathan/apps/earthspecies/crow-tools/classifier/evaluate.py
+Seed set to 18202
+
+=== Label Statistics ===
+Total labels loaded: 3894
+
+crowCount distribution:
+  Class 0: 1245
+  Class 1: 2048
+  Class 2: 345
+  Class 4: 256
+
+crowAge distribution:
+  Class 1: 3550
+  Class 2: 344
+
+quality distribution:
+  Class 1: 1347
+  Class 2: 2547
+
+alert count: 593
+begging count: 307
+softSong count: 612
+rattle count: 543
+mob count: 753
+
+
+Evaluating on 468 VALIDATE samples
+
+=== Overall Accuracy ===
+crowCount :  82.91% (388/468)
+crowAge   :  96.15% (450/468)
+quality   :  91.67% (429/468)
+alert     :  90.81% (425/468)
+begging   :  96.15% (450/468)
+softSong  :  94.02% (440/468)
+rattle    :  95.51% (447/468)
+mob       :  88.68% (415/468)
+
+=== crowCount Breakdown ===
+  Class 0:  89.21% (124/139)
+  Class 1:  87.69% (228/260)
+  Class 2:  40.48% (17/42)
+  Class 3:   0.00% (0/0)
+  Class 4:  70.37% (19/27)
+
+=== crowAge Breakdown ===
+  Class 1:  98.56% (410/416)
+  Class 2:  76.92% (40/52)
+
+=== quality Breakdown ===
+  Class 1:  85.91% (128/149)
+  Class 2:  94.36% (301/319)
+
+=== alert Breakdown ===
+  Value 0:  93.37% (366/392)
+  Value 1:  77.63% (59/76)
+
+=== begging Breakdown ===
+  Value 0:  98.11% (415/423)
+  Value 1:  77.78% (35/45)
+
+=== softSong Breakdown ===
+  Value 0:  97.18% (379/390)
+  Value 1:  78.21% (61/78)
+
+=== rattle Breakdown ===
+  Value 0:  96.94% (380/392)
+  Value 1:  88.16% (67/76)
+
+=== mob Breakdown ===
+  Value 0:  95.00% (361/380)
+  Value 1:  61.36% (54/88)
+
+=== Composite Score ===
+Overall composite score: 84.39%
+Individual task scores:
+  crowCount : 71.94%
+  crowAge   : 87.74%
+  quality   : 90.13%
+  alert     : 85.50%
+  begging   : 87.94%
+  softSong  : 87.69%
+  rattle    : 92.55%
+  mob       : 78.18%
