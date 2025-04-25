@@ -98,7 +98,7 @@ window.SegmentCard = {
                  :value="1"
                  v-model.number="currentLabels.crowAge"
                  @change="onLabelsChanged">
-          <label class="btn btn-outline-primary" :for="'crowAgeAdult_' + segmentKey" title="Adult">🐦‍⬛</label>
+          <label class="btn btn-outline-primary" :for="'crowAgeAdult_' + segmentKey" title="Adult"><img src="/images/crow-emote.png" style="width: 17px;"></label>
       
           <input type="radio" class="btn-check"
                  :name="'crowAge' + segmentKey"

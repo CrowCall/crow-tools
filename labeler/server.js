@@ -10,6 +10,7 @@ app.use(express.json({
 
 // Serve static files from "public" and the project root
 app.use('/cache', express.static(path.join(__dirname, '../.cache')));
+app.use('/images', express.static(path.join(__dirname, '../docs/images')));
 app.use(express.static('.'));
 
 // Endpoint to update labels.json on disk
