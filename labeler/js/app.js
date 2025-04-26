@@ -385,6 +385,7 @@ const app = Vue.createApp({
 app.component('pagination', window.Pagination);
 app.component('segment-card', window.SegmentCard);
 app.component('filter-component', window.FilterComponent);
+app.component('menu-component', window.MenuComponent);
 
 // Custom directive for auto focus
 app.directive("focus", {

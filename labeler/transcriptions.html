@@ -125,12 +125,8 @@
 </head>
 <body class="bg-dark text-light">
   <div id="app" class="container">
-    <!-- Header Row -->
-    <div class="row mb-3">
-      <div class="col">
-        <h1 class="text-center"><img src="/images/crow-emote.png" class="align-baseline"> Crow Transcriber</h1>
-      </div>
-    </div>
+    <menu-component title="Crow Transcriber"></menu-component>
+
     <!-- File ID Input Row -->
     <div class="row mb-3">
       <div class="col">
@@ -285,9 +281,12 @@
 
   <!-- Load Vue 3 -->
   <script src="https://unpkg.com/vue@3"></script>
+  <!-- Bootstrap JS -->
+  <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Load Wavesurfer.js v6.6.4 and its spectrogram plugin -->
   <script src="https://unpkg.com/wavesurfer.js@6.6.4"></script>
   <script src="https://unpkg.com/wavesurfer.js@6.6.4/dist/plugin/wavesurfer.spectrogram.min.js"></script>
+  <script src="js/components/menu.js"></script>
   <script>
     const app = Vue.createApp({
       data() {
@@ -752,6 +751,7 @@
       mounted(el) { el.focus(); }
     });
 
+    app.component('menu-component', window.MenuComponent);
     app.mount("#app");
 
     function generateBluePalette() {
