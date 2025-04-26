@@ -150,8 +150,12 @@ const app = Vue.createApp({
                 }
 
                 // Quality Filter
-                if (this.activeFilters.quality !== 'all' && labelData && labelData.quality !== undefined) {
-                    if (Number(labelData.quality) !== Number(this.activeFilters.quality)) return false;
+                if (this.activeFilters.quality !== 'all') {
+                    // require a defined quality that matches the filter
+                    const q = labelData?.quality;
+                    if (q == null || Number(q) !== Number(this.activeFilters.quality)) {
+                        return false;
+                    }
                 }
 
                 // Global Filter: searches across media_notes, recordist (author), file ID and cluster.
@@ -257,6 +261,10 @@ const app = Vue.createApp({
                 .then(r => r.json())
                 .then(data => {
                     this.labels = data;
+                    // Re-apply active filters now that labels have arrived
+                    if (this.activeFilters) {
+                        this.filteredSegmentsCache = this.applyFiltersToSegments();
+                    }
                 })
                 .catch(err => {
                     console.warn('No labels json found, starting fresh.');
