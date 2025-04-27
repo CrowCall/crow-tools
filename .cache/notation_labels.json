@@ -14,7 +14,7 @@
         },
         {
             "timestamp": 0.8976851745888039,
-            "token": "Number",
+            "token": "NUMBER",
             "top": 5,
             "editing": false
         },
@@ -99,6 +99,24 @@
         {
             "timestamp": 11.117991994079693,
             "token": "ca",
+            "top": 5,
+            "editing": false
+        },
+        {
+            "timestamp": 0.5134259153295446,
+            "token": "CATALOG",
+            "top": 5,
+            "editing": false
+        },
+        {
+            "timestamp": 2.5699075239676015,
+            "token": "ONE",
+            "top": 5,
+            "editing": false
+        },
+        {
+            "timestamp": 2.0736111711572716,
+            "token": "THREE",
             "top": 5,
             "editing": false
         }
