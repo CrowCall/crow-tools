@@ -36,7 +36,7 @@ python get-data.py
 ```
 
 ## Introduction
-[![crow-tools-presentation-cover.png](docs/images/crow-tools-presentation-cover.png)](https://docs.google.com/presentation/d/15q6MwZquIA3LaXqK29C7NRGKmcn5BTSwK5TFsem-QGk/edit?usp=sharing)
+[![crow-tools-presentation-cover.png](docs/images/crow-tools-presentation-cover.png)](https://docs.google.com/presentation/d/15q6MwZquIA3LaXqK29C7NRGKmcn5BTSwK5TFsem-QGk/present)
 
 ## Module Overview
 
