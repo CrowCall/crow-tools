@@ -8,15 +8,17 @@ from classifier.classify import predict_embedding
 
 # Define paths.
 PATH = os.path.dirname(__file__)
-public_path = os.path.join(PATH, "..", ".cache")
+BASE = os.path.join(PATH, "..", ".cache")
+LIBRARIES_BASE = os.path.join(BASE, "libraries")
+MACAULAY_LIB = os.path.join(LIBRARIES_BASE, "macaulay")
 csv_paths = [
-    os.path.join(public_path, "csv", "crows.csv"),
-    os.path.join(public_path, "csv", "crows-xeno-canto.csv"),
-    os.path.join(public_path, "csv", "local.csv"),
+    os.path.join(LIBRARIES_BASE, "macaulay", "library.csv"),
+    os.path.join(LIBRARIES_BASE, "xeno-canto", "library.csv"),
+    os.path.join(LIBRARIES_BASE, "local", "library.csv"),
 ]
-library_dir = os.path.join(public_path, "library")
-segments_path = os.path.join(public_path, "segments.json")
-auto_labels_path = os.path.join(public_path, "auto_labels.json")
+library_dir = os.path.join(MACAULAY_LIB, "audio")
+segments_path = os.path.join(MACAULAY_LIB, "segments.json")
+auto_labels_path = os.path.join(MACAULAY_LIB, "auto_labels.json")
 
 def compute_contiguous_stats(segments, auto_labels, target_crowCount, tolerance=0.01):
     """
@@ -91,12 +93,12 @@ def start_detections():
 
                 # Run detection for this file.
                 print(f"Detecting for file {file_id}")
-                detections, audio, sr = detect_file_segments(file_id, public_path=public_path)
+                detections, audio, sr = detect_file_segments(file_id, public_path=MACAULAY_LIB)
                 if detections:
                     # For segments, we create a minimal dictionary per detection.
                     segments[file_id] = []
                     # Load the embeddings for the file.
-                    embedding_file = os.path.join(public_path, "embeddings", f"{file_id}.npy")
+                    embedding_file = os.path.join(MACAULAY_LIB, "embeddings", f"{file_id}.npy")
                     if not os.path.exists(embedding_file):
                         print(f"Embedding file {embedding_file} not found for file {file_id}, skipping.")
                         continue

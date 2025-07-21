@@ -7,8 +7,8 @@ PATH = os.path.dirname(__file__)
 
 # -- CONFIG: Adjust as needed --
 SPECIES_QUERY = "American+Crow"
-OUTPUT_CSV = os.path.join(PATH, "..", ".cache", "csv", "crows-xeno-canto.csv")
-OUTPUT_DIR = os.path.join(PATH, "..", ".cache", "library")
+OUTPUT_CSV = os.path.join(PATH, "..", ".cache", "libraries", "xeno-canto", "library.csv")
+OUTPUT_DIR = os.path.join(PATH, "..", ".cache", "libraries", "xeno-canto", "audio")
 BASE_API_URL = "https://www.xeno-canto.org/api/2/recordings"
 
 # Create output folder if not existing
@@ -58,10 +58,13 @@ def download_mp3(xc_id, mp3_url):
         except Exception as e:
             print(f"Error downloading {mp3_url}: {e}")
 
-def start_downloads():
+def start_downloads(percent=100):
     # Fetch all recordings
     recordings = fetch_all_recordings(SPECIES_QUERY)
     print(f"Found {len(recordings)} recordings for '{SPECIES_QUERY}'.")
+    if percent < 100:
+        limit = int(len(recordings) * (percent / 100.0))
+        recordings = recordings[:max(1, limit)]
 
     fieldnames = [
         "ML Catalog Number",

@@ -4,16 +4,20 @@ import requests
 
 PATH = os.path.dirname(__file__)
 
-def start_downloads():
+def start_downloads(percent=100):
+    """Download audio from the Macaulay library."""
     # Fetch all recordings
-    csv_path = os.path.join(PATH, "..", ".cache", "csv", "crows.csv")
-    library_dir = os.path.join(PATH, "..", ".cache", "library")
+    csv_path = os.path.join(PATH, "..", ".cache", "libraries", "macaulay", "library.csv")
+    library_dir = os.path.join(PATH, "..", ".cache", "libraries", "macaulay", "audio")
     os.makedirs(library_dir, exist_ok=True)
     download_count = 0
     skipped_count = 0
 
     with open(csv_path, "r", encoding="utf-8-sig") as f:
-        reader = csv.DictReader(f)
+        reader = list(csv.DictReader(f))
+        if percent < 100:
+            limit = int(len(reader) * (percent / 100.0))
+            reader = reader[:max(1, limit)]
 
         for row in reader:
             # Now this should read the correct field name without BOM

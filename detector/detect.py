@@ -51,10 +51,10 @@ def get_data(arg, public_path=None):
     Otherwise, it assumes arg is a file ID and attempts to load cached files from:
       - {public_path}/embeddings-denoised/{file_id}.npy
       - {public_path}/embeddings-denoised-volumes/{file_id}.npy
-      - {public_path}/library/{file_id}.mp3
+      - {public_path}/audio/{file_id}.mp3
     """
     if public_path is None:
-        public_path = os.path.join(os.path.dirname(__file__), "..", ".cache")
+        public_path = os.path.join(os.path.dirname(__file__), "..", ".cache", "libraries", "macaulay")
 
     if os.path.isfile(arg):
         # Uncached mode: arg is a file path.
@@ -103,7 +103,7 @@ def get_data(arg, public_path=None):
         file_id = arg
         embeddings_path = os.path.join(public_path, "embeddings", f"{file_id}.npy")
         volumes_path = os.path.join(public_path, "embeddings-denoised-volumes", f"{file_id}.npy")
-        library_dir = os.path.join(public_path, "library")
+        library_dir = os.path.join(public_path, "audio")
         audio_path = os.path.join(library_dir, f"{file_id}.mp3")
 
         if not os.path.exists(embeddings_path):
@@ -523,8 +523,8 @@ class TimelinePlayer:
             json.dump(cluster_segments, f, indent=4)
         segments_count = len(segments_list)
 
-        # --- File copy: copy the original raw file to .cache/library/GUID.mp3 ---
-        library_dir = os.path.join(base_path, "library")
+        # --- File copy: copy the original raw file to .cache/.../audio/GUID.mp3 ---
+        library_dir = os.path.join(base_path, "audio")
         os.makedirs(library_dir, exist_ok=True)
         dest_file = os.path.join(library_dir, f"{short_guid}.mp3")
         if os.path.exists(self.source_file):
@@ -536,7 +536,7 @@ class TimelinePlayer:
         else:
             file_copy_msg = f"Source file '{self.source_file}' not found. File not copied."
 
-        # --- Save embeddings to .cache/embeddings/GUID.npy ---
+        # --- Save embeddings to .cache/.../embeddings/GUID.npy ---
         try:
             # Reload embeddings (from the raw file) using get_data.
             embeddings, volumes, audio, sr = get_data(self.source_file, self.public_path)
@@ -578,7 +578,7 @@ def main():
         arg = sys.argv[1]
 
     # Use the .cache directory relative to this script.
-    public_path = os.path.join(os.path.dirname(__file__), "..", ".cache")
+    public_path = os.path.join(os.path.dirname(__file__), "..", ".cache", "libraries", "macaulay")
     # Determine if arg is an uncached file path.
     if os.path.isfile(arg):
         raw_file = arg

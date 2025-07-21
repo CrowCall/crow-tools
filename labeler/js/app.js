@@ -11,6 +11,7 @@ const app = Vue.createApp({
             playbackSpeed: 1,
             totalPagesCached: 0,
             errorMessage: "",
+            datasetConfig: {},
             filters: {
                 labelStatus: 'all',
                 reviewStatus: 'all',
@@ -32,7 +33,8 @@ const app = Vue.createApp({
                 globalFilter: '',
                 quality: 'all'
             },
-            activeFilters: null
+            activeFilters: null,
+            dataset: new URLSearchParams(window.location.search).get('dataset') || 'all-public'
         };
     },
     computed: {
@@ -196,7 +198,8 @@ const app = Vue.createApp({
             }
         },
         loadCrowsCSV() {
-            const files = ['/cache/csv/crows.csv', '/cache/csv/crows-xeno-canto.csv', '/cache/csv/local.csv' ];
+            const libs = this.datasetConfig.included_libraries || ['macaulay', 'xeno-canto'];
+            const files = libs.map(l => `/cache/libraries/${l}/library.csv`);
             let remaining = files.length;
             files.forEach(file => {
                 Papa.parse(file, {
@@ -220,13 +223,14 @@ const app = Vue.createApp({
             });
         },
         loadSegments() {
-            fetch('/cache/cluster_segments.json')
+            fetch(`/cache/datasets/${this.dataset}/segments.json`)
                 .then(r => r.json())
                 .then(data => {
                     const segArray = [];
                     for (const [id, segs] of Object.entries(data)) {
                         segs.forEach(seg => {
                             seg.id = id;
+                            if (!seg.library) seg.library = 'macaulay';
                             segArray.push(seg);
                         });
                     }
@@ -257,7 +261,7 @@ const app = Vue.createApp({
             });
         },
         loadLabels() {
-            fetch('/cache/cluster_labels.json')
+            fetch(`/cache/datasets/${this.dataset}/labels.json`)
                 .then(r => r.json())
                 .then(data => {
                     this.labels = data;
@@ -272,7 +276,7 @@ const app = Vue.createApp({
                 });
         },
         saveLabelsToServer(payload) {
-            fetch('/updateLabels', {
+            fetch(`/updateLabels?dataset=${this.dataset}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
@@ -329,7 +333,7 @@ const app = Vue.createApp({
             this.deleteSegmentFromServer(segmentKey);
         },
         deleteSegmentFromServer(segmentKey) {
-            fetch('/deleteSegment', {
+            fetch(`/deleteSegment?dataset=${this.dataset}`, {
                 method: 'DELETE',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({segmentKey})
@@ -376,9 +380,14 @@ const app = Vue.createApp({
             }
         }
         
-        // Now loadSegments and labels
-        this.loadSegments();
-        this.loadLabels();
+        // Now load dataset config then segments and labels
+        fetch(`/cache/datasets/${this.dataset}/config.json`)
+            .then(r => r.json())
+            .then(cfg => { this.datasetConfig = cfg; })
+            .finally(() => {
+                this.loadSegments();
+                this.loadLabels();
+            });
     }
 });
 

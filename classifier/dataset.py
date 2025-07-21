@@ -5,13 +5,34 @@ from torch.utils.data import Dataset
 import numpy as np
 
 PATH = os.path.dirname(__file__)
+CACHE_BASE = os.path.join(PATH, "..", ".cache")
+LIBRARIES_BASE = os.path.join(CACHE_BASE, "libraries")
 
-embeddings_dir = os.path.join(PATH, "..", ".cache", "embeddings")
-labels_file = os.path.join(PATH, "..", ".cache", "cluster_labels.json")
+def locate_embedding(file_id, denoised=True):
+    """Return path to the embedding for ``file_id`` in any library."""
+    suffix = "embeddings-denoised" if denoised else "embeddings"
+    for lib in os.listdir(LIBRARIES_BASE):
+        emb_dir = os.path.join(LIBRARIES_BASE, lib, suffix)
+        path = os.path.join(emb_dir, f"{file_id}.npy")
+        if os.path.exists(path):
+            return path
+    return None
 
 class CrowDataset(Dataset):
-    def __init__(self):
-        # Load the labels from the JSON file.
+    def __init__(self, dataset_name="all-public"):
+        dataset_dir = os.path.join(CACHE_BASE, "datasets", dataset_name)
+        labels_file = os.path.join(dataset_dir, "labels.json")
+        config_file = os.path.join(dataset_dir, "config.json")
+        if not os.path.exists(labels_file):
+            raise FileNotFoundError(f"Labels not found for dataset {dataset_name}")
+
+        self.included_libraries = []
+        if os.path.exists(config_file):
+            with open(config_file, 'r') as cf:
+                cfg = json.load(cf)
+                self.included_libraries = cfg.get("included_libraries", [])
+
+        # Load the labels from the JSON file
         with open(labels_file, 'r') as f:
             self.raw_labels = json.load(f)
             self.labels = { key: label for key, label in self.raw_labels.items() if "reviewed" in label and label["reviewed"] }
@@ -77,11 +98,12 @@ class CrowDataset(Dataset):
         key = self.keys[idx]
         file_id, start, end = key.split("-")
 
-        # Load embedding.
-        cached_path = os.path.join(embeddings_dir, f"{file_id}.npy")
-        if os.path.exists(cached_path):
-            embedding = np.load(cached_path)
-            embedding = embedding[int(start):int(end)]
+        # Load the per-file embedding (searching all libraries)
+        emb_path = locate_embedding(file_id)
+        if emb_path is None:
+            raise FileNotFoundError(f"Embedding for {file_id} not found")
+        embedding = np.load(emb_path)
+        embedding = embedding[int(start):int(end)]
 
         # Convert embedding to a torch tensor.
         embedding_tensor = torch.from_numpy(embedding).float()

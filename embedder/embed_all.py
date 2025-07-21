@@ -13,70 +13,69 @@ def start_embeddings(denoised=False):
         DENOISED_MODE = "-denoised"
         EXT = ".wav"
 
-    # Directory with the denoised .wav files
-    library_path = os.path.join(PATH, "..", ".cache", f"library{DENOISED_MODE}")
-    file_paths = sorted(os.listdir(library_path))
+    # Directory with the audio files (original or denoised)
 
-    # Where to save the averaged embeddings
-    embeddings_path = os.path.join(PATH, "..", ".cache", f"embeddings{DENOISED_MODE}")
-    if not os.path.exists(embeddings_path):
-        os.makedirs(embeddings_path)
-
-    # Where to save per-second volume data
-    volumes_path = os.path.join(PATH, "..", ".cache", f"embeddings{DENOISED_MODE}-volumes")
-    if not os.path.exists(volumes_path):
-        os.makedirs(volumes_path)
+    base_dir = os.path.join(PATH, "..", ".cache", "libraries")
+    libraries = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
 
     sample_rate = 8000
     chunk_size = 25  # Number of frames to average into one vector
 
-    for file_name in file_paths:
-        if not file_name.endswith(EXT):
+    for lib in libraries:
+        library_path = os.path.join(base_dir, lib, f"audio{DENOISED_MODE}")
+        if not os.path.exists(library_path):
             continue
+        file_paths = sorted(os.listdir(library_path))
 
-        file_id = os.path.splitext(file_name)[0]
-        audio_path = os.path.join(library_path, file_name)
+        # Where to save the averaged embeddings
+        embeddings_path = os.path.join(base_dir, lib, f"embeddings{DENOISED_MODE}")
+        os.makedirs(embeddings_path, exist_ok=True)
 
-        if not os.path.exists(audio_path):
-            print(f"Audio file {audio_path} not found, skipping {file_id}.")
-            continue
+        # Where to save per-second volume data
+        volumes_path = os.path.join(base_dir, lib, f"embeddings{DENOISED_MODE}-volumes")
+        os.makedirs(volumes_path, exist_ok=True)
 
-        # Embedding output
-        embedding_out_path = os.path.join(embeddings_path, f"{file_id}.npy")
-        # Volume output
-        volume_out_path = os.path.join(volumes_path, f"{file_id}.npy")
+        for file_name in file_paths:
+            if not file_name.endswith(EXT):
+                continue
 
-        # Skip if both already exist
-        if os.path.exists(embedding_out_path) and os.path.exists(volume_out_path):
-            print(f"Skipping {file_id}; embedding & volume both exist.")
-            continue
+            file_id = os.path.splitext(file_name)[0]
+            audio_path = os.path.join(library_path, file_name)
 
-        print(f"Loading {audio_path} at {sample_rate} Hz.")
-        waveform, sr = librosa.load(audio_path, sr=sample_rate, mono=True)
-        if sr != sample_rate:
-            print(f"Warning: Sample rate mismatch for {file_id}. Using SR={sr}.")
+            if not os.path.exists(audio_path):
+                print(f"Audio file {audio_path} not found, skipping {file_id}.")
+                continue
 
-        ############################################################
-        # 1) Generate and save embeddings (if not already existing)
-        ############################################################
-        if not os.path.exists(embedding_out_path):
-            full_embedding = generate_embeddings(waveform)  # shape: (N_frames, 768)
-            full_embedding = np.array(full_embedding, dtype=np.float32)
-            num_frames = full_embedding.shape[0]
-            print(f"{file_id}: got {num_frames} frames of embeddings.")
+            embedding_out_path = os.path.join(embeddings_path, f"{file_id}.npy")
+            volume_out_path = os.path.join(volumes_path, f"{file_id}.npy")
 
-            # Chunk the frames in increments of 'chunk_size' and average
-            num_chunks = int(np.ceil(num_frames / chunk_size))
-            embedding_means = []
-            for i in range(num_chunks):
-                start_idx = i * chunk_size
-                end_idx = min((i + 1) * chunk_size, num_frames)
-                chunk = full_embedding[start_idx:end_idx]
-                mean_emb = np.mean(chunk, axis=0)
-                embedding_means.append(mean_emb)
-            final_embedding = np.stack(embedding_means, axis=0)
-            np.save(embedding_out_path, final_embedding)
-            print(f"Saved embedding for {file_id} -> {embedding_out_path} shape={final_embedding.shape}")
+            if os.path.exists(embedding_out_path) and os.path.exists(volume_out_path):
+                print(f"Skipping {file_id}; embedding & volume both exist.")
+                continue
+
+            print(f"Loading {audio_path} at {sample_rate} Hz.")
+            waveform, sr = librosa.load(audio_path, sr=sample_rate, mono=True)
+            if sr != sample_rate:
+                print(f"Warning: Sample rate mismatch for {file_id}. Using SR={sr}.")
+
+            if not os.path.exists(embedding_out_path):
+                full_embedding = generate_embeddings(waveform)
+                full_embedding = np.array(full_embedding, dtype=np.float32)
+                num_frames = full_embedding.shape[0]
+                print(f"{file_id}: got {num_frames} frames of embeddings.")
+
+                # Chunk the frames in increments of 'chunk_size' and average
+                num_chunks = int(np.ceil(num_frames / chunk_size))
+                embedding_means = []
+                for i in range(num_chunks):
+                    start_idx = i * chunk_size
+                    end_idx = min((i + 1) * chunk_size, num_frames)
+                    chunk = full_embedding[start_idx:end_idx]
+                    mean_emb = np.mean(chunk, axis=0)
+                    embedding_means.append(mean_emb)
+                final_embedding = np.stack(embedding_means, axis=0)
+                np.save(embedding_out_path, final_embedding)
+                print(f"Saved embedding for {file_id} -> {embedding_out_path} shape={final_embedding.shape}")
 
         ############################################################
         # 2) Compute and save volume data (if not existing)

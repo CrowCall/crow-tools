@@ -13,10 +13,22 @@ app.use('/cache', express.static(path.join(__dirname, '../.cache')));
 app.use('/images', express.static(path.join(__dirname, '../docs/images')));
 app.use(express.static('.'));
 
+// Return list of available datasets
+app.get('/datasets', (req, res) => {
+  const datasetsDir = path.join(__dirname, '../.cache/datasets');
+  try {
+    const names = fs.readdirSync(datasetsDir).filter(name => fs.statSync(path.join(datasetsDir, name)).isDirectory());
+    res.json({ datasets: names });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to list datasets' });
+  }
+});
+
 // Endpoint to update labels.json on disk
 app.post('/updateLabels', (req, res) => {
+  const dataset = req.query.dataset || 'all-public';
   const update = req.body; // Expecting: { segmentKey, labels }
-  const labelsFile = path.join(__dirname, '../', '.cache', 'cluster_labels.json');
+  const labelsFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'labels.json');
   let allLabels = {};
   try {
     if (fs.existsSync(labelsFile)) {
@@ -38,9 +50,10 @@ app.post('/updateLabels', (req, res) => {
 
 // Add below your updateLabels endpoint in server.js
 app.post('/updateNotationLabels', (req, res) => {
+  const dataset = req.query.dataset || 'all-public';
   // Expecting: { fileId: 'xxx', notations: { <timestamp>: "transcription text", ... } }
   const update = req.body;
-  const notationFile = path.join(__dirname, '../', '.cache', 'notation_labels.json');
+  const notationFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'notation_labels.json');
   let allNotations = {};
   try {
     if (fs.existsSync(notationFile)) {
@@ -64,8 +77,9 @@ app.post('/updateNotationLabels', (req, res) => {
 });
 
 app.get('/getNotationLabels', (req, res) => {
+  const dataset = req.query.dataset || 'all-public';
   const fileId = req.query.fileId;
-  const notationFile = path.join(__dirname, '../', '.cache', 'notation_labels.json');
+  const notationFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'notation_labels.json');
   let allNotations = {};
   try {
     if (fs.existsSync(notationFile)) {
@@ -102,10 +116,11 @@ app.get('/api/embeddings', (req, res) => {
 
 // Endpoint to delete a segment and its label
 app.delete('/deleteSegment', (req, res) => {
+  const dataset = req.query.dataset || 'all-public';
   const { segmentKey } = req.body;
 
   // ----- Remove from labels file -----
-  const labelsFile = path.join(__dirname, '../', '.cache', 'cluster_labels.json');
+  const labelsFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'labels.json');
   let allLabels = {};
   try {
     if (fs.existsSync(labelsFile)) {
@@ -126,7 +141,7 @@ app.delete('/deleteSegment', (req, res) => {
   }
 
   // ----- Remove from segments file -----
-  const segmentsFile = path.join(__dirname, '../', '.cache', 'cluster_segments.json');
+  const segmentsFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'segments.json');
   let allSegments = {};
   try {
     if (fs.existsSync(segmentsFile)) {

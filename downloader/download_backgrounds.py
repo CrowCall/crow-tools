@@ -6,7 +6,7 @@ import random
 random.seed(42)
 PATH = os.path.dirname(__file__)
 
-def start_downloads():
+def start_downloads(percent=100):
     # Fetch all recordings
     # Background file names
     background_filenames = [
@@ -26,16 +26,18 @@ def start_downloads():
 
     for background_filename in background_filenames:
         print(f"Downloading {background_filename} - {max_downloads} downloads")
-        csv_path = os.path.join(PATH, "..", ".cache", "csv", background_filename)
-        library_dir = os.path.join(PATH, "..", ".cache", "backgrounds")
+        csv_path = os.path.join(PATH, "..", ".cache", "libraries", "backgrounds", background_filename)
+        library_dir = os.path.join(PATH, "..", ".cache", "libraries", "backgrounds", "audio")
         os.makedirs(library_dir, exist_ok=True)
         background_count = 0
         age_sexes = {}
 
         with open(csv_path, "r", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            rows = list(reader)  # Load all rows into a list
-            random.shuffle(rows)  # Shuffle the list in-place
+            rows = list(csv.DictReader(f))
+            random.shuffle(rows)
+            if percent < 100:
+                limit = int(len(rows) * (percent / 100.0))
+                rows = rows[:max(1, limit)]
 
         for row in rows:
                 # Now this should read the correct field name without BOM
