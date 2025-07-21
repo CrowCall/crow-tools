@@ -24,6 +24,84 @@ app.get('/datasets', (req, res) => {
   }
 });
 
+// Return list of available libraries
+app.get('/libraries', (req, res) => {
+  const libsDir = path.join(__dirname, '../.cache/libraries');
+  try {
+    const names = fs.readdirSync(libsDir).filter(name => fs.statSync(path.join(libsDir, name)).isDirectory());
+    res.json({ libraries: names });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to list libraries' });
+  }
+});
+
+// Create a new dataset (optionally importing labels from another dataset)
+app.post('/datasets', (req, res) => {
+  const { name, included_libraries = [], importFrom } = req.body || {};
+  if (!name) return res.status(400).json({ error: 'name required' });
+  const datasetsDir = path.join(__dirname, '../.cache/datasets');
+  const newDir = path.join(datasetsDir, name);
+  try {
+    if (!fs.existsSync(newDir)) fs.mkdirSync(newDir, { recursive: true });
+    const cfg = { name, included_libraries };
+    fs.writeFileSync(path.join(newDir, 'config.json'), JSON.stringify(cfg, null, 2));
+    fs.writeFileSync(path.join(newDir, 'labels.json'), '{}');
+    if (importFrom) {
+      const src = path.join(datasetsDir, importFrom, 'labels.json');
+      if (fs.existsSync(src)) {
+        const data = fs.readFileSync(src, 'utf8');
+        fs.writeFileSync(path.join(newDir, 'labels.json'), data);
+      }
+    }
+    res.json({ success: true });
+  } catch (e) {
+    console.error('Create dataset error:', e);
+    res.status(500).json({ error: 'Failed to create dataset' });
+  }
+});
+
+// Delete a dataset
+app.delete('/datasets/:name', (req, res) => {
+  const datasetsDir = path.join(__dirname, '../.cache/datasets');
+  const dir = path.join(datasetsDir, req.params.name);
+  try {
+    fs.rmSync(dir, { recursive: true, force: true });
+    res.json({ success: true });
+  } catch (e) {
+    console.error('Delete dataset error:', e);
+    res.status(500).json({ error: 'Failed to delete dataset' });
+  }
+});
+
+// Update dataset config or import labels
+app.put('/datasets/:name', (req, res) => {
+  const { included_libraries, importFrom } = req.body || {};
+  const datasetsDir = path.join(__dirname, '../.cache/datasets');
+  const dir = path.join(datasetsDir, req.params.name);
+  const cfgFile = path.join(dir, 'config.json');
+  try {
+    let cfg = {};
+    if (fs.existsSync(cfgFile)) cfg = JSON.parse(fs.readFileSync(cfgFile));
+    if (included_libraries) cfg.included_libraries = included_libraries;
+    fs.writeFileSync(cfgFile, JSON.stringify(cfg, null, 2));
+    if (importFrom) {
+      const src = path.join(datasetsDir, importFrom, 'labels.json');
+      const dest = path.join(dir, 'labels.json');
+      if (fs.existsSync(src)) {
+        let data = JSON.parse(fs.readFileSync(src));
+        let destData = {};
+        if (fs.existsSync(dest)) destData = JSON.parse(fs.readFileSync(dest));
+        Object.assign(destData, data);
+        fs.writeFileSync(dest, JSON.stringify(destData, null, 2));
+      }
+    }
+    res.json({ success: true });
+  } catch (e) {
+    console.error('Update dataset error:', e);
+    res.status(500).json({ error: 'Failed to update dataset' });
+  }
+});
+
 // Endpoint to update labels.json on disk
 app.post('/updateLabels', (req, res) => {
   const dataset = req.query.dataset || 'all-public';

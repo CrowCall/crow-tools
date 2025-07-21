@@ -23,7 +23,11 @@
 </head>
 <body>
 <div id="app">
-    <menu-component title="Crow Embeddings"></menu-component>
+    <menu-component title="Crow Embeddings">
+        <template #dataset-control>
+            <dataset-modal :current-dataset="dataset" @dataset-changed="changeDataset"></dataset-modal>
+        </template>
+    </menu-component>
 </div>
 
 <!-- Vue 3 (global build) -->
@@ -33,12 +37,14 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.134/examples/js/controls/OrbitControls.js"></script>
 <!-- Bootstrap JS -->
 <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/components/datasetModal.js"></script>
 <script src="js/components/menu.js"></script>
 <script>
     const App = {
         data() {
             return {
-                embeddings: [] // Each embedding should include coordinates, color, and segment (e.g. "FILE-START-END")
+                embeddings: [], // Each embedding should include coordinates, color, and segment
+                dataset: new URLSearchParams(window.location.search).get('dataset') || 'all-public'
             };
         },
         methods: {
@@ -215,6 +221,11 @@
                     camera.updateProjectionMatrix();
                     renderer.setSize(container.clientWidth, container.clientHeight);
                 });
+            },
+            changeDataset(ds) {
+                if (ds && ds !== this.dataset) {
+                    window.location.search = '?dataset=' + ds;
+                }
             }
         },
         mounted() {
@@ -224,6 +235,7 @@
 
     const app = Vue.createApp(App);
     app.component('menu-component', window.MenuComponent);
+    app.component('dataset-modal', window.DatasetModal);
     app.mount('#app');
 
 </script>

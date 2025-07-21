@@ -223,8 +223,13 @@ const app = Vue.createApp({
             });
         },
         loadSegments() {
+            // Attempt to load dataset-specific segments.json. If it doesn't exist
+            // fall back to loading all segments from the configured libraries.
             fetch(`/cache/datasets/${this.dataset}/segments.json`)
-                .then(r => r.json())
+                .then(r => {
+                    if (!r.ok) throw new Error('no dataset segments');
+                    return r.json();
+                })
                 .then(data => {
                     const segArray = [];
                     for (const [id, segs] of Object.entries(data)) {
@@ -234,20 +239,40 @@ const app = Vue.createApp({
                             segArray.push(seg);
                         });
                     }
-                    
-                    // Sort by cluster
-                    segArray.sort((a, b) => {
-                        const clusterA = a.cluster || 1;
-                        const clusterB = b.cluster || 1;
-                        return clusterA - clusterB;
-                    });
-                    
-                    this.segments = segArray;
-                    this.loadCrowsCSV();
-                    this.totalPagesCached = Math.ceil(this.segments.length / this.segmentsPerPage);
-                    this.initializeFilterCache();
+                    this.finishSegmentsLoad(segArray);
                 })
-                .catch(err => console.error('Error loading segments:', err));
+                .catch(() => {
+                    // Load segments from included libraries
+                    const libs = this.datasetConfig.included_libraries || ['macaulay'];
+                    const promises = libs.map(l => fetch(`/cache/libraries/${l}/segments.json`).then(r => r.json()));
+                    Promise.all(promises).then(results => {
+                        const segArray = [];
+                        libs.forEach((lib, idx) => {
+                            const obj = results[idx] || {};
+                            for (const [id, segs] of Object.entries(obj)) {
+                                segs.forEach(seg => {
+                                    seg.id = id;
+                                    seg.library = lib;
+                                    segArray.push(seg);
+                                });
+                            }
+                        });
+                        this.finishSegmentsLoad(segArray);
+                    }).catch(err => console.error('Error loading library segments:', err));
+                });
+        },
+        finishSegmentsLoad(segArray) {
+            // Sort by cluster
+            segArray.sort((a, b) => {
+                const clusterA = a.cluster || 1;
+                const clusterB = b.cluster || 1;
+                return clusterA - clusterB;
+            });
+
+            this.segments = segArray;
+            this.loadCrowsCSV();
+            this.totalPagesCached = Math.ceil(this.segments.length / this.segmentsPerPage);
+            this.initializeFilterCache();
         },
         attachCSVtoSegments() {
             this.segments.forEach(seg => {
@@ -325,6 +350,11 @@ const app = Vue.createApp({
         setPlaybackSpeed(speed) {
             this.playbackSpeed = speed;
         },
+        changeDataset(ds) {
+            if (ds && ds !== this.dataset) {
+                window.location.search = '?dataset=' + ds;
+            }
+        },
         // Delete segment handling remains the same.
         handleSegmentDeleted(segmentKey) {
             this.segments = this.segments.filter(seg => this.segmentKey(seg) !== segmentKey);
@@ -395,6 +425,7 @@ app.component('pagination', window.Pagination);
 app.component('segment-card', window.SegmentCard);
 app.component('filter-component', window.FilterComponent);
 app.component('menu-component', window.MenuComponent);
+app.component('dataset-modal', window.DatasetModal);
 
 // Custom directive for auto focus
 app.directive("focus", {
