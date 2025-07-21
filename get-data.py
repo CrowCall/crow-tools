@@ -1,17 +1,27 @@
 import sys
 
 print("""
-This script will download and process a large amount of crow audio data.
-It requires over 30 GB of disk space and will take several hours to complete.
-Each audio file will be downloaded, denoised, segmented, embedded, and classified.
+======================================================================
+                            CrowTools 
+======================================================================
+CrowTools is ready to take flight and process *tons* of crow audio data!
+It needs over *30 GB* of space and hours to caw-mplete (scales with %)!
+Each file is downloaded, denoised, segmented, embedded, and classified.
 
-Files that are already processed will be skipped.
-Are you ready to begin? (y/n)
+Previously processed files? We’ll hop past them like a crafty crow!
+----------------------------------------------------------------------
+Enter % of data do you want to download? (1-100)
+  Try 1 for a quick test, 100 for everything!
+----------------------------------------------------------------------
 """)
-response = input("> ").strip().lower()
-if response not in ("y", "yes"):
-    print("Exiting. Please run the script again when you're ready.")
-    sys.exit(0)
+response = input("> ").strip()
+try:
+    percentage = int(response)
+    if not 1 <= percentage <= 100:
+        raise ValueError
+except ValueError:
+    print("Invalid input. Please enter a number between 1 and 100.")
+    sys.exit(1)
 
 from downloader.download_backgrounds import start_downloads as start_downloads_background
 from downloader.download_crows_ebird import start_downloads as start_downloads_ebird
@@ -22,7 +32,7 @@ from embedder.embed_all import start_embeddings
 
 # Download all crow audio and mix-related audio
 for download in [start_downloads_background, start_downloads_ebird, start_downloads_xeno]:
-    download()
+    download(percent=percentage)
 
 # Denoise all crow audio
 start_denoising()
