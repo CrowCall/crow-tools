@@ -33,7 +33,7 @@ else:
 ###############################################################################
 # Helper function to retrieve embeddings, volumes, audio and sample rate.
 ###############################################################################
-def get_data(arg, public_path=None):
+def get_data(arg, public_path=None, include_audio=False):
     """
     Given a file identifier or full file path, returns:
       - embeddings: a 2D numpy array (num_seconds x feature_dim)
@@ -121,7 +121,11 @@ def get_data(arg, public_path=None):
         if volumes.ndim > 1:
             volumes = volumes.squeeze(-1)
         try:
-            audio, sr = librosa.load(audio_path, sr=None, mono=True)
+            if include_audio:
+                audio, sr = librosa.load(audio_path, sr=8000, mono=True)
+            else:
+                audio = None
+                sr = 8000
         except Exception as e:
             print(f"Error loading audio: {e}")
             sys.exit(1)
@@ -130,7 +134,7 @@ def get_data(arg, public_path=None):
 ###############################################################################
 # Detection function (common for both cached and uncached data)
 ###############################################################################
-def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=None):
+def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=None, include_audio=False):
     """
     Loads embeddings and volume data (and audio) using get_data() and then runs
     the classifier on each second where the volume exceeds the threshold.
@@ -139,7 +143,7 @@ def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=
       - audio: the audio waveform
       - sr: sample rate
     """
-    embeddings, volumes, audio, sr = get_data(arg, public_path)
+    embeddings, volumes, audio, sr = get_data(arg, public_path, include_audio)
     detections = []
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -584,7 +588,7 @@ def main():
         raw_file = arg
     else:
         raw_file = None
-    detections, audio, sr = detect_file_segments(arg, public_path=public_path)
+    detections, audio, sr = detect_file_segments(arg, public_path=public_path, include_audio=True)
     print(f"Found {len(detections)} detection segments.")
     print(json.dumps(detections, indent=4))
 

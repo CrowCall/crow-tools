@@ -1,0 +1,1552 @@
+{
+    "f6a92c7d-16-17": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-640-641": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-877-878": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-878-879": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-953-954": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1004-1005": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1005-1006": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1013-1014": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1015-1016": {
+        "crowCount": 2,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1016-1017": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1018-1019": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1021-1022": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1024-1025": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1032-1033": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1040-1041": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1052-1053": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1053-1054": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1088-1089": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1638-1639": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1673-1674": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-1803-1804": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-2909-2910": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-2910-2911": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-2911-2912": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-2922-2923": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-3126-3127": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "f6a92c7d-3182-3183": {
+        "crowCount": 2,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "f6a92c7d-3244-3245": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-3353-3354": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-3945-3946": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-3946-3947": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "f6a92c7d-3947-3948": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "f6a92c7d-3949-3950": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-4256-4257": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-4257-4258": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-4271-4272": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-4284-4285": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-4285-4286": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-4286-4287": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-4288-4289": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-4744-4745": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-5188-5189": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "f6a92c7d-5189-5190": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-5246-5247": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-5290-5291": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-5314-5315": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-6289-6290": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-6290-6291": {
+        "crowCount": 2,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "f6a92c7d-7053-7054": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-7556-7557": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-7557-7558": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-8218-8219": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-9530-9531": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-9680-9681": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "f6a92c7d-11708-11709": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-11716-11717": {
+        "crowCount": 2,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-11720-11721": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-15443-15444": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-15470-15471": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-15472-15473": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22027-22028": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22034-22035": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22035-22036": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22043-22044": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22044-22045": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22142-22143": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22143-22144": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22145-22146": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22147-22148": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22152-22153": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22158-22159": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "f6a92c7d-22166-22167": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-289-290": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "b2a06f6b-5114-5115": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23795-23796": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23797-23798": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23798-23799": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23799-23800": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23800-23801": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23801-23802": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23802-23803": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23805-23806": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23806-23807": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23807-23808": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23808-23809": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23809-23810": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23810-23811": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23811-23812": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23812-23813": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23813-23814": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23814-23815": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23815-23816": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23816-23817": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23818-23819": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23819-23820": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23820-23821": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23821-23822": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23822-23823": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23823-23824": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23824-23825": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23825-23826": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23826-23827": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23827-23828": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23828-23829": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23829-23830": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23833-23834": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23851-23852": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23852-23853": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23853-23854": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23893-23894": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23898-23899": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-23900-23901": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24018-24019": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24020-24021": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24083-24084": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24084-24085": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24085-24086": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24089-24090": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24093-24094": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24094-24095": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24148-24149": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24237-24238": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24244-24245": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24264-24265": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24639-24640": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-24640-24641": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-25221-25222": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-25524-25525": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-26659-26660": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-26919-26920": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-26920-26921": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-26939-26940": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-30519-30520": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-30525-30526": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-30526-30527": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-31492-31493": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-31493-31494": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-31494-31495": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33689-33690": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33724-33725": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33738-33739": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33767-33768": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33776-33777": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33789-33790": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33790-33791": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33800-33801": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33801-33802": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": true,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-33802-33803": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-34095-34096": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-36675-36676": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-36677-36678": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-36678-36679": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-40069-40070": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-40070-40071": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "b2a06f6b-40375-40376": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": true,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    }
+}

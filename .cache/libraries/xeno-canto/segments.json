@@ -1,0 +1,22 @@
+{
+  "543336": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 9,
+      "end_time": 10,
+      "confidence": 0,
+      "cluster": 42
+    }
+  ],
+  "543337": [
+    {
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "start_time": 15,
+      "end_time": 16,
+      "confidence": 0,
+      "cluster": 9
+    }
+  ]
+}

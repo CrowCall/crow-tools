@@ -16,7 +16,7 @@ def start_embeddings(denoised=False):
     # Directory with the audio files (original or denoised)
 
     base_dir = os.path.join(PATH, "..", ".cache", "libraries")
-    libraries = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
+    libraries = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d)) and d != "backgrounds"]
 
     sample_rate = 8000
     chunk_size = 25  # Number of frames to average into one vector

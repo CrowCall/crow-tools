@@ -17,7 +17,7 @@ def start_denoising():
     """Denoise all audio files in each library."""
     # Define directories
     base_dir = os.path.join(PATH, "..", ".cache", "libraries")
-    libraries = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
+    libraries = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d)) and d != "backgrounds"]
     for lib in libraries:
         library_dir = os.path.join(base_dir, lib, "audio")
         output_dir = os.path.join(base_dir, lib, "audio-denoised")
