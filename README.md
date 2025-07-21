@@ -43,8 +43,9 @@ python get-data.py
 ### Downloader
 
 The downloader module retrieves a large collection of crow vocalizations (13+ GB) from multiple public repositories. 
-It handles the complexities of connecting to each source, downloading the audio files, and storing relevant metadata 
-for proper attribution. Credits and licensing info for all files are saved in the `.cache/csv/` directory.
+It handles the complexities of connecting to each source, downloading the audio files, and storing relevant metadata
+for proper attribution. Credits and licensing info for all files are saved alongside each library in
+`./.cache/libraries/<name>/library.csv`.
 
 Crow-tools relies on openly available datasets for research and development. We gratefully acknowledge the following sources:
 
@@ -141,7 +142,9 @@ crow-tools/
 ├── embedder/    # embed crow calls into 768 dimensions (AVES embedding model)
 ├── labeler/     # human labeling web app (for training classifier, vieweing embeddings, and transcribing crow language)
 ├── separator/   # separate overlapping crow calls into seaparate audio files (train and inference)
-└── .cache/      # all downloaded and generated files (30+ GB)
+└── .cache/
+    ├── libraries/  # read-only audio sources (macaulay, xeno-canto, local, backgrounds)
+    └── datasets/   # curated combinations of libraries
 ```
 
 ## Authors
