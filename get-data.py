@@ -10,7 +10,7 @@ Each file is downloaded, denoised, segmented, embedded, and classified.
 
 Previously processed files? We’ll hop past them like a crafty crow!
 ----------------------------------------------------------------------
-Enter % of data do you want to download? (1-100)
+Enter % of data you want to download? (1-100)
   Try 1 for a quick test, 100 for everything!
 ----------------------------------------------------------------------
 """)
