@@ -125,7 +125,11 @@
 </head>
 <body class="bg-dark text-light">
   <div id="app" class="container">
-    <menu-component title="Crow Transcriber"></menu-component>
+    <menu-component title="Crow Transcriber">
+      <template #dataset-control>
+        <dataset-modal :current-dataset="dataset" @dataset-changed="changeDataset"></dataset-modal>
+      </template>
+    </menu-component>
 
     <!-- File ID Input Row -->
     <div class="row mb-3">
@@ -286,12 +290,14 @@
   <!-- Load Wavesurfer.js v6.6.4 and its spectrogram plugin -->
   <script src="https://unpkg.com/wavesurfer.js@6.6.4"></script>
   <script src="https://unpkg.com/wavesurfer.js@6.6.4/dist/plugin/wavesurfer.spectrogram.min.js"></script>
+  <script src="js/components/datasetModal.js"></script>
   <script src="js/components/menu.js"></script>
   <script>
     const app = Vue.createApp({
       data() {
         return {
           fileId: "13130",
+          dataset: new URLSearchParams(window.location.search).get('dataset') || 'all-public',
           audioLoaded: false,
           audioLoading: false,
           wavesurfer: null,
@@ -440,7 +446,7 @@
             if (this.isLooping) { this.wavesurfer.play(0); }
           });
           this.wavesurfer.on("audioprocess", () => { this.updatePlayhead(); });
-          const audioUrl = `/cache/library/${this.fileId}.mp3`;
+          const audioUrl = `/audio/${this.dataset}/${this.fileId}`;
           fetch(audioUrl)
             .then(response => response.arrayBuffer())
             .then(arrayBuffer => {
@@ -641,7 +647,7 @@
         },
         saveNotations() {
           console.log("Saving notations:", this.notations);
-          fetch('/updateNotationLabels', {
+          fetch(`/updateNotationLabels?dataset=${encodeURIComponent(this.dataset)}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ fileId: this.fileId, notations: this.notations })
@@ -657,7 +663,7 @@
           .catch(err => console.error("Error saving notations:", err));
         },
         loadNotations() {
-          fetch(`/getNotationLabels?fileId=${this.fileId}`)
+          fetch(`/getNotationLabels?dataset=${encodeURIComponent(this.dataset)}&fileId=${encodeURIComponent(this.fileId)}`)
             .then(response => response.json())
             .then(data => {
               if (data.success) {
@@ -734,6 +740,11 @@
             source.stop();
             ctx.close();
           }, segmentDuration * 1000);
+        },
+        changeDataset(ds) {
+          if (ds && ds !== this.dataset) {
+            window.location.search = '?dataset=' + ds;
+          }
         }
       },
       mounted() {
@@ -752,6 +763,7 @@
     });
 
     app.component('menu-component', window.MenuComponent);
+    app.component('dataset-modal', window.DatasetModal);
     app.mount("#app");
 
     function generateBluePalette() {

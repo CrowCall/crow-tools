@@ -1,0 +1,30 @@
+{
+  "543337-15-16": {
+    "crowCount": 4,
+    "crowAge": 1,
+    "alert": false,
+    "scold": false,
+    "begging": false,
+    "grief": false,
+    "softSong": false,
+    "rattle": false,
+    "mob": false,
+    "quality": 2,
+    "reviewed": true,
+    "cluster": 9
+  },
+  "543336-9-10": {
+    "crowCount": 4,
+    "crowAge": 1,
+    "alert": false,
+    "scold": false,
+    "begging": false,
+    "grief": false,
+    "softSong": false,
+    "rattle": false,
+    "mob": false,
+    "quality": 1,
+    "reviewed": true,
+    "cluster": 42
+  }
+}

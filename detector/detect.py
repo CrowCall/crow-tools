@@ -19,9 +19,24 @@ from tqdm import tqdm
 # Import tkinter components for UI dialogs.
 import tkinter as tk
 from tkinter import messagebox, simpledialog
+import argparse
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 
 from classifier.classify import predict_embedding
 from embedder.embed import generate_embeddings
+from crowtools.datasets import (
+    LOCAL_LIBRARY,
+    ensure_dataset,
+    get_dataset_artifact_path,
+    get_dataset_libraries,
+    get_library_dir,
+    load_dataset_config,
+    resolve_dataset_file_library,
+    write_json_file,
+)
 
 def is_headless():
     return not os.environ.get("DISPLAY") and os.name != "nt"
@@ -33,7 +48,7 @@ else:
 ###############################################################################
 # Helper function to retrieve embeddings, volumes, audio and sample rate.
 ###############################################################################
-def get_data(arg, public_path=None):
+def get_data(arg, public_path=None, include_audio=False):
     """
     Given a file identifier or full file path, returns:
       - embeddings: a 2D numpy array (num_seconds x feature_dim)
@@ -51,10 +66,10 @@ def get_data(arg, public_path=None):
     Otherwise, it assumes arg is a file ID and attempts to load cached files from:
       - {public_path}/embeddings-denoised/{file_id}.npy
       - {public_path}/embeddings-denoised-volumes/{file_id}.npy
-      - {public_path}/library/{file_id}.mp3
+      - {public_path}/audio/{file_id}.mp3
     """
-    if public_path is None:
-        public_path = os.path.join(os.path.dirname(__file__), "..", ".cache")
+    if public_path is None and not os.path.isfile(arg):
+        raise ValueError("public_path is required when resolving a cached file ID")
 
     if os.path.isfile(arg):
         # Uncached mode: arg is a file path.
@@ -103,7 +118,7 @@ def get_data(arg, public_path=None):
         file_id = arg
         embeddings_path = os.path.join(public_path, "embeddings", f"{file_id}.npy")
         volumes_path = os.path.join(public_path, "embeddings-denoised-volumes", f"{file_id}.npy")
-        library_dir = os.path.join(public_path, "library")
+        library_dir = os.path.join(public_path, "audio")
         audio_path = os.path.join(library_dir, f"{file_id}.mp3")
 
         if not os.path.exists(embeddings_path):
@@ -121,7 +136,11 @@ def get_data(arg, public_path=None):
         if volumes.ndim > 1:
             volumes = volumes.squeeze(-1)
         try:
-            audio, sr = librosa.load(audio_path, sr=None, mono=True)
+            if include_audio:
+                audio, sr = librosa.load(audio_path, sr=8000, mono=True)
+            else:
+                audio = None
+                sr = 8000
         except Exception as e:
             print(f"Error loading audio: {e}")
             sys.exit(1)
@@ -130,7 +149,7 @@ def get_data(arg, public_path=None):
 ###############################################################################
 # Detection function (common for both cached and uncached data)
 ###############################################################################
-def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=None):
+def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=None, include_audio=False):
     """
     Loads embeddings and volume data (and audio) using get_data() and then runs
     the classifier on each second where the volume exceeds the threshold.
@@ -139,7 +158,7 @@ def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=
       - audio: the audio waveform
       - sr: sample rate
     """
-    embeddings, volumes, audio, sr = get_data(arg, public_path)
+    embeddings, volumes, audio, sr = get_data(arg, public_path, include_audio)
     detections = []
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -249,7 +268,7 @@ def generate_detection_summary(detections, gap=5):
 # INTERACTIVE TIMELINE PLAYER
 ###############################################################################
 class TimelinePlayer:
-    def __init__(self, label, detections, audio, sr, public_path=None, raw_file=None):
+    def __init__(self, label, detections, audio, sr, public_path=None, raw_file=None, dataset_name="all-public", cache_base=None):
         """
         Args:
           label (str): file identifier or base filename.
@@ -277,6 +296,8 @@ class TimelinePlayer:
 
         # Store the original raw file (if provided).
         self.source_file = raw_file
+        self.dataset_name = dataset_name
+        self.cache_base = cache_base
 
         # Define the boolean features to display.
         self.features = ["alert", "mob", "begging", "softSong", "rattle", "other"]
@@ -432,20 +453,39 @@ class TimelinePlayer:
 
     def add_to_labeler(self, event):
         """Callback for the 'Add to Labeler' button for uncached files."""
-        base_path = self.public_path
+        ensure_dataset(self.dataset_name, self.cache_base)
+        dataset_libraries = get_dataset_libraries(self.dataset_name, self.cache_base)
+        if LOCAL_LIBRARY not in dataset_libraries:
+            config = load_dataset_config(self.dataset_name, self.cache_base)
+            included_libraries = list(config.get("included_libraries", []))
+            included_libraries.append(LOCAL_LIBRARY)
+            config["included_libraries"] = list(dict.fromkeys(included_libraries))
+            config_path = get_dataset_artifact_path(self.dataset_name, "config.json", cache_base=self.cache_base)
+            write_json_file(config_path, config)
+            dataset_libraries = config["included_libraries"]
+            print(f"Added '{LOCAL_LIBRARY}' to dataset {self.dataset_name} so the copied file can resolve in the labeler.")
+
+        dataset_labels_file = get_dataset_artifact_path(self.dataset_name, "labels.json", cache_base=self.cache_base)
+        dataset_segments_file = get_dataset_artifact_path(self.dataset_name, "segments.json", cache_base=self.cache_base)
+        local_library_path = get_library_dir(LOCAL_LIBRARY, self.cache_base)
+        local_audio_dir = os.path.join(local_library_path, "audio")
+        local_embeddings_dir = os.path.join(local_library_path, "embeddings")
+        local_csv_file = os.path.join(local_library_path, "library.csv")
+
+        os.makedirs(local_audio_dir, exist_ok=True)
+        os.makedirs(local_embeddings_dir, exist_ok=True)
 
         # --- Determine suggested cluster (largest existing cluster + 1) ---
-        labels_file = os.path.join(base_path, "cluster_labels.json")
         suggestion = 1
-        if os.path.exists(labels_file):
+        if os.path.exists(dataset_labels_file):
             try:
-                with open(labels_file, "r") as f:
+                with open(dataset_labels_file, "r") as f:
                     data = json.load(f)
                     clusters = [entry.get("cluster", 0) for entry in data.values()]
                     if clusters:
                         suggestion = max(clusters) + 1
             except Exception as e:
-                print(f"Error reading {labels_file}: {e}")
+                print(f"Error reading {dataset_labels_file}: {e}")
 
         # Prompt the user via UI for a cluster number.
         root = tk.Tk()
@@ -461,52 +501,49 @@ class TimelinePlayer:
 
         # --- Generate GUID and add CSV record first ---
         short_guid = str(uuid.uuid4())[:8]
-        csv_dir = os.path.join(base_path, "csv")
-        os.makedirs(csv_dir, exist_ok=True)
-        csv_file = os.path.join(csv_dir, "local.csv")
         header = "ML Catalog Number,Date,Latitude,Longitude,Recordist,Media notes,Age/Sex,Average Community Rating,Filename\n"
         today_date = datetime.now().strftime("%Y-%m-%d")
         # Use the GUID as the file ID for the CSV record.
-        csv_row = f"{short_guid},{today_date},0,0,Unknown,N/A,N/A,0.0,{short_guid}\n"
-        if not os.path.exists(csv_file):
-            with open(csv_file, "w") as f:
+        csv_row = f"{short_guid},{today_date},0,0,Unknown,N/A,N/A,0.0,{short_guid}.mp3\n"
+        if not os.path.exists(local_csv_file):
+            with open(local_csv_file, "w") as f:
                 f.write(header)
                 f.write(csv_row)
         else:
-            with open(csv_file, "a") as f:
+            with open(local_csv_file, "a") as f:
                 f.write(csv_row)
 
-        # --- Update cluster_labels.json using the new GUID for each detection ---
-        if os.path.exists(labels_file):
-            with open(labels_file, "r") as f:
+        # --- Update dataset labels.json using the new GUID for each detection ---
+        if os.path.exists(dataset_labels_file):
+            with open(dataset_labels_file, "r") as f:
                 try:
-                    cluster_labels = json.load(f)
+                    labels = json.load(f)
                 except json.JSONDecodeError:
-                    cluster_labels = {}
+                    labels = {}
         else:
-            cluster_labels = {}
+            labels = {}
 
         for det in self.detections:
             if det['quality'] > 0:
                 key = f"{short_guid}-{int(det['start_time'])}-{int(det['end_time'])}"
                 det['cluster'] = cluster_int
-                cluster_labels[key] = det
-        with open(labels_file, "w") as f:
-            json.dump(cluster_labels, f, indent=4)
+                det['reviewed'] = False
+                labels[key] = det
+        with open(dataset_labels_file, "w") as f:
+            json.dump(labels, f, indent=4)
         labels_count = len(self.detections)
 
-        # --- Update cluster_segments.json using the GUID as key ---
-        segments_file = os.path.join(base_path, "cluster_segments.json")
-        if os.path.exists(segments_file):
-            with open(segments_file, "r") as f:
+        # --- Update dataset segments.json using the GUID as key ---
+        if os.path.exists(dataset_segments_file):
+            with open(dataset_segments_file, "r") as f:
                 try:
-                    cluster_segments = json.load(f)
+                    segments = json.load(f)
                 except json.JSONDecodeError:
-                    cluster_segments = {}
+                    segments = {}
         else:
-            cluster_segments = {}
+            segments = {}
 
-        segments_list = cluster_segments.get(short_guid, [])
+        segments_list = segments.get(short_guid, [])
         for det in self.detections:
             if det['quality'] > 0:
                 segment = {
@@ -518,15 +555,13 @@ class TimelinePlayer:
                     "cluster": cluster_int
                 }
                 segments_list.append(segment)
-        cluster_segments[short_guid] = segments_list
-        with open(segments_file, "w") as f:
-            json.dump(cluster_segments, f, indent=4)
+        segments[short_guid] = segments_list
+        with open(dataset_segments_file, "w") as f:
+            json.dump(segments, f, indent=4)
         segments_count = len(segments_list)
 
-        # --- File copy: copy the original raw file to .cache/library/GUID.mp3 ---
-        library_dir = os.path.join(base_path, "library")
-        os.makedirs(library_dir, exist_ok=True)
-        dest_file = os.path.join(library_dir, f"{short_guid}.mp3")
+        # --- File copy: copy the original raw file to local/audio/GUID.mp3 ---
+        dest_file = os.path.join(local_audio_dir, f"{short_guid}.mp3")
         if os.path.exists(self.source_file):
             try:
                 shutil.copy(self.source_file, dest_file)
@@ -536,13 +571,11 @@ class TimelinePlayer:
         else:
             file_copy_msg = f"Source file '{self.source_file}' not found. File not copied."
 
-        # --- Save embeddings to .cache/embeddings/GUID.npy ---
+        # --- Save embeddings to local/embeddings/GUID.npy ---
         try:
             # Reload embeddings (from the raw file) using get_data.
             embeddings, volumes, audio, sr = get_data(self.source_file, self.public_path)
-            embeddings_dir = os.path.join(base_path, "embeddings")
-            os.makedirs(embeddings_dir, exist_ok=True)
-            emb_dest_file = os.path.join(embeddings_dir, f"{short_guid}.npy")
+            emb_dest_file = os.path.join(local_embeddings_dir, f"{short_guid}.npy")
             np.save(emb_dest_file, embeddings)
             embeddings_msg = f"Embeddings saved to '{emb_dest_file}'."
         except Exception as e:
@@ -571,20 +604,27 @@ class TimelinePlayer:
 ###############################################################################
 # Main entry point.
 ###############################################################################
-def main():
-    if len(sys.argv) < 2:
-        arg = input("Enter file ID or file path: ").strip()
-    else:
-        arg = sys.argv[1]
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Detect crow calls in a cached dataset file or raw audio file.")
+    parser.add_argument("arg", nargs="?", help="File ID from a dataset, or a raw audio file path.")
+    parser.add_argument("--dataset", default="all-public", help="Dataset to resolve cached file IDs from.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
+    parser.add_argument("--no-gui", action="store_true", help="Print detections and exit without opening the timeline UI.")
+    args = parser.parse_args(argv)
 
-    # Use the .cache directory relative to this script.
-    public_path = os.path.join(os.path.dirname(__file__), "..", ".cache")
+    arg = args.arg or input("Enter file ID or file path: ").strip()
+
     # Determine if arg is an uncached file path.
     if os.path.isfile(arg):
+        public_path = None
         raw_file = arg
     else:
+        library_name = resolve_dataset_file_library(args.dataset, arg, cache_base=args.cache_dir)
+        if library_name is None:
+            raise FileNotFoundError(f"File ID {arg} was not found in dataset {args.dataset}")
+        public_path = get_library_dir(library_name, args.cache_dir)
         raw_file = None
-    detections, audio, sr = detect_file_segments(arg, public_path=public_path)
+    detections, audio, sr = detect_file_segments(arg, public_path=public_path, include_audio=True)
     print(f"Found {len(detections)} detection segments.")
     print(json.dumps(detections, indent=4))
 
@@ -593,8 +633,20 @@ def main():
     duration = len(audio) / sr
     print(f"Audio duration: {duration:.2f} seconds, Sample Rate: {sr} Hz")
 
+    if args.no_gui:
+        return
+
     label = os.path.basename(arg)
-    player = TimelinePlayer(label, detections, audio, sr, public_path=public_path, raw_file=raw_file)
+    player = TimelinePlayer(
+        label,
+        detections,
+        audio,
+        sr,
+        public_path=public_path,
+        raw_file=raw_file,
+        dataset_name=args.dataset,
+        cache_base=args.cache_dir,
+    )
     plt.show()
 
 if __name__ == "__main__":

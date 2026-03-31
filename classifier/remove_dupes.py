@@ -2,11 +2,19 @@
 import json
 import os
 import numpy as np
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from crowtools.datasets import get_dataset_artifact_path
 
 # Adjust CACHE_DIR to point to your .cache folder.
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "..", ".cache")
-SEGMENTS_FILE = os.path.join(CACHE_DIR, "cluster_segments.json")
-LABELS_FILE = os.path.join(CACHE_DIR, "cluster_labels.json")
+DATASET_NAME = "all-public"
+SEGMENTS_FILE = get_dataset_artifact_path(DATASET_NAME, "segments.json", cache_base=CACHE_DIR)
+LABELS_FILE = get_dataset_artifact_path(DATASET_NAME, "labels.json", cache_base=CACHE_DIR)
 
 def remove_duplicate_segments(segments_data):
     """

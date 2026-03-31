@@ -1,5 +1,5 @@
 window.SegmentCard = {
-  props: ['segment', 'labels', 'playbackSpeed', 'prevLabels'],
+  props: ['segment', 'dataset', 'labels', 'playbackSpeed', 'prevLabels'],
   template: `
     <div :class="['card', 'h-100', 'mb-2', 'p-2', cardBorderClass, {'reviewed-card': currentLabels.reviewed}]" :style="[leftBorderStyle, cardBackgroundStyle, {position: 'relative'}]">
       <!-- NEW: Delete Button -->
@@ -307,7 +307,8 @@ window.SegmentCard = {
   },
   mounted() {
     this.audio = this.$refs.audio;
-    this.audio.src = `/cache/library/${this.segment.id}.mp3`;
+    const dataset = this.dataset || 'all-public';
+    this.audio.src = `/audio/${encodeURIComponent(dataset)}/${encodeURIComponent(this.segment.id)}`;
     this.audio.currentTime = this.segment.start_time;
     this.audio.playbackRate = this.playbackSpeed;
     this.audio.addEventListener('timeupdate', this.updateProgress);

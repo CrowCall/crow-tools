@@ -11,6 +11,7 @@ window.MenuComponent = {
           <img src="/images/crow-emote.png" width="40" height="40" class="d-inline-block align-text-top me-2" alt="">
           {{ title }}
         </a>
+        <slot name="dataset-control"></slot>
         <!-- Always-collapsed hamburger -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#mainNav" aria-controls="mainNav"

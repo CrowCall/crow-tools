@@ -1,4 +1,3 @@
-birdnetlib
 librosa
 tensorflow
 tqdm
@@ -11,3 +10,4 @@ pesto-pitch==0.1.0
 pandas
 faiss-cpu
 optuna
+pytest

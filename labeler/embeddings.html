@@ -23,7 +23,11 @@
 </head>
 <body>
 <div id="app">
-    <menu-component title="Crow Embeddings"></menu-component>
+    <menu-component title="Crow Embeddings">
+        <template #dataset-control>
+            <dataset-modal :current-dataset="dataset" @dataset-changed="changeDataset"></dataset-modal>
+        </template>
+    </menu-component>
 </div>
 
 <!-- Vue 3 (global build) -->
@@ -33,18 +37,20 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.134/examples/js/controls/OrbitControls.js"></script>
 <!-- Bootstrap JS -->
 <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/components/datasetModal.js"></script>
 <script src="js/components/menu.js"></script>
 <script>
     const App = {
         data() {
             return {
-                embeddings: [] // Each embedding should include coordinates, color, and segment (e.g. "FILE-START-END")
+                embeddings: [], // Each embedding should include coordinates, color, and segment
+                dataset: new URLSearchParams(window.location.search).get('dataset') || 'all-public'
             };
         },
         methods: {
             async loadEmbeddings() {
                 try {
-                    const res = await fetch('/api/embeddings');
+                    const res = await fetch('/api/embeddings?dataset=' + encodeURIComponent(this.dataset));
                     const data = await res.json();
                     if (data.success) {
                         this.embeddings = data.embeddings;
@@ -67,7 +73,7 @@
                 const file = parts[0];
                 const start = parseFloat(parts[1]);
                 const end = parseFloat(parts[2]);
-                const audio = new Audio("/cache/library/" + file + ".mp3");
+                const audio = new Audio(`/audio/${this.dataset}/${file}`);
                 audio.addEventListener('loadedmetadata', () => {
                     audio.currentTime = start;
                     audio.play();
@@ -215,6 +221,11 @@
                     camera.updateProjectionMatrix();
                     renderer.setSize(container.clientWidth, container.clientHeight);
                 });
+            },
+            changeDataset(ds) {
+                if (ds && ds !== this.dataset) {
+                    window.location.search = '?dataset=' + ds;
+                }
             }
         },
         mounted() {
@@ -224,6 +235,7 @@
 
     const app = Vue.createApp(App);
     app.component('menu-component', window.MenuComponent);
+    app.component('dataset-modal', window.DatasetModal);
     app.mount('#app');
 
 </script>

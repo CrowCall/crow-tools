@@ -3,15 +3,43 @@ import json
 import torch
 from torch.utils.data import Dataset
 import numpy as np
+import sys
 
 PATH = os.path.dirname(__file__)
+ROOT = os.path.dirname(PATH)
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 
-embeddings_dir = os.path.join(PATH, "..", ".cache", "embeddings")
-labels_file = os.path.join(PATH, "..", ".cache", "cluster_labels.json")
+from crowtools.datasets import get_cache_base, get_dataset_libraries, get_libraries_base
+
+
+def locate_embedding(file_id, libraries, denoised=True, cache_base=None):
+    """Return path to the embedding for ``file_id`` in an allowed library."""
+    suffix = "embeddings-denoised" if denoised else "embeddings"
+    libraries_base = get_libraries_base(cache_base)
+    for lib in libraries:
+        emb_dir = os.path.join(libraries_base, lib, suffix)
+        path = os.path.join(emb_dir, f"{file_id}.npy")
+        if os.path.exists(path):
+            return path
+    return None
 
 class CrowDataset(Dataset):
-    def __init__(self):
-        # Load the labels from the JSON file.
+    def __init__(self, dataset_name="all-public"):
+        self.cache_base = get_cache_base()
+        dataset_dir = os.path.join(self.cache_base, "datasets", dataset_name)
+        labels_file = os.path.join(dataset_dir, "labels.json")
+        config_file = os.path.join(dataset_dir, "config.json")
+        if not os.path.exists(labels_file):
+            raise FileNotFoundError(f"Labels not found for dataset {dataset_name}")
+
+        self.included_libraries = get_dataset_libraries(dataset_name, self.cache_base)
+        if os.path.exists(config_file) and not self.included_libraries:
+            with open(config_file, 'r') as cf:
+                cfg = json.load(cf)
+                self.included_libraries = cfg.get("included_libraries", [])
+
+        # Load the labels from the JSON file
         with open(labels_file, 'r') as f:
             self.raw_labels = json.load(f)
             self.labels = { key: label for key, label in self.raw_labels.items() if "reviewed" in label and label["reviewed"] }
@@ -77,11 +105,16 @@ class CrowDataset(Dataset):
         key = self.keys[idx]
         file_id, start, end = key.split("-")
 
-        # Load embedding.
-        cached_path = os.path.join(embeddings_dir, f"{file_id}.npy")
-        if os.path.exists(cached_path):
-            embedding = np.load(cached_path)
-            embedding = embedding[int(start):int(end)]
+        # Load the per-file embedding (searching all libraries)
+        emb_path = locate_embedding(
+            file_id,
+            libraries=self.included_libraries,
+            cache_base=self.cache_base,
+        )
+        if emb_path is None:
+            raise FileNotFoundError(f"Embedding for {file_id} not found")
+        embedding = np.load(emb_path)
+        embedding = embedding[int(start):int(end)]
 
         # Convert embedding to a torch tensor.
         embedding_tensor = torch.from_numpy(embedding).float()

@@ -1,5 +1,4 @@
 import os
-import glob
 import json
 import random
 import numpy as np
@@ -8,16 +7,18 @@ import sounddevice as sd
 from sklearn.decomposition import PCA
 import faiss
 from collections import defaultdict
+import argparse
+import sys
 
-# Paths
-BASE_PATH = os.path.dirname(__file__)
-EMBEDDINGS_DIR = os.path.join(BASE_PATH, "..", ".cache", "embeddings-denoised")
-VOLUMES_DIR = os.path.join(BASE_PATH, "..", ".cache", "embeddings-denoised-volumes")
-OUTPUT_SEGMENTS = os.path.join(BASE_PATH, "..", ".cache", "cluster_segments.json")
-OUTPUT_LABELS = os.path.join(BASE_PATH, "..", ".cache", "cluster_labels.json")
-AUDIO_DIR = os.path.join(BASE_PATH, "..", ".cache", "library-denoised")
-INDEX_PATH = os.path.join(BASE_PATH, "..", ".cache", "faiss_index.index")
-LABEL_TEMPLATE_FILE = os.path.join(BASE_PATH, "..", ".cache", "cluster_segments_labels.json")
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from crowtools.datasets import (
+    build_dataset_file_index,
+    get_dataset_artifact_path,
+    resolve_dataset_audio_path,
+)
 
 # Parameters
 STARTING_CLUSTER_ID = 65
@@ -31,6 +32,8 @@ PREVIEW_CLUSTERS = False
 ONLY_OUTPUT_SEEDS = True
 PREVIEW_PER_CLUSTER = 10
 NUM_REPRESENTATIVE = 10  # Number of segments per merged cluster for labeling
+CURRENT_DATASET = "all-public"
+CACHE_BASE = None
 
 # Seed examples for new clusters.
 SEED_EXAMPLES = [
@@ -89,15 +92,37 @@ def play_audio_preview(audio_file, start_time, duration):
         print(f"Error playing {audio_file}: {e}")
 
 
-def load_non_silent_embeddings(emb_dir, vol_dir, thresh):
+def dataset_audio_preview_path(file_id):
+    return resolve_dataset_audio_path(
+        CURRENT_DATASET,
+        file_id,
+        denoised=True,
+        cache_base=CACHE_BASE,
+    )
+
+
+def load_non_silent_embeddings(dataset_name, thresh, cache_base=None):
     emb_list, ids, total = [], [], 0
-    for path in sorted(glob.glob(os.path.join(emb_dir, "*.npy"))):
-        file_id = os.path.splitext(os.path.basename(path))[0]
-        vol_path = os.path.join(vol_dir, f"{file_id}.npy")
-        if not os.path.exists(vol_path):
+    embedding_index = build_dataset_file_index(
+        dataset_name,
+        relative_dir="embeddings-denoised",
+        extensions=[".npy"],
+        cache_base=cache_base,
+    )
+    volume_index = build_dataset_file_index(
+        dataset_name,
+        relative_dir="embeddings-denoised-volumes",
+        extensions=[".npy"],
+        cache_base=cache_base,
+    )
+    for file_id in sorted(embedding_index):
+        emb_path = embedding_index[file_id]["paths"][".npy"]
+        vol_record = volume_index.get(file_id)
+        if not vol_record:
             continue
+        vol_path = vol_record["paths"][".npy"]
         try:
-            emb_data = np.load(path)
+            emb_data = np.load(emb_path)
             vol_data = np.load(vol_path)
             if vol_data.ndim > 1:
                 vol_data = vol_data.squeeze(-1)
@@ -235,14 +260,18 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
     from collections import defaultdict
 
     # Load existing segments and labels if the files exist.
-    if os.path.exists(OUTPUT_SEGMENTS):
-        with open(OUTPUT_SEGMENTS, "r") as f:
+    output_segments = get_dataset_artifact_path(CURRENT_DATASET, "segments.json", cache_base=CACHE_BASE)
+    output_labels = get_dataset_artifact_path(CURRENT_DATASET, "labels.json", cache_base=CACHE_BASE)
+    label_template_file = get_dataset_artifact_path(CURRENT_DATASET, "cluster_segments_labels.json", cache_base=CACHE_BASE)
+
+    if os.path.exists(output_segments):
+        with open(output_segments, "r") as f:
             existing_segments = json.load(f)
     else:
         existing_segments = {}
 
-    if os.path.exists(OUTPUT_LABELS):
-        with open(OUTPUT_LABELS, "r") as f:
+    if os.path.exists(output_labels):
+        with open(output_labels, "r") as f:
             existing_labels = json.load(f)
     else:
         existing_labels = {}
@@ -251,8 +280,8 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
     new_segments = defaultdict(list)
     new_labels = {}
 
-    if os.path.exists(LABEL_TEMPLATE_FILE):
-        with open(LABEL_TEMPLATE_FILE, "r") as f:
+    if os.path.exists(label_template_file):
+        with open(label_template_file, "r") as f:
             label_templates = json.load(f)
     else:
         label_templates = {}
@@ -277,7 +306,7 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
                     file_id, sec = ids[idx]
                     sim = np.dot(norm_emb[idx], center)
                     print(f"  File: {file_id}, Start: {sec}, Similarity: {sim:.4f}")
-                    audio_file = os.path.join(AUDIO_DIR, f"{file_id}.wav")
+                    audio_file = dataset_audio_preview_path(file_id)
                     play_audio_preview(audio_file, float(sec), 1.0)
                 user_input = input("Press 'R' to repeat or Enter to continue: ")
                 if user_input.strip().lower() != 'r':
@@ -331,7 +360,7 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
                 print(f"\nSeed Cluster {current_cluster_id}:")
                 for seg in seg_list[:PREVIEW_PER_CLUSTER]:
                     print(f"  File: {seg['file_id']}, Start: {seg['start_time']}, End: {seg['end_time']}")
-                    audio_file = os.path.join(AUDIO_DIR, f"{seg['file_id']}.wav")
+                    audio_file = dataset_audio_preview_path(seg["file_id"])
                     play_audio_preview(audio_file, seg["start_time"], 1.0)
                 user_input = input("Press 'R' to repeat or Enter to continue: ")
                 if user_input.strip().lower() != 'r':
@@ -364,22 +393,25 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
         existing_segments[file_id] = sorted(existing_segments[file_id], key=lambda x: x["start_time"])
 
     # Save updated JSON outputs.
-    with open(OUTPUT_SEGMENTS, "w") as f:
+    with open(output_segments, "w") as f:
         json.dump(existing_segments, f, indent=2)
-    with open(OUTPUT_LABELS, "w") as f:
+    with open(output_labels, "w") as f:
         json.dump(existing_labels, f, indent=2)
 
-    print(f"\nSaved segments to {OUTPUT_SEGMENTS}")
-    print(f"Saved cluster labels to {OUTPUT_LABELS}")
+    print(f"\nSaved segments to {output_segments}")
+    print(f"Saved cluster labels to {output_labels}")
     return existing_segments, existing_labels
 
 
-def main():
+def main(dataset_name="all-public", cache_base=None):
+    global CURRENT_DATASET, CACHE_BASE
+    CURRENT_DATASET = dataset_name
+    CACHE_BASE = cache_base
     random.seed(42)
     np.random.seed(42)
 
     # Load embeddings.
-    embeddings, ids, total = load_non_silent_embeddings(EMBEDDINGS_DIR, VOLUMES_DIR, VOLUME_THRESHOLD)
+    embeddings, ids, total = load_non_silent_embeddings(dataset_name, VOLUME_THRESHOLD, cache_base=cache_base)
     print(f"Processed {total} seconds. Non-silent segments: {embeddings.shape[0]}")
     embeddings, ids = random_subsample(embeddings, ids, SUBSAMPLE_FACTOR)
     print(f"After subsampling: {embeddings.shape[0]} segments")
@@ -425,4 +457,8 @@ def main():
     build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb)
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Find candidate training clusters from dataset embeddings.")
+    parser.add_argument("--dataset", default="all-public", help="Dataset to cluster.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
+    args = parser.parse_args()
+    main(dataset_name=args.dataset, cache_base=args.cache_dir)

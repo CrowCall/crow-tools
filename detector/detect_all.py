@@ -1,22 +1,25 @@
 #!/usr/bin/env python3
+import argparse
 import os
 import json
 import csv
+import sys
 import numpy as np
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
 from detector.detect import detect_file_segments
 from classifier.classify import predict_embedding
-
-# Define paths.
-PATH = os.path.dirname(__file__)
-public_path = os.path.join(PATH, "..", ".cache")
-csv_paths = [
-    os.path.join(public_path, "csv", "crows.csv"),
-    os.path.join(public_path, "csv", "crows-xeno-canto.csv"),
-    os.path.join(public_path, "csv", "local.csv"),
-]
-library_dir = os.path.join(public_path, "library")
-segments_path = os.path.join(public_path, "segments.json")
-auto_labels_path = os.path.join(public_path, "auto_labels.json")
+from crowtools.datasets import (
+    get_dataset_libraries,
+    get_library_dir,
+    get_selected_files_for_library,
+    get_public_libraries,
+    read_library_catalog_rows,
+    select_catalog_rows,
+)
 
 def compute_contiguous_stats(segments, auto_labels, target_crowCount, tolerance=0.01):
     """
@@ -58,152 +61,122 @@ def compute_contiguous_stats(segments, auto_labels, target_crowCount, tolerance=
 
     return contiguous_group_hist
 
-def start_detections():
-    # Load previously processed auto labels if available.
-    if os.path.exists(auto_labels_path):
-        with open(auto_labels_path, "r", encoding="utf-8") as f:
-            auto_labels = json.load(f)
-    else:
-        auto_labels = {}
+def start_detections(libraries=None, selected_ids_by_library=None, cache_base=None):
+    libraries = list(libraries) if libraries is not None else get_public_libraries(cache_base)
 
-    # Load previously processed segments if available.
-    if os.path.exists(segments_path):
-        with open(segments_path, "r", encoding="utf-8") as f:
-            segments = json.load(f)
-    else:
-        segments = {}
+    for library_name in libraries:
+        lib_base = get_library_dir(library_name, cache_base)
+        segments_path    = os.path.join(lib_base, "segments.json")
+        labels_dir       = os.path.join(lib_base, "labels")
+        auto_labels_path = os.path.join(labels_dir, "auto.json")
+        embedding_dir    = os.path.join(lib_base, "embeddings")
 
-    # Use keys from auto_labels as already processed file IDs.
-    processed_ids = set(auto_labels.keys())
-    # (Since auto_labels keys are segment keys, we infer processed file IDs
-    #  by collecting the file_id part from each key.)
-    processed_file_ids = {key.split("-")[0] for key in processed_ids}
+        os.makedirs(labels_dir, exist_ok=True)
 
-    # Iterate through CSVs for unique file IDs.
-    for csv_path in csv_paths:
-        with open(csv_path, "r", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                file_id = row["ML Catalog Number"]
-                if file_id in processed_file_ids:
-                    print(f"Skipping file {file_id} (already processed)")
-                    continue
+        # Load or initialize auto_labels
+        if os.path.exists(auto_labels_path):
+            with open(auto_labels_path, "r", encoding="utf-8") as f:
+                auto_labels = json.load(f)
+        else:
+            auto_labels = {}
 
-                # Run detection for this file.
-                print(f"Detecting for file {file_id}")
-                detections, audio, sr = detect_file_segments(file_id, public_path=public_path)
-                if detections:
-                    # For segments, we create a minimal dictionary per detection.
-                    segments[file_id] = []
-                    # Load the embeddings for the file.
-                    embedding_file = os.path.join(public_path, "embeddings", f"{file_id}.npy")
-                    if not os.path.exists(embedding_file):
-                        print(f"Embedding file {embedding_file} not found for file {file_id}, skipping.")
-                        continue
-                    embeddings_array = np.load(embedding_file)
+        # Load or initialize segments
+        if os.path.exists(segments_path):
+            with open(segments_path, "r", encoding="utf-8") as f:
+                segments = json.load(f)
+        else:
+            segments = {}
 
-                    for det in detections:
-                        st = det.get("start_time")
-                        et = det.get("end_time")
-                        # Construct a segment key (e.g., "fileid-44-45")
-                        segment_key = f"{file_id}-{int(st)}-{int(et)}"
-                        # Save minimal segment info.
-                        seg_min = {
-                            "start_time": st,
-                            "end_time": et,
-                            "confidence": 0.0,
-                            "cluster": 0
-                        }
-                        segments[file_id].append(seg_min)
+        # Determine which files have been processed
+        processed_file_ids = {key.split("-")[0] for key in auto_labels.keys()}
 
-                        # Get the embedding corresponding to this segment.
-                        idx = int(st)
-                        if idx < 0 or idx >= embeddings_array.shape[0]:
-                            print(f"Index {idx} out of range for file {file_id}, skipping segment {segment_key}.")
-                            continue
-                        emb = embeddings_array[idx]
-                        # Predict the label.
-                        predicted_label = predict_embedding(emb)
-                        auto_labels[segment_key] = predicted_label
-
-                    # Optional: print summary for this file.
-                    features_to_report = ["alert", "mob", "begging", "softSong", "rattle"]
-                    feature_counts = {feat: sum(1 for det in detections if det.get(feat, False))
-                                      for feat in features_to_report}
-                    feature_counts_str = ", ".join(f"{feat}: {count}"
-                                                   for feat, count in feature_counts.items() if count > 0)
-                    print(f">>>>> Found {len(detections)} detections in file {file_id} ({feature_counts_str})")
-                else:
-                    print(f"<<<<<< No detections in file {file_id}")
-
-    # Save segments and auto labels.
-    with open(segments_path, "w", encoding="utf-8") as f:
-        json.dump(segments, f, indent=2)
-    print(f"***** Saved segments for {len(segments)} files to {segments_path}")
-
-    with open(auto_labels_path, "w", encoding="utf-8") as f:
-        json.dump(auto_labels, f, indent=4)
-    print(f"***** Saved auto labels for {len(auto_labels)} segments to {auto_labels_path}")
-
-    # Recalculate summary statistics from auto_labels.
-    total_detections = 0
-    binary_totals = {
-        "alert": 0,
-        "begging": 0,
-        "softSong": 0,
-        "rattle": 0,
-        "mob": 0,
-    }
-
-    # For non-binary attributes, group counts by unique value.
-    grouped_counts = {
-        "crowCount": {},
-        "crowAge": {},
-        "quality": {}
-    }
-
-    for segment_key, label in auto_labels.items():
-        total_detections += 1
-        # Update binary attributes.
-        binary_totals["alert"] += int(label.get("alert", False))
-        binary_totals["begging"] += int(label.get("begging", False))
-        binary_totals["softSong"] += int(label.get("softSong", False))
-        binary_totals["rattle"] += int(label.get("rattle", False))
-        binary_totals["mob"] += int(label.get("mob", False))
-        # Update non-binary grouped counts.
-        for attr in ["crowCount", "crowAge", "quality"]:
-            value = label.get(attr)
-            if value is None:
+        lib_name = os.path.basename(lib_base)
+        selected_ids = None if selected_ids_by_library is None else selected_ids_by_library.get(lib_name)
+        rows = read_library_catalog_rows(lib_name, cache_base)
+        reader = select_catalog_rows(rows, selected_ids=selected_ids)
+        for row in reader:
+            file_id = row["ML Catalog Number"]
+            if file_id in processed_file_ids:
+                print(f"[{lib_name}] skip {file_id} (already processed)")
                 continue
-            grouped_counts[attr][value] = grouped_counts[attr].get(value, 0) + 1
 
-    # For total detection time, each detection is one second.
-    hours = total_detections // 3600
-    minutes = (total_detections % 3600) // 60
+            print(f"[{lib_name}] detecting {file_id}")
+            detections, audio, sr = detect_file_segments(
+                file_id,
+                public_path=lib_base
+            )
 
-    print("\n===== Detection Summary =====")
-    print(f"Total detections: {total_detections} ({int(hours):02d}:{int(minutes):02d} HH:MM)")
-    print("\nTotals for non-binary attributes:")
-    for attr, counts in grouped_counts.items():
-        counts_str = ", ".join(f"{val} = {counts[val]}" for val in sorted(counts.keys()))
-        print(f"  {attr}: {counts_str}")
-    print("\nTotals for binary attributes:")
-    for attr, total in binary_totals.items():
-        hours = total // 3600
-        minutes = (total % 3600) // 60
-        print(f"  {attr}: {total} ({int(hours):02d}:{int(minutes):02d} HH:MM)")
+            if not detections:
+                print(f"[{lib_name}] <<<<<< No detections in file {file_id}")
+                continue
 
-    # --- New code: Compute contiguous segments group stats for different crowCount filters ---
-    for target in [1, 2, 4]:
-        stats = compute_contiguous_stats(segments, auto_labels, target_crowCount=target)
-        print(f"\nContiguous Segments Groups (crowCount=={target}):")
-        for group_size in sorted(stats.keys())[:10]:
-            seg_label = "segment" if group_size == 1 else "segments"
-            total_time = stats[group_size]
-            hours = total_time // 3600
-            minutes = (total_time % 3600) // 60
-            print(f"  {group_size} {seg_label}: {total_time} ({int(hours):02d}:{int(minutes):02d} HH:MM)")
+            segments[file_id] = []
+            embedding_file = os.path.join(embedding_dir, f"{file_id}.npy")
+            if not os.path.exists(embedding_file):
+                print(f"[{lib_name}] ⚠ Missing embedding for {file_id}, skipping")
+                continue
+            embeddings_array = np.load(embedding_file)
+
+            for det in detections:
+                st = det.get("start_time")
+                et = det.get("end_time")
+                segment_key = f"{file_id}-{int(st)}-{int(et)}"
+                segments[file_id].append({
+                    "start_time": st,
+                    "end_time": et,
+                    "confidence": 0.0,
+                    "cluster": 0
+                })
+
+                idx = int(st)
+                if idx < 0 or idx >= embeddings_array.shape[0]:
+                    print(f"[{lib_name}] ⚠ Index {idx} out of range for {segment_key}")
+                    continue
+                emb = embeddings_array[idx]
+                predicted_label = predict_embedding(emb)
+                auto_labels[segment_key] = predicted_label
+
+            print(f"[{lib_name}] >>>>> Found {len(detections)} detections in file {file_id}")
+
+        # Save updated segments.json
+        with open(segments_path, "w", encoding="utf-8") as f:
+            json.dump(segments, f, indent=2)
+        print(f"[{lib_name}] ***** Saved segments for {len(segments)} files to {segments_path}")
+
+        # Save updated auto labels
+        with open(auto_labels_path, "w", encoding="utf-8") as f:
+            json.dump(auto_labels, f, indent=4)
+        print(f"[{lib_name}] ***** Saved auto labels for {len(auto_labels)} segments to {auto_labels_path}\n")
+
+        # Summary statistics
+        total_detections = len(auto_labels)
+        print(f"[{lib_name}] Total detections: {total_detections}")
+        for target in [1, 2, 4]:
+            stats = compute_contiguous_stats(segments, auto_labels, target_crowCount=target)
+            print(f"[{lib_name}] Contiguous groups (crowCount=={target}): {stats}")
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Detect crow segments across a dataset.")
+    parser.add_argument("--dataset", default=None, help="Dataset to process. Defaults to all discovered public libraries.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
+    args = parser.parse_args(argv)
+
+    if args.dataset:
+        libraries = get_dataset_libraries(args.dataset, args.cache_dir)
+        selected_ids_by_library = {
+            library_name: get_selected_files_for_library(args.dataset, library_name, args.cache_dir)
+            for library_name in libraries
+        }
+    else:
+        libraries = None
+        selected_ids_by_library = None
+
+    start_detections(
+        libraries=libraries,
+        selected_ids_by_library=selected_ids_by_library,
+        cache_base=args.cache_dir,
+    )
 
 
 if __name__ == "__main__":
-    start_detections()
+    main()

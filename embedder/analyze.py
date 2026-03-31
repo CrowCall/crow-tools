@@ -11,6 +11,19 @@ import sounddevice as sd
 from sklearn.decomposition import PCA
 from matplotlib.widgets import RadioButtons
 from ispa import utils
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from crowtools.datasets import (
+    get_dataset_artifact_path,
+    load_dataset_auto_labels,
+    load_dataset_segments,
+    resolve_dataset_audio_path,
+    resolve_dataset_embedding_path,
+)
 
 PATH = os.path.dirname(__file__)
 
@@ -23,6 +36,12 @@ else:
 
 
 def print_label_stats(labels):
+    if not labels:
+        print("=== LABEL SUMMARY ===")
+        print("No labels found.")
+        print()
+        return
+
     # Convert labels dict into a DataFrame.
     df = pd.DataFrame.from_dict(labels, orient='index')
 
@@ -120,14 +139,14 @@ def choose_color(label, mode='quality'):
     return "gray"
 
 
-def main(sample_size):
-    segments_path = os.path.join("..", ".cache", "segments.json")
-    with open(segments_path, encoding='utf-8', mode='r') as f:
-        segments_dict = json.load(f)
-
-    labels_path = os.path.join("..", ".cache", "auto_labels.json")
-    with open(labels_path, encoding='utf-8', mode='r') as f:
-        labels = json.load(f)
+def main(sample_size, dataset_name="all-public", cache_base=None, show_plot=True):
+    segments_dict = load_dataset_segments(dataset_name, cache_base=cache_base)
+    dataset_labels_path = get_dataset_artifact_path(dataset_name, "labels.json", cache_base=cache_base)
+    if os.path.exists(dataset_labels_path):
+        with open(dataset_labels_path, "r") as f:
+            labels = json.load(f)
+    else:
+        labels = load_dataset_auto_labels(dataset_name, cache_base=cache_base)
 
     print_label_stats(labels)
     print_segment_stats(segments_dict)
@@ -170,14 +189,24 @@ def main(sample_size):
 
         denoised_suffix = "-denoised" if denoised else ""
         audio_extension = "wav" if denoised else "mp3"
-        audio_path = os.path.join(PATH, "..", ".cache", f"library{denoised_suffix}", f"{file_id}.{audio_extension}")
+        audio_path = resolve_dataset_audio_path(
+            dataset_name,
+            file_id,
+            denoised=denoised,
+            cache_base=cache_base,
+        )
 
-        if not os.path.exists(audio_path):
+        if not audio_path or not os.path.exists(audio_path):
             print(f"Audio file {audio_path} not found, skipping")
             continue
 
-        cached_path = os.path.join(PATH, "..", ".cache", f"embeddings{denoised_suffix}", f"{file_id}.npy")
-        if not os.path.exists(cached_path):
+        cached_path = resolve_dataset_embedding_path(
+            dataset_name,
+            file_id,
+            denoised=denoised,
+            cache_base=cache_base,
+        )
+        if not cached_path or not os.path.exists(cached_path):
             print(f"Skipping {segment_key}, no cached embedding file found")
             continue
 
@@ -220,7 +249,7 @@ def main(sample_size):
     pca = PCA(n_components=3)
     embeddings_3d = pca.fit_transform(chunk_embeddings)
 
-    output_json_path = os.path.join(PATH, "..", ".cache", "embeddings-3d.json")
+    output_json_path = get_dataset_artifact_path(dataset_name, "embeddings-3d.json", cache_base=cache_base)
     output_data = []
     for i, coords in enumerate(embeddings_3d.tolist()):
         output_data.append({
@@ -298,12 +327,18 @@ def main(sample_size):
         sd.play(chunk_np, sample_rate)
 
     fig.canvas.mpl_connect('pick_event', on_pick)
-    plt.show()
+    if show_plot:
+        plt.show()
+    else:
+        plt.close(fig)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze Embedding Detections with Interactive Color Modes")
+    parser.add_argument("--dataset", default="all-public", help="Dataset to analyze.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
     parser.add_argument("--sample_size", type=int, default=10000,
                         help="Number of segments to sample (default: 10000)")
+    parser.add_argument("--no-show", action="store_true", help="Generate outputs without opening the interactive plot.")
     args = parser.parse_args()
-    main(args.sample_size)
+    main(args.sample_size, dataset_name=args.dataset, cache_base=args.cache_dir, show_plot=not args.no_show)

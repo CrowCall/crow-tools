@@ -28,11 +28,24 @@ pip install -r requirements.txt
 
 ## Download and Prepare Data
 
-Run this script to download, denoise, embed, and auto-label all crow audio files. 
-NOTE: This will download more than **30 GB** of data into a local `.cache` directory.
+For a new user, start with the small `starter` dataset:
 
 ```
-python get-data.py
+python get-data.py --dataset starter
+```
+
+The `starter` dataset is a curated, deterministic subset of high-quality human-reviewed files. It downloads only those audio files and includes committed dataset `segments.json` and `labels.json` artifacts so you can start exploring immediately without re-running auto-labeling for that subset.
+
+To build the full public dataset:
+
+```
+python get-data.py --dataset all-public
+```
+
+To preview the pipeline without downloading anything:
+
+```
+python get-data.py --dataset starter --dry-run
 ```
 
 ## Introduction
@@ -43,8 +56,9 @@ python get-data.py
 ### Downloader
 
 The downloader module retrieves a large collection of crow vocalizations (13+ GB) from multiple public repositories. 
-It handles the complexities of connecting to each source, downloading the audio files, and storing relevant metadata 
-for proper attribution. Credits and licensing info for all files are saved in the `.cache/csv/` directory.
+It handles the complexities of connecting to each source, downloading the audio files, and storing relevant metadata
+for proper attribution. Credits and licensing info for all files are saved alongside each library in
+`./.cache/libraries/<name>/library.csv`.
 
 Crow-tools relies on openly available datasets for research and development. We gratefully acknowledge the following sources:
 
@@ -60,12 +74,25 @@ quality of the audio for subsequent processing steps by focusing on the relevant
 the creation of mixes (overlapping crow sounds) to train our separator model. This module utilizes the [biodenoising](https://github.com/earthspecies/biodenoising-inference)
 module created by [Earth Species Project](https://earthspecies.org/).
 
+```bash
+# Denoise the starter recordings.
+python denoiser/denoise_all.py --dataset starter
+```
+
 ![denoiser.png](docs/images/denoiser.png)
 
 ### Classifier
 The classifier module analyzes crow call embeddings and categorizes them (i.e. auto labels) into various types such as 
 alert, number of calls, age indicators, rattles, soft songs, and quality of audio. It processes the embedded data and 
 applies machine learning techniques to identify and label crow vocalizations.
+
+```bash
+# Detect candidate crow segments and write library auto labels.
+python detector/detect_all.py --dataset starter
+
+# Review those detections and promote accepted ones into the starter dataset.
+python classifier/review_detections.py --dataset starter --attribute quality:2
+```
 
 ```python
     {
@@ -84,6 +111,11 @@ applies machine learning techniques to identify and label crow vocalizations.
 The detector module leverages our custom trained crow classifier, to quickly find all crow sounds across an audio file.
 By isolating these segments, the module enables more focused analysis and processing of individual crow calls and vocalizations.
 We also include an interactive crow timeline app to review and listen to the detections:
+
+```bash
+# Detect crow calls in one starter file and print the results (file paths also accepted here)
+python detector/detect.py --dataset starter --no-gui 105346
+```
 
 ![detector-timeline.png](docs/images/detector-timeline.png)
 
@@ -109,12 +141,25 @@ The embedder module transforms each crow call into a 768-dimensional vector usin
 transformation creates a numerical representation of the audio, which is essential for further analysis and machine 
 learning applications.
 
+```bash
+# Generate raw and denoised embeddings for the starter dataset.
+python embedder/embed_all.py --dataset starter
+
+# Analyze and generate the 3D embeddings JSON used by the labeler.
+python embedder/analyze.py --dataset starter --no-show
+```
+
 ![embeddings.gif](docs/videos/embeddings.gif)
 
 ### Labeler
 The labeler module provides a web interface for manual labeling of crow calls. This interface is designed for 
 human labeling and review, ensuring that the training data for the classifier is accurate and reliable. It also
 provides a 3D interactive embedding feature. Built with Vue v3 and Node.js.
+
+```bash
+# Launch the labeling web app.
+cd labeler && npm install && npm start
+```
 
 ![labeler.png](docs/images/labeler.png)
 
@@ -129,6 +174,11 @@ for training crow-to-text models. Built with Vue v3 and Node.js.
 The separator module is responsible for separating overlapping crow calls into distinct audio files. This process 
 enables clearer analysis by isolating individual calls that may be mixed together in the original recordings.
 
+```bash
+# Separate one audio file into per-source outputs.
+python separator/separate.py separator/samples/overlapping-crows-1.wav
+```
+
 ![separator.png](docs/images/separator.png)
 
 ## Directory Structure
@@ -141,7 +191,9 @@ crow-tools/
 ├── embedder/    # embed crow calls into 768 dimensions (AVES embedding model)
 ├── labeler/     # human labeling web app (for training classifier, vieweing embeddings, and transcribing crow language)
 ├── separator/   # separate overlapping crow calls into seaparate audio files (train and inference)
-└── .cache/      # all downloaded and generated files (30+ GB)
+└── .cache/
+    ├── libraries/  # read-only audio sources (macaulay, xeno-canto, local, backgrounds)
+    └── datasets/   # curated combinations of libraries
 ```
 
 ## Authors
@@ -157,4 +209,3 @@ Together, we're building a **state-of-the-art toolkit for decoding and exploring
 ## Citations
 
 Give our crows a shout-out — cite `crow-tools` in your work! GitHub provides a citation file — just click the **Cite this repository** button in the sidebar at the top of this page.
-

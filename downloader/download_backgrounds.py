@@ -3,10 +3,12 @@ import os
 import requests
 import random
 
+from crowtools.datasets import get_library_dir
+
 random.seed(42)
 PATH = os.path.dirname(__file__)
 
-def start_downloads():
+def start_downloads(percent=100, cache_base=None):
     # Fetch all recordings
     # Background file names
     background_filenames = [
@@ -26,16 +28,19 @@ def start_downloads():
 
     for background_filename in background_filenames:
         print(f"Downloading {background_filename} - {max_downloads} downloads")
-        csv_path = os.path.join(PATH, "..", ".cache", "csv", background_filename)
-        library_dir = os.path.join(PATH, "..", ".cache", "backgrounds")
+        library_base = get_library_dir("backgrounds", cache_base)
+        csv_path = os.path.join(library_base, background_filename)
+        library_dir = os.path.join(library_base, "audio")
         os.makedirs(library_dir, exist_ok=True)
         background_count = 0
         age_sexes = {}
 
         with open(csv_path, "r", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            rows = list(reader)  # Load all rows into a list
-            random.shuffle(rows)  # Shuffle the list in-place
+            rows = list(csv.DictReader(f))
+            random.shuffle(rows)
+            if percent < 100:
+                limit = int(len(rows) * (percent / 100.0))
+                rows = rows[:max(1, limit)]
 
         for row in rows:
                 # Now this should read the correct field name without BOM

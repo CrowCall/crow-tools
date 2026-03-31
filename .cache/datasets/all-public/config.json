@@ -1,0 +1,9 @@
+{
+  "name": "All Public",
+  "included_libraries": [
+    "macaulay",
+    "xeno-canto"
+  ],
+  "selected_segments": null,
+  "label_schema": {}
+}
