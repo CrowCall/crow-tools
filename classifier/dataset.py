@@ -1,7 +1,7 @@
 import os
 import json
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, random_split
 import numpy as np
 import sys
 
@@ -10,11 +10,23 @@ ROOT = os.path.dirname(PATH)
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from crowtools.datasets import get_cache_base, get_dataset_libraries, get_libraries_base
+from crowtools.datasets import get_cache_base, get_dataset_libraries, get_libraries_base, resolve_dataset_embedding_path
+
+TRAIN_SPLIT_FRACTION = 0.88
+DATASET_SPLIT_SEED = 18202
 
 
-def locate_embedding(file_id, libraries, denoised=True, cache_base=None):
+def locate_embedding(file_id, dataset_name, libraries, denoised=True, cache_base=None):
     """Return path to the embedding for ``file_id`` in an allowed library."""
+    dataset_path = resolve_dataset_embedding_path(
+        dataset_name,
+        file_id,
+        denoised=denoised,
+        cache_base=cache_base,
+    )
+    if dataset_path is not None:
+        return dataset_path
+
     suffix = "embeddings-denoised" if denoised else "embeddings"
     libraries_base = get_libraries_base(cache_base)
     for lib in libraries:
@@ -24,9 +36,17 @@ def locate_embedding(file_id, libraries, denoised=True, cache_base=None):
             return path
     return None
 
+
+def split_train_val_dataset(dataset, train_fraction=TRAIN_SPLIT_FRACTION, seed=DATASET_SPLIT_SEED):
+    train_size = int(train_fraction * len(dataset))
+    val_size = len(dataset) - train_size
+    generator = torch.Generator().manual_seed(seed)
+    return random_split(dataset, [train_size, val_size], generator=generator)
+
 class CrowDataset(Dataset):
-    def __init__(self, dataset_name="all-public"):
-        self.cache_base = get_cache_base()
+    def __init__(self, dataset_name="all-public", cache_base=None):
+        self.dataset_name = dataset_name
+        self.cache_base = get_cache_base(cache_base)
         dataset_dir = os.path.join(self.cache_base, "datasets", dataset_name)
         labels_file = os.path.join(dataset_dir, "labels.json")
         config_file = os.path.join(dataset_dir, "config.json")
@@ -43,7 +63,7 @@ class CrowDataset(Dataset):
         with open(labels_file, 'r') as f:
             self.raw_labels = json.load(f)
             self.labels = { key: label for key, label in self.raw_labels.items() if "reviewed" in label and label["reviewed"] }
-        self.keys = list(self.labels.keys())
+        self.keys = sorted(self.labels.keys())
         self.print_label_stats()
 
     def print_label_stats(self):
@@ -108,6 +128,7 @@ class CrowDataset(Dataset):
         # Load the per-file embedding (searching all libraries)
         emb_path = locate_embedding(
             file_id,
+            dataset_name=self.dataset_name,
             libraries=self.included_libraries,
             cache_base=self.cache_base,
         )

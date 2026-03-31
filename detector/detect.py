@@ -28,14 +28,11 @@ if ROOT not in sys.path:
 from classifier.classify import predict_embedding
 from embedder.embed import generate_embeddings
 from crowtools.datasets import (
-    LOCAL_LIBRARY,
     ensure_dataset,
     get_dataset_artifact_path,
+    get_dataset_import_path,
     get_dataset_libraries,
-    get_library_dir,
-    load_dataset_config,
     resolve_dataset_file_library,
-    write_json_file,
 )
 
 def is_headless():
@@ -454,26 +451,13 @@ class TimelinePlayer:
     def add_to_labeler(self, event):
         """Callback for the 'Add to Labeler' button for uncached files."""
         ensure_dataset(self.dataset_name, self.cache_base)
-        dataset_libraries = get_dataset_libraries(self.dataset_name, self.cache_base)
-        if LOCAL_LIBRARY not in dataset_libraries:
-            config = load_dataset_config(self.dataset_name, self.cache_base)
-            included_libraries = list(config.get("included_libraries", []))
-            included_libraries.append(LOCAL_LIBRARY)
-            config["included_libraries"] = list(dict.fromkeys(included_libraries))
-            config_path = get_dataset_artifact_path(self.dataset_name, "config.json", cache_base=self.cache_base)
-            write_json_file(config_path, config)
-            dataset_libraries = config["included_libraries"]
-            print(f"Added '{LOCAL_LIBRARY}' to dataset {self.dataset_name} so the copied file can resolve in the labeler.")
-
         dataset_labels_file = get_dataset_artifact_path(self.dataset_name, "labels.json", cache_base=self.cache_base)
         dataset_segments_file = get_dataset_artifact_path(self.dataset_name, "segments.json", cache_base=self.cache_base)
-        local_library_path = get_library_dir(LOCAL_LIBRARY, self.cache_base)
-        local_audio_dir = os.path.join(local_library_path, "audio")
-        local_embeddings_dir = os.path.join(local_library_path, "embeddings")
-        local_csv_file = os.path.join(local_library_path, "library.csv")
+        dataset_audio_dir = get_dataset_import_path(self.dataset_name, "audio", cache_base=self.cache_base)
+        dataset_embeddings_dir = get_dataset_import_path(self.dataset_name, "embeddings", cache_base=self.cache_base)
 
-        os.makedirs(local_audio_dir, exist_ok=True)
-        os.makedirs(local_embeddings_dir, exist_ok=True)
+        os.makedirs(dataset_audio_dir, exist_ok=True)
+        os.makedirs(dataset_embeddings_dir, exist_ok=True)
 
         # --- Determine suggested cluster (largest existing cluster + 1) ---
         suggestion = 1
@@ -499,19 +483,8 @@ class TimelinePlayer:
             print("Cluster input cancelled. Operation aborted.")
             return
 
-        # --- Generate GUID and add CSV record first ---
+        # --- Generate GUID for the imported file ---
         short_guid = str(uuid.uuid4())[:8]
-        header = "ML Catalog Number,Date,Latitude,Longitude,Recordist,Media notes,Age/Sex,Average Community Rating,Filename\n"
-        today_date = datetime.now().strftime("%Y-%m-%d")
-        # Use the GUID as the file ID for the CSV record.
-        csv_row = f"{short_guid},{today_date},0,0,Unknown,N/A,N/A,0.0,{short_guid}.mp3\n"
-        if not os.path.exists(local_csv_file):
-            with open(local_csv_file, "w") as f:
-                f.write(header)
-                f.write(csv_row)
-        else:
-            with open(local_csv_file, "a") as f:
-                f.write(csv_row)
 
         # --- Update dataset labels.json using the new GUID for each detection ---
         if os.path.exists(dataset_labels_file):
@@ -560,8 +533,8 @@ class TimelinePlayer:
             json.dump(segments, f, indent=4)
         segments_count = len(segments_list)
 
-        # --- File copy: copy the original raw file to local/audio/GUID.mp3 ---
-        dest_file = os.path.join(local_audio_dir, f"{short_guid}.mp3")
+        # --- File copy: copy the original raw file into the dataset imports directory ---
+        dest_file = os.path.join(dataset_audio_dir, f"{short_guid}.mp3")
         if os.path.exists(self.source_file):
             try:
                 shutil.copy(self.source_file, dest_file)
@@ -571,11 +544,11 @@ class TimelinePlayer:
         else:
             file_copy_msg = f"Source file '{self.source_file}' not found. File not copied."
 
-        # --- Save embeddings to local/embeddings/GUID.npy ---
+        # --- Save embeddings alongside the dataset import ---
         try:
             # Reload embeddings (from the raw file) using get_data.
             embeddings, volumes, audio, sr = get_data(self.source_file, self.public_path)
-            emb_dest_file = os.path.join(local_embeddings_dir, f"{short_guid}.npy")
+            emb_dest_file = os.path.join(dataset_embeddings_dir, f"{short_guid}.npy")
             np.save(emb_dest_file, embeddings)
             embeddings_msg = f"Embeddings saved to '{emb_dest_file}'."
         except Exception as e:
@@ -585,7 +558,6 @@ class TimelinePlayer:
         print("\n=== Add to Labeler Summary ===")
         print(f"New File ID (GUID): {short_guid}")
         print(f"Cluster used: {cluster_int}")
-        print(f"CSV record added for file ID: {short_guid}")
         print(f"Labels added: {labels_count}")
         print(f"Segments added: {segments_count}")
         print(file_copy_msg)
