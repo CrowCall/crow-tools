@@ -224,6 +224,7 @@
         <div v-for="(segment, index) in paginatedSegments" :key="segment.id + '-' + segment.start_time + '-' + segment.end_time" class="col d-flex">
             <segment-card
               :segment="segment"
+              :dataset="dataset"
               :labels="labels"
               :playback-speed="playbackSpeed"
               :prev-labels="index > 0 ? labels[paginatedSegments[index - 1].id + '-' + paginatedSegments[index - 1].start_time + '-' + paginatedSegments[index - 1].end_time] : null"

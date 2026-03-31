@@ -445,7 +445,7 @@ class TimelinePlayer:
         base_path = self.public_path
 
         # --- Determine suggested cluster (largest existing cluster + 1) ---
-        labels_file = os.path.join(base_path, "cluster_labels.json")
+        labels_file = os.path.join(base_path, "labels.json")
         suggestion = 1
         if os.path.exists(labels_file):
             try:
@@ -486,37 +486,37 @@ class TimelinePlayer:
             with open(csv_file, "a") as f:
                 f.write(csv_row)
 
-        # --- Update cluster_labels.json using the new GUID for each detection ---
+        # --- Update labels.json using the new GUID for each detection ---
         if os.path.exists(labels_file):
             with open(labels_file, "r") as f:
                 try:
-                    cluster_labels = json.load(f)
+                    labels = json.load(f)
                 except json.JSONDecodeError:
-                    cluster_labels = {}
+                    labels = {}
         else:
-            cluster_labels = {}
+            labels = {}
 
         for det in self.detections:
             if det['quality'] > 0:
                 key = f"{short_guid}-{int(det['start_time'])}-{int(det['end_time'])}"
                 det['cluster'] = cluster_int
-                cluster_labels[key] = det
+                labels[key] = det
         with open(labels_file, "w") as f:
-            json.dump(cluster_labels, f, indent=4)
+            json.dump(labels, f, indent=4)
         labels_count = len(self.detections)
 
-        # --- Update cluster_segments.json using the GUID as key ---
-        segments_file = os.path.join(base_path, "cluster_segments.json")
+        # --- Update segments.json using the GUID as key ---
+        segments_file = os.path.join(base_path, "segments.json")
         if os.path.exists(segments_file):
             with open(segments_file, "r") as f:
                 try:
-                    cluster_segments = json.load(f)
+                    segments = json.load(f)
                 except json.JSONDecodeError:
-                    cluster_segments = {}
+                    segments = {}
         else:
-            cluster_segments = {}
+            segments = {}
 
-        segments_list = cluster_segments.get(short_guid, [])
+        segments_list = segments.get(short_guid, [])
         for det in self.detections:
             if det['quality'] > 0:
                 segment = {
@@ -528,9 +528,9 @@ class TimelinePlayer:
                     "cluster": cluster_int
                 }
                 segments_list.append(segment)
-        cluster_segments[short_guid] = segments_list
+        segments[short_guid] = segments_list
         with open(segments_file, "w") as f:
-            json.dump(cluster_segments, f, indent=4)
+            json.dump(segments, f, indent=4)
         segments_count = len(segments_list)
 
         # --- File copy: copy the original raw file to .cache/.../audio/GUID.mp3 ---

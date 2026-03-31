@@ -26,30 +26,30 @@ def play_audio_preview(audio_file, start_time, duration):
         print(f"Error playing {audio_file}: {e}")
 
 
-def save_cluster_labels(cluster_labels, cluster_labels_file):
-    with open(cluster_labels_file, "w") as f:
-        json.dump(cluster_labels, f, indent=4)
-    print(f"Progress saved to {cluster_labels_file}.")
+def save_labels(labels, labels_file):
+    with open(labels_file, "w") as f:
+        json.dump(labels, f, indent=4)
+    print(f"Progress saved to {labels_file}.")
 
 
-def append_missing_segments(cluster_labels_file, cluster_segments_file):
-    # Load cluster_labels.
-    if os.path.exists(cluster_labels_file):
-        with open(cluster_labels_file, "r") as f:
-            cluster_labels = json.load(f)
+def append_missing_segments(labels_file, segments_file):
+    # Load labels.
+    if os.path.exists(labels_file):
+        with open(labels_file, "r") as f:
+            labels = json.load(f)
     else:
-        print(f"No cluster labels found at {cluster_labels_file}. Skipping appending segments.")
+        print(f"No labels found at {labels_file}. Skipping appending segments.")
         return
 
-    # Load or initialize cluster_segments.
-    if os.path.exists(cluster_segments_file):
-        with open(cluster_segments_file, "r") as f:
-            cluster_segments = json.load(f)
+    # Load or initialize segments.
+    if os.path.exists(segments_file):
+        with open(segments_file, "r") as f:
+            segments = json.load(f)
     else:
-        cluster_segments = {}
+        segments = {}
 
-    # Process each detection in cluster_labels.
-    for key, detection in cluster_labels.items():
+    # Process each detection in labels.
+    for key, detection in labels.items():
         parts = key.split("-")
         if len(parts) != 3:
             print(f"Skipping key with unexpected format: {key}")
@@ -62,14 +62,14 @@ def append_missing_segments(cluster_labels_file, cluster_segments_file):
             print(f"Invalid start/end times in key: {key}")
             continue
 
-        # Ensure the file_id exists in cluster_segments.
-        if file_id not in cluster_segments:
-            cluster_segments[file_id] = []
+        # Ensure the file_id exists in segments.
+        if file_id not in segments:
+            segments[file_id] = []
 
         # Check if the segment (by start and end times) already exists.
         segment_exists = any(
             seg.get("start_time") == start_time and seg.get("end_time") == end_time
-            for seg in cluster_segments[file_id]
+            for seg in segments[file_id]
         )
         if not segment_exists:
             # Build a new segment entry following the correct format.
@@ -81,26 +81,26 @@ def append_missing_segments(cluster_labels_file, cluster_segments_file):
                 "confidence": detection.get("confidence", 0),
                 "cluster": detection.get("cluster")
             }
-            cluster_segments[file_id].append(segment_entry)
-            print(f"Appended segment {key} to cluster_segments under file id {file_id}.")
+            segments[file_id].append(segment_entry)
+            print(f"Appended segment {key} to segments under file id {file_id}.")
 
-    # Save the updated cluster_segments.
-    with open(cluster_segments_file, "w") as f:
-        json.dump(cluster_segments, f, indent=4)
-    print(f"Updated cluster_segments saved to {cluster_segments_file}.")
+    # Save the updated segments.
+    with open(segments_file, "w") as f:
+        json.dump(segments, f, indent=4)
+    print(f"Updated segments saved to {segments_file}.")
 
 def main(attribute, cluster, offset, dataset_name="all-public", cache_base=None):
-    cluster_labels_file = get_dataset_artifact_path(dataset_name, "cluster_labels.json", cache_base=cache_base)
-    cluster_segments_file = get_dataset_artifact_path(dataset_name, "cluster_segments.json", cache_base=cache_base)
+    labels_file = get_dataset_artifact_path(dataset_name, "labels.json", cache_base=cache_base)
+    segments_file = get_dataset_artifact_path(dataset_name, "segments.json", cache_base=cache_base)
 
     auto_labels = load_dataset_auto_labels(dataset_name, cache_base=cache_base)
 
-    # Load or initialize cluster_labels.json.
-    if os.path.exists(cluster_labels_file):
-        with open(cluster_labels_file, "r") as f:
-            cluster_labels = json.load(f)
+    # Load or initialize labels.json.
+    if os.path.exists(labels_file):
+        with open(labels_file, "r") as f:
+            labels = json.load(f)
     else:
-        cluster_labels = {}
+        labels = {}
 
     # Handle filter attribute with optional value.
     if ":" in attribute:
@@ -136,8 +136,8 @@ def main(attribute, cluster, offset, dataset_name="all-public", cache_base=None)
             continue
 
         # Skip if already included.
-        if key in cluster_labels:
-            print(f"Skipped {key}: already in cluster_labels.")
+        if key in labels:
+            print(f"Skipped {key}: already in labels.")
             continue
 
         detection = auto_labels[key]
@@ -161,8 +161,8 @@ def main(attribute, cluster, offset, dataset_name="all-public", cache_base=None)
         response = input("Include this detection? (Y = include, N = skip, Z = add as garbage, S = skip file, Q = quit): ").strip().lower()
         if response in ("q", "quit"):
             print("Quitting early. Saving progress...")
-            save_cluster_labels(cluster_labels, cluster_labels_file)
-            append_missing_segments(cluster_labels_file, cluster_segments_file)
+            save_labels(labels, labels_file)
+            append_missing_segments(labels_file, segments_file)
             return
         elif response == "s":
             skipped_file_ids.add(file_id)
@@ -171,9 +171,9 @@ def main(attribute, cluster, offset, dataset_name="all-public", cache_base=None)
         elif response == "y":
             new_detection = detection.copy()
             new_detection["cluster"] = cluster
-            cluster_labels[key] = new_detection
-            print(f"Added {key} to cluster_labels with cluster {cluster}.")
-            save_cluster_labels(cluster_labels, cluster_labels_file)
+            labels[key] = new_detection
+            print(f"Added {key} to labels with cluster {cluster}.")
+            save_labels(labels, labels_file)
         elif response == "z":
             # Create a garbage label.
             garbage_detection = {
@@ -187,31 +187,31 @@ def main(attribute, cluster, offset, dataset_name="all-public", cache_base=None)
                 "quality": 1,
                 "cluster": cluster
             }
-            cluster_labels[key] = garbage_detection
-            print(f"Added {key} as garbage to cluster_labels with cluster {cluster}.")
-            save_cluster_labels(cluster_labels, cluster_labels_file)
+            labels[key] = garbage_detection
+            print(f"Added {key} as garbage to labels with cluster {cluster}.")
+            save_labels(labels, labels_file)
         else:
             print("Skipped.")
 
     print("\nAll detections processed.")
-    save_cluster_labels(cluster_labels, cluster_labels_file)
-    append_missing_segments(cluster_labels_file, cluster_segments_file)
+    save_labels(labels, labels_file)
+    append_missing_segments(labels_file, segments_file)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Preview and promote auto-labeled segments into cluster labels.")
+    parser = argparse.ArgumentParser(description="Preview and promote auto-labeled segments into dataset labels.")
     parser.add_argument("--dataset", default="all-public", help="Dataset to read from and write to.")
     parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
     args = parser.parse_args()
 
     attr = input("Enter detection attribute to filter (e.g., rattle, softSong, begging, mob, alert, quality:1, crowCount:2, crowAge:1): ").strip()
 
-    cluster_labels_file = get_dataset_artifact_path(args.dataset, "cluster_labels.json", cache_base=args.cache_dir)
+    labels_file = get_dataset_artifact_path(args.dataset, "labels.json", cache_base=args.cache_dir)
     default_cluster = 1
-    if os.path.exists(cluster_labels_file):
-        with open(cluster_labels_file, "r") as f:
-            existing_cluster_labels = json.load(f)
+    if os.path.exists(labels_file):
+        with open(labels_file, "r") as f:
+            existing_labels = json.load(f)
         cluster_values = []
-        for detection in existing_cluster_labels.values():
+        for detection in existing_labels.values():
             cluster_val = detection.get("cluster")
             if isinstance(cluster_val, int):
                 cluster_values.append(cluster_val)

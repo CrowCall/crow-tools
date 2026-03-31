@@ -110,7 +110,8 @@ function getDatasetSegments(datasetName) {
     const datasetSegments = readJsonIfExists(datasetSegmentsPath, {});
     const filtered = {};
     for (const [fileId, segments] of Object.entries(datasetSegments)) {
-      segments.forEach(segment => addIfAllowed(filtered, fileId, segment, segment.library || null));
+      const inferredLibrary = findAudioInfo(datasetName, fileId)?.library || null;
+      segments.forEach(segment => addIfAllowed(filtered, fileId, segment, segment.library || inferredLibrary));
     }
     return filtered;
   }
@@ -307,11 +308,7 @@ app.get('/getNotationLabels', (req, res) => {
 
 app.get('/api/embeddings', (req, res) => {
     const dataset = req.query.dataset;
-    let embeddingsFile = path.join(CACHE_DIR, 'embeddings-3d.json');
-    if (dataset) {
-      const datasetEmbeddings = getDatasetFilePath(dataset, 'embeddings-3d.json');
-      if (fs.existsSync(datasetEmbeddings)) embeddingsFile = datasetEmbeddings;
-    }
+    const embeddingsFile = getDatasetFilePath(dataset || 'all-public', 'embeddings-3d.json');
     if (fs.existsSync(embeddingsFile)) {
         fs.readFile(embeddingsFile, 'utf8', (err, data) => {
             if (err) {

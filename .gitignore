@@ -1,6 +1,13 @@
 .cache/datasets/*/labels.json
 .cache/datasets/*/notation_labels.json
 .cache/datasets/*/excluded_segments.json
+.cache/datasets/*/segments.json
+!.cache/datasets/all-public/labels.json
+!.cache/datasets/all-public/notation_labels.json
+!.cache/datasets/all-public/segments.json
+.cache/datasets/Local/*
+!.cache/datasets/Local/config.json
+.cache/libraries/local/
 .cache/libraries/*/audio/
 .cache/libraries/*/audio-denoised/
 .cache/libraries/*/embeddings/
@@ -12,4 +19,3 @@
 __pycache__/
 */__pycache__/
 .pytest_cache/
-

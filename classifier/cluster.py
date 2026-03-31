@@ -260,8 +260,8 @@ def build_and_save_clusters(merged_leaves, seed_clusters, ids, norm_emb):
     from collections import defaultdict
 
     # Load existing segments and labels if the files exist.
-    output_segments = get_dataset_artifact_path(CURRENT_DATASET, "cluster_segments.json", cache_base=CACHE_BASE)
-    output_labels = get_dataset_artifact_path(CURRENT_DATASET, "cluster_labels.json", cache_base=CACHE_BASE)
+    output_segments = get_dataset_artifact_path(CURRENT_DATASET, "segments.json", cache_base=CACHE_BASE)
+    output_labels = get_dataset_artifact_path(CURRENT_DATASET, "labels.json", cache_base=CACHE_BASE)
     label_template_file = get_dataset_artifact_path(CURRENT_DATASET, "cluster_segments_labels.json", cache_base=CACHE_BASE)
 
     if os.path.exists(output_segments):

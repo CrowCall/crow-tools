@@ -36,6 +36,12 @@ else:
 
 
 def print_label_stats(labels):
+    if not labels:
+        print("=== LABEL SUMMARY ===")
+        print("No labels found.")
+        print()
+        return
+
     # Convert labels dict into a DataFrame.
     df = pd.DataFrame.from_dict(labels, orient='index')
 
@@ -135,7 +141,12 @@ def choose_color(label, mode='quality'):
 
 def main(sample_size, dataset_name="all-public", cache_base=None, show_plot=True):
     segments_dict = load_dataset_segments(dataset_name, cache_base=cache_base)
-    labels = load_dataset_auto_labels(dataset_name, cache_base=cache_base)
+    dataset_labels_path = get_dataset_artifact_path(dataset_name, "labels.json", cache_base=cache_base)
+    if os.path.exists(dataset_labels_path):
+        with open(dataset_labels_path, "r") as f:
+            labels = json.load(f)
+    else:
+        labels = load_dataset_auto_labels(dataset_name, cache_base=cache_base)
 
     print_label_stats(labels)
     print_segment_stats(segments_dict)
@@ -185,7 +196,7 @@ def main(sample_size, dataset_name="all-public", cache_base=None, show_plot=True
             cache_base=cache_base,
         )
 
-        if not os.path.exists(audio_path):
+        if not audio_path or not os.path.exists(audio_path):
             print(f"Audio file {audio_path} not found, skipping")
             continue
 
@@ -195,7 +206,7 @@ def main(sample_size, dataset_name="all-public", cache_base=None, show_plot=True
             denoised=denoised,
             cache_base=cache_base,
         )
-        if not os.path.exists(cached_path):
+        if not cached_path or not os.path.exists(cached_path):
             print(f"Skipping {segment_key}, no cached embedding file found")
             continue
 
