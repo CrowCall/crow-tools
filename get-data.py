@@ -73,7 +73,7 @@ def resolve_pipeline_functions():
     from downloader.download_backgrounds import start_downloads as download_backgrounds
     from downloader.download_crows_ebird import start_downloads as download_macaulay
     from downloader.download_crows_xeno import start_downloads as download_xeno
-    from denoiser.denoise_crows import start_denoising
+    from denoiser.denoise_all import start_denoising
     from detector.detect_all import start_detections
     from embedder.embed_all import start_embeddings
 

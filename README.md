@@ -74,6 +74,10 @@ quality of the audio for subsequent processing steps by focusing on the relevant
 the creation of mixes (overlapping crow sounds) to train our separator model. This module utilizes the [biodenoising](https://github.com/earthspecies/biodenoising-inference)
 module created by [Earth Species Project](https://earthspecies.org/).
 
+```bash
+python denoiser/denoise_all.py
+```
+
 ![denoiser.png](docs/images/denoiser.png)
 
 ### Classifier
@@ -99,6 +103,11 @@ The detector module leverages our custom trained crow classifier, to quickly fin
 By isolating these segments, the module enables more focused analysis and processing of individual crow calls and vocalizations.
 We also include an interactive crow timeline app to review and listen to the detections:
 
+```bash
+python detector/detect.py --dataset starter --no-gui 105346
+python detector/detect_all.py --dataset starter
+```
+
 ![detector-timeline.png](docs/images/detector-timeline.png)
 
 ```json
@@ -123,12 +132,21 @@ The embedder module transforms each crow call into a 768-dimensional vector usin
 transformation creates a numerical representation of the audio, which is essential for further analysis and machine 
 learning applications.
 
+```bash
+python embedder/embed_all.py
+python embedder/analyze.py --dataset starter --no-show
+```
+
 ![embeddings.gif](docs/videos/embeddings.gif)
 
 ### Labeler
 The labeler module provides a web interface for manual labeling of crow calls. This interface is designed for 
 human labeling and review, ensuring that the training data for the classifier is accurate and reliable. It also
 provides a 3D interactive embedding feature. Built with Vue v3 and Node.js.
+
+```bash
+cd labeler && npm install && npm start
+```
 
 ![labeler.png](docs/images/labeler.png)
 
@@ -142,6 +160,10 @@ for training crow-to-text models. Built with Vue v3 and Node.js.
 ### Separator
 The separator module is responsible for separating overlapping crow calls into distinct audio files. This process 
 enables clearer analysis by isolating individual calls that may be mixed together in the original recordings.
+
+```bash
+python separator/separate.py
+```
 
 ![separator.png](docs/images/separator.png)
 

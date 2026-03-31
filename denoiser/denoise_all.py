@@ -1,10 +1,15 @@
 import os
+import sys
 import torch
 import torchaudio
 import librosa
 from biodenoising import pretrained
 from biodenoising.denoiser.dsp import convert_audio
 from tqdm import tqdm
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 
 from crowtools.datasets import get_library_dir, get_public_libraries
 

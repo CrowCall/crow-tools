@@ -1,6 +1,12 @@
 import os
+import sys
 import librosa
 import numpy as np
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
 from embedder.embed import generate_embeddings
 from embedder.ispa import utils
 from crowtools.datasets import get_library_dir, get_public_libraries
