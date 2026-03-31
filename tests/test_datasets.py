@@ -51,7 +51,6 @@ def test_default_datasets_are_created_in_temp_cache(tmp_path):
 
     assert (cache_dir / "datasets" / "starter" / "config.json").exists()
     assert (cache_dir / "datasets" / "all-public" / "config.json").exists()
-    assert (cache_dir / "datasets" / "Local" / "config.json").exists()
 
 
 def test_all_public_excludes_local_and_background_libraries(tmp_path):

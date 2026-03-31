@@ -197,15 +197,8 @@ def main(attribute, cluster, offset, dataset_name="all-public", cache_base=None)
     save_labels(labels, labels_file)
     append_missing_segments(labels_file, segments_file)
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Preview and promote auto-labeled segments into dataset labels.")
-    parser.add_argument("--dataset", default="all-public", help="Dataset to read from and write to.")
-    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
-    args = parser.parse_args()
-
-    attr = input("Enter detection attribute to filter (e.g., rattle, softSong, begging, mob, alert, quality:1, crowCount:2, crowAge:1): ").strip()
-
-    labels_file = get_dataset_artifact_path(args.dataset, "labels.json", cache_base=args.cache_dir)
+def get_default_cluster(dataset_name="all-public", cache_base=None):
+    labels_file = get_dataset_artifact_path(dataset_name, "labels.json", cache_base=cache_base)
     default_cluster = 1
     if os.path.exists(labels_file):
         with open(labels_file, "r") as f:
@@ -217,11 +210,45 @@ if __name__ == "__main__":
                 cluster_values.append(cluster_val)
         if cluster_values:
             default_cluster = max(cluster_values) + 1
+    return default_cluster
 
-    clus_input = input(f"Enter cluster number to assign [default: {default_cluster}]: ").strip()
-    clus = int(clus_input) if clus_input else default_cluster
 
-    offset_input = input("Enter starting offset [default: 0]: ").strip()
-    offset = int(offset_input) if offset_input else 0
+def main_cli(argv=None):
+    parser = argparse.ArgumentParser(description="Review detected segments and promote accepted items into dataset labels.")
+    parser.add_argument("--dataset", default="all-public", help="Dataset to read from and write to.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
+    parser.add_argument(
+        "--attribute",
+        default=None,
+        help="Detection attribute filter, e.g. rattle, softSong, quality:1, crowCount:2.",
+    )
+    parser.add_argument(
+        "--cluster",
+        type=int,
+        default=None,
+        help="Cluster to assign to accepted detections. Defaults to the next available cluster.",
+    )
+    parser.add_argument(
+        "--offset",
+        type=int,
+        default=0,
+        help="Starting offset within the filtered detections.",
+    )
+    args = parser.parse_args(argv)
 
-    main(attr, clus, offset, dataset_name=args.dataset, cache_base=args.cache_dir)
+    attr = args.attribute or input(
+        "Enter detection attribute to filter (e.g., rattle, softSong, begging, mob, alert, quality:1, crowCount:2, crowAge:1): "
+    ).strip()
+
+    default_cluster = get_default_cluster(args.dataset, args.cache_dir)
+    if args.cluster is None:
+        clus_input = input(f"Enter cluster number to assign [default: {default_cluster}]: ").strip()
+        clus = int(clus_input) if clus_input else default_cluster
+    else:
+        clus = args.cluster
+
+    main(attr, clus, args.offset, dataset_name=args.dataset, cache_base=args.cache_dir)
+
+
+if __name__ == "__main__":
+    main_cli()

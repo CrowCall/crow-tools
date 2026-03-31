@@ -1,3 +1,4 @@
+import argparse
 import os
 import sys
 import torch
@@ -11,7 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(__file__))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from crowtools.datasets import get_library_dir, get_public_libraries
+from crowtools.datasets import get_dataset_libraries, get_library_dir, get_public_libraries, get_selected_files
 
 # Set device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -79,5 +80,26 @@ def start_denoising(libraries=None, selected_ids_by_library=None, cache_base=Non
                 torchaudio.save(output_file, denoised.cpu(), model.sample_rate)
                 print(f"Saved denoised audio to: {output_file}")
 
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Denoise crow audio across a dataset.")
+    parser.add_argument("--dataset", default=None, help="Dataset to process. Defaults to all discovered public libraries.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
+    args = parser.parse_args(argv)
+
+    if args.dataset:
+        libraries = get_dataset_libraries(args.dataset, args.cache_dir)
+        selected_ids_by_library = get_selected_files(args.dataset, args.cache_dir)
+    else:
+        libraries = None
+        selected_ids_by_library = None
+
+    start_denoising(
+        libraries=libraries,
+        selected_ids_by_library=selected_ids_by_library,
+        cache_base=args.cache_dir,
+    )
+
+
 if __name__ == "__main__":
-    start_denoising()
+    main()

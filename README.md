@@ -75,7 +75,8 @@ the creation of mixes (overlapping crow sounds) to train our separator model. Th
 module created by [Earth Species Project](https://earthspecies.org/).
 
 ```bash
-python denoiser/denoise_all.py
+# Denoise the starter recordings.
+python denoiser/denoise_all.py --dataset starter
 ```
 
 ![denoiser.png](docs/images/denoiser.png)
@@ -84,6 +85,14 @@ python denoiser/denoise_all.py
 The classifier module analyzes crow call embeddings and categorizes them (i.e. auto labels) into various types such as 
 alert, number of calls, age indicators, rattles, soft songs, and quality of audio. It processes the embedded data and 
 applies machine learning techniques to identify and label crow vocalizations.
+
+```bash
+# Detect candidate crow segments and write library auto labels.
+python detector/detect_all.py --dataset starter
+
+# Review those detections and promote accepted ones into the starter dataset.
+python classifier/review_detections.py --dataset starter --attribute quality:2
+```
 
 ```python
     {
@@ -104,8 +113,8 @@ By isolating these segments, the module enables more focused analysis and proces
 We also include an interactive crow timeline app to review and listen to the detections:
 
 ```bash
+# Detect crow calls in one starter file and print the results (file paths also accepted here)
 python detector/detect.py --dataset starter --no-gui 105346
-python detector/detect_all.py --dataset starter
 ```
 
 ![detector-timeline.png](docs/images/detector-timeline.png)
@@ -133,7 +142,10 @@ transformation creates a numerical representation of the audio, which is essenti
 learning applications.
 
 ```bash
-python embedder/embed_all.py
+# Generate raw and denoised embeddings for the starter dataset.
+python embedder/embed_all.py --dataset starter
+
+# Analyze and generate the 3D embeddings JSON used by the labeler.
 python embedder/analyze.py --dataset starter --no-show
 ```
 
@@ -145,6 +157,7 @@ human labeling and review, ensuring that the training data for the classifier is
 provides a 3D interactive embedding feature. Built with Vue v3 and Node.js.
 
 ```bash
+# Launch the labeling web app.
 cd labeler && npm install && npm start
 ```
 
@@ -162,7 +175,8 @@ The separator module is responsible for separating overlapping crow calls into d
 enables clearer analysis by isolating individual calls that may be mixed together in the original recordings.
 
 ```bash
-python separator/separate.py
+# Separate one audio file into per-source outputs.
+python separator/separate.py separator/samples/overlapping-crows-1.wav
 ```
 
 ![separator.png](docs/images/separator.png)

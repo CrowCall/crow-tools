@@ -22,13 +22,8 @@ DEFAULT_DATASET_CONFIGS = {
     },
     "starter": {
         "name": "starter",
-        "description": "Small deterministic public subset for onboarding and smoke tests.",
+        "description": "Curated starter subset of high-quality human-reviewed files.",
         "included_libraries": DEFAULT_PUBLIC_LIBRARIES,
-    },
-    "Local": {
-        "name": "Local",
-        "description": "Local-only dataset.",
-        "included_libraries": [LOCAL_LIBRARY],
     },
 }
 

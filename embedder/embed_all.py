@@ -1,3 +1,4 @@
+import argparse
 import os
 import sys
 import librosa
@@ -9,7 +10,7 @@ if ROOT not in sys.path:
 
 from embedder.embed import generate_embeddings
 from embedder.ispa import utils
-from crowtools.datasets import get_library_dir, get_public_libraries
+from crowtools.datasets import get_dataset_libraries, get_library_dir, get_public_libraries, get_selected_files
 
 PATH = os.path.dirname(__file__)
 
@@ -112,6 +113,33 @@ def start_embeddings(denoised=False, libraries=None, selected_ids_by_library=Non
                 np.save(volume_out_path, volumes)
                 print(f"Saved volume data for {file_id} -> {volume_out_path} shape={volumes.shape}")
 
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Generate embeddings across a dataset.")
+    parser.add_argument("--dataset", default=None, help="Dataset to process. Defaults to all discovered public libraries.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
+    args = parser.parse_args(argv)
+
+    if args.dataset:
+        libraries = get_dataset_libraries(args.dataset, args.cache_dir)
+        selected_ids_by_library = get_selected_files(args.dataset, args.cache_dir)
+    else:
+        libraries = None
+        selected_ids_by_library = None
+
+    start_embeddings(
+        denoised=False,
+        libraries=libraries,
+        selected_ids_by_library=selected_ids_by_library,
+        cache_base=args.cache_dir,
+    )
+    start_embeddings(
+        denoised=True,
+        libraries=libraries,
+        selected_ids_by_library=selected_ids_by_library,
+        cache_base=args.cache_dir,
+    )
+
+
 if __name__ == "__main__":
-    start_embeddings(denoised=False)
-    start_embeddings(denoised=True)
+    main()

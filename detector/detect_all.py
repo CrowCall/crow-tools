@@ -15,8 +15,8 @@ from classifier.classify import predict_embedding
 from crowtools.datasets import (
     get_dataset_libraries,
     get_library_dir,
+    get_selected_files_for_library,
     get_public_libraries,
-    get_selected_files,
     read_library_catalog_rows,
     select_catalog_rows,
 )
@@ -155,7 +155,6 @@ def start_detections(libraries=None, selected_ids_by_library=None, cache_base=No
             stats = compute_contiguous_stats(segments, auto_labels, target_crowCount=target)
             print(f"[{lib_name}] Contiguous groups (crowCount=={target}): {stats}")
 
-
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Detect crow segments across a dataset.")
     parser.add_argument("--dataset", default=None, help="Dataset to process. Defaults to all discovered public libraries.")
@@ -164,7 +163,10 @@ def main(argv=None):
 
     if args.dataset:
         libraries = get_dataset_libraries(args.dataset, args.cache_dir)
-        selected_ids_by_library = get_selected_files(args.dataset, args.cache_dir)
+        selected_ids_by_library = {
+            library_name: get_selected_files_for_library(args.dataset, library_name, args.cache_dir)
+            for library_name in libraries
+        }
     else:
         libraries = None
         selected_ids_by_library = None
