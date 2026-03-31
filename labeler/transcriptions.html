@@ -647,7 +647,7 @@
         },
         saveNotations() {
           console.log("Saving notations:", this.notations);
-          fetch('/updateNotationLabels', {
+          fetch(`/updateNotationLabels?dataset=${encodeURIComponent(this.dataset)}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ fileId: this.fileId, notations: this.notations })
@@ -663,7 +663,7 @@
           .catch(err => console.error("Error saving notations:", err));
         },
         loadNotations() {
-          fetch(`/getNotationLabels?fileId=${this.fileId}`)
+          fetch(`/getNotationLabels?dataset=${encodeURIComponent(this.dataset)}&fileId=${encodeURIComponent(this.fileId)}`)
             .then(response => response.json())
             .then(data => {
               if (data.success) {

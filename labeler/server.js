@@ -8,14 +8,14 @@ app.use(express.json({
     limit: '200mb',
 }));
 
-// Serve static files from "public" and the project root
-app.use('/cache', express.static(path.join(__dirname, '../.cache')));
-app.use('/images', express.static(path.join(__dirname, '../docs/images')));
-app.use(express.static('.'));
-
-const CACHE_DIR = path.join(__dirname, '../.cache');
+const CACHE_DIR = path.resolve(process.env.CROW_TOOLS_CACHE_DIR || path.join(__dirname, '../.cache'));
 const DATASETS_DIR = path.join(CACHE_DIR, 'datasets');
 const LIBRARIES_DIR = path.join(CACHE_DIR, 'libraries');
+
+// Serve static files from "public" and the project root
+app.use('/cache', express.static(CACHE_DIR));
+app.use('/images', express.static(path.join(__dirname, '../docs/images')));
+app.use(express.static('.'));
 const DEFAULT_PUBLIC_LIBRARIES = ['macaulay', 'xeno-canto'];
 
 function readJsonIfExists(filePath, fallback) {
@@ -64,6 +64,10 @@ function isFileAllowed(config, libraryName, fileId) {
 
 function getIncludedLibraries(datasetName) {
   return loadDatasetConfig(datasetName).included_libraries || [];
+}
+
+function getDatasetFilePath(datasetName, filename) {
+  return path.join(DATASETS_DIR, datasetName, filename);
 }
 
 function findAudioInfo(datasetName, fileId) {
@@ -236,7 +240,7 @@ app.put('/datasets/:name', (req, res) => {
 app.post('/updateLabels', (req, res) => {
   const dataset = req.query.dataset || 'all-public';
   const update = req.body; // Expecting: { segmentKey, labels }
-  const labelsFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'labels.json');
+  const labelsFile = getDatasetFilePath(dataset, 'labels.json');
   let allLabels = {};
   try {
     if (fs.existsSync(labelsFile)) {
@@ -261,7 +265,7 @@ app.post('/updateNotationLabels', (req, res) => {
   const dataset = req.query.dataset || 'all-public';
   // Expecting: { fileId: 'xxx', notations: { <timestamp>: "transcription text", ... } }
   const update = req.body;
-  const notationFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'notation_labels.json');
+  const notationFile = getDatasetFilePath(dataset, 'notation_labels.json');
   let allNotations = {};
   try {
     if (fs.existsSync(notationFile)) {
@@ -287,7 +291,7 @@ app.post('/updateNotationLabels', (req, res) => {
 app.get('/getNotationLabels', (req, res) => {
   const dataset = req.query.dataset || 'all-public';
   const fileId = req.query.fileId;
-  const notationFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'notation_labels.json');
+  const notationFile = getDatasetFilePath(dataset, 'notation_labels.json');
   let allNotations = {};
   try {
     if (fs.existsSync(notationFile)) {
@@ -303,9 +307,9 @@ app.get('/getNotationLabels', (req, res) => {
 
 app.get('/api/embeddings', (req, res) => {
     const dataset = req.query.dataset;
-    let embeddingsFile = path.join(__dirname, '../', '.cache', 'embeddings-3d.json');
+    let embeddingsFile = path.join(CACHE_DIR, 'embeddings-3d.json');
     if (dataset) {
-      const datasetEmbeddings = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'embeddings-3d.json');
+      const datasetEmbeddings = getDatasetFilePath(dataset, 'embeddings-3d.json');
       if (fs.existsSync(datasetEmbeddings)) embeddingsFile = datasetEmbeddings;
     }
     if (fs.existsSync(embeddingsFile)) {
@@ -345,7 +349,7 @@ app.delete('/deleteSegment', (req, res) => {
   const { segmentKey } = req.body;
 
   // ----- Remove from labels file -----
-  const labelsFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'labels.json');
+  const labelsFile = getDatasetFilePath(dataset, 'labels.json');
   let allLabels = {};
   try {
     if (fs.existsSync(labelsFile)) {
@@ -366,7 +370,7 @@ app.delete('/deleteSegment', (req, res) => {
   }
 
   // ----- Remove from segments file -----
-  const segmentsFile = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'segments.json');
+  const segmentsFile = getDatasetFilePath(dataset, 'segments.json');
   if (fs.existsSync(segmentsFile)) {
     let allSegments = {};
     try {
@@ -398,7 +402,7 @@ app.delete('/deleteSegment', (req, res) => {
       return res.status(500).json({ success: false, error: 'Failed to delete segment from segments file.' });
     }
   } else {
-    const excludedPath = path.join(__dirname, '../', '.cache', 'datasets', dataset, 'excluded_segments.json');
+    const excludedPath = getDatasetFilePath(dataset, 'excluded_segments.json');
     let excluded = readJsonIfExists(excludedPath, []);
     if (!excluded.includes(segmentKey)) excluded.push(segmentKey);
     try {
