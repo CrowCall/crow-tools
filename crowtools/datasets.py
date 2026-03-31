@@ -14,30 +14,6 @@ LOCAL_LIBRARY = "local"
 BACKGROUND_LIBRARY = "backgrounds"
 DEFAULT_PUBLIC_LIBRARIES = ["macaulay", "xeno-canto"]
 
-# A deterministic, public-only starter subset intended for onboarding and smoke tests.
-STARTER_SELECTED_FILES = {
-    "macaulay": [
-        "104365511",
-        "229089",
-        "56781051",
-        "420980621",
-        "304195801",
-        "305346371",
-        "391813591",
-        "305970",
-    ],
-    "xeno-canto": [
-        "543339",
-        "543338",
-        "543337",
-        "543336",
-        "543335",
-        "524251",
-        "524250",
-        "524249",
-    ],
-}
-
 DEFAULT_DATASET_CONFIGS = {
     "all-public": {
         "name": "all-public",
@@ -48,7 +24,6 @@ DEFAULT_DATASET_CONFIGS = {
         "name": "starter",
         "description": "Small deterministic public subset for onboarding and smoke tests.",
         "included_libraries": DEFAULT_PUBLIC_LIBRARIES,
-        "selected_files": STARTER_SELECTED_FILES,
     },
     "Local": {
         "name": "Local",
@@ -424,6 +399,33 @@ def load_dataset_segments(dataset_name: str, cache_base: Optional[str] = None) -
                     continue
                 _merge_segment_entry(merged, file_id, segment, library_name)
     return merged
+
+
+def materialize_dataset_artifacts(
+    dataset_name: str,
+    cache_base: Optional[str] = None,
+    *,
+    include_auto_labels: bool = True,
+) -> None:
+    """
+    Persist dataset-scoped segments/labels by merging the selected subset from the
+    underlying libraries. Existing dataset labels take precedence so local review
+    work is preserved while missing entries are filled from auto labels.
+    """
+    ensure_dataset(dataset_name, cache_base)
+
+    dataset_segments_path = get_dataset_artifact_path(dataset_name, "segments.json", cache_base=cache_base)
+    dataset_labels_path = get_dataset_artifact_path(dataset_name, "labels.json", cache_base=cache_base)
+
+    existing_segments = read_json_file(dataset_segments_path, {})
+    existing_labels = read_json_file(dataset_labels_path, {})
+
+    merged_segments = load_dataset_segments(dataset_name, cache_base=cache_base)
+    merged_labels = dict(load_dataset_auto_labels(dataset_name, cache_base=cache_base)) if include_auto_labels else {}
+    merged_labels.update(existing_labels)
+
+    write_json_file(dataset_segments_path, merged_segments)
+    write_json_file(dataset_labels_path, merged_labels)
 
 
 def find_file_path(

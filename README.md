@@ -34,6 +34,8 @@ For a new user, start with the small `starter` dataset:
 python get-data.py --dataset starter
 ```
 
+The `starter` dataset is a curated, deterministic subset of high-quality human-reviewed files. It downloads only those audio files and includes committed dataset `segments.json` and `labels.json` artifacts so you can start exploring immediately without re-running auto-labeling for that subset.
+
 To build the full public dataset:
 
 ```

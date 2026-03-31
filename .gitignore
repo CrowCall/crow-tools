@@ -5,6 +5,8 @@
 !.cache/datasets/all-public/labels.json
 !.cache/datasets/all-public/notation_labels.json
 !.cache/datasets/all-public/segments.json
+!.cache/datasets/starter/labels.json
+!.cache/datasets/starter/segments.json
 .cache/datasets/Local/*
 !.cache/datasets/Local/config.json
 .cache/libraries/local/

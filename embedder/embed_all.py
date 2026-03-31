@@ -79,32 +79,32 @@ def start_embeddings(denoised=False, libraries=None, selected_ids_by_library=Non
                 np.save(embedding_out_path, final_embedding)
                 print(f"Saved embedding for {file_id} -> {embedding_out_path} shape={final_embedding.shape}")
 
-        ############################################################
-        # 2) Compute and save volume data (if not existing)
-        ############################################################
-        if not os.path.exists(volume_out_path):
-            # Ensure waveform is 1D. librosa.load returns a 1D array if mono=True,
-            # but in case it ends up 2D, squeeze the first axis.
-            if waveform.ndim > 1:
-                waveform = np.squeeze(waveform, axis=0)
-            total_samples = waveform.shape[0]
+            ############################################################
+            # 2) Compute and save volume data (if not existing)
+            ############################################################
+            if not os.path.exists(volume_out_path):
+                # Ensure waveform is 1D. librosa.load returns a 1D array if mono=True,
+                # but in case it ends up 2D, squeeze the first axis.
+                if waveform.ndim > 1:
+                    waveform = np.squeeze(waveform, axis=0)
+                total_samples = waveform.shape[0]
 
-            # Compute 1 volume metric per second (mean absolute amplitude)
-            total_seconds = int(np.ceil(total_samples / sr))
-            volumes = []
-            for sec in range(total_seconds):
-                start_samp = sec * sr
-                end_samp = min((sec + 1) * sr, total_samples)
-                segment = waveform[start_samp:end_samp]
-                if len(segment) == 0:
-                    volumes.append(0.0)
-                else:
-                    mean_amp = np.mean(np.abs(segment))
-                    volumes.append(mean_amp)
+                # Compute 1 volume metric per second (mean absolute amplitude)
+                total_seconds = int(np.ceil(total_samples / sr))
+                volumes = []
+                for sec in range(total_seconds):
+                    start_samp = sec * sr
+                    end_samp = min((sec + 1) * sr, total_samples)
+                    segment = waveform[start_samp:end_samp]
+                    if len(segment) == 0:
+                        volumes.append(0.0)
+                    else:
+                        mean_amp = np.mean(np.abs(segment))
+                        volumes.append(mean_amp)
 
-            volumes = np.array(volumes, dtype=np.float32)
-            np.save(volume_out_path, volumes)
-            print(f"Saved volume data for {file_id} -> {volume_out_path} shape={volumes.shape}")
+                volumes = np.array(volumes, dtype=np.float32)
+                np.save(volume_out_path, volumes)
+                print(f"Saved volume data for {file_id} -> {volume_out_path} shape={volumes.shape}")
 
 if __name__ == "__main__":
     start_embeddings(denoised=False)

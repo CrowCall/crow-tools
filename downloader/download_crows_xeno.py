@@ -83,6 +83,10 @@ def start_downloads(percent=100, selected_ids=None, cache_base=None):
         "Filename"
     ]
 
+    if not recordings:
+        print(f"No Xeno-Canto recordings resolved for '{SPECIES_QUERY}'. Preserving existing catalog at '{output_csv}'.")
+        return
+
     with open(output_csv, "w", newline="", encoding="utf-8") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()

@@ -1,12 +1,15 @@
 import argparse
+import json
 import os
 from typing import Optional, Sequence
 
 from crowtools.datasets import (
     ensure_dataset,
     ensure_default_datasets,
+    get_dataset_artifact_path,
     get_dataset_libraries,
     get_selected_files,
+    materialize_dataset_artifacts,
 )
 
 
@@ -84,10 +87,29 @@ def resolve_pipeline_functions():
     }
 
 
+def has_curated_dataset_artifacts(dataset_name: str, cache_dir: Optional[str]) -> bool:
+    if dataset_name != "starter":
+        return False
+
+    labels_path = get_dataset_artifact_path(dataset_name, "labels.json", cache_base=cache_dir)
+    segments_path = get_dataset_artifact_path(dataset_name, "segments.json", cache_base=cache_dir)
+
+    try:
+        with open(labels_path, "r", encoding="utf-8") as handle:
+            labels = json.load(handle)
+        with open(segments_path, "r", encoding="utf-8") as handle:
+            segments = json.load(handle)
+    except FileNotFoundError:
+        return False
+
+    return bool(labels) and bool(segments)
+
+
 def run_pipeline(dataset_name: str, cache_dir: Optional[str], include_backgrounds: bool, args) -> None:
     selected_files = get_selected_files(dataset_name, cache_dir)
     libraries = get_dataset_libraries(dataset_name, cache_dir)
     pipeline = resolve_pipeline_functions()
+    curated_artifacts = has_curated_dataset_artifacts(dataset_name, cache_dir)
 
     if not args.skip_download:
         if "macaulay" in libraries:
@@ -124,12 +146,17 @@ def run_pipeline(dataset_name: str, cache_dir: Optional[str], include_background
             cache_base=cache_dir,
         )
 
-    if not args.skip_detect:
+    if not args.skip_detect and not curated_artifacts:
         pipeline["start_detections"](
             libraries=libraries,
             selected_ids_by_library=selected_files,
             cache_base=cache_dir,
         )
+
+    if curated_artifacts:
+        print(f"Using curated dataset labels and segments for {dataset_name}; skipping auto-label materialization.")
+    else:
+        materialize_dataset_artifacts(dataset_name, cache_base=cache_dir)
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:

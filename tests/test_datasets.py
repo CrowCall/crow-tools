@@ -9,7 +9,6 @@ if str(ROOT) not in sys.path:
 
 from crowtools.datasets import (
     DEFAULT_PUBLIC_LIBRARIES,
-    STARTER_SELECTED_FILES,
     ensure_default_datasets,
     find_file_library,
     find_file_path,
@@ -66,14 +65,20 @@ def test_all_public_excludes_local_and_background_libraries(tmp_path):
     assert "backgrounds" not in libraries
 
 
-def test_starter_selected_files_are_exposed(tmp_path):
+def test_starter_defaults_to_disk_config_for_selected_files(tmp_path):
     cache_dir = build_fake_cache(tmp_path)
 
     ensure_default_datasets(str(cache_dir))
+    starter_config_path = cache_dir / "datasets" / "starter" / "config.json"
+    starter_config_path.write_text(
+        '{"name":"starter","included_libraries":["macaulay","xeno-canto"],'
+        '"selected_files":{"macaulay":["111"],"xeno-canto":["222"]}}',
+        encoding="utf-8",
+    )
     selected = get_selected_files("starter", str(cache_dir))
 
-    assert selected["macaulay"] == set(STARTER_SELECTED_FILES["macaulay"])
-    assert selected["xeno-canto"] == set(STARTER_SELECTED_FILES["xeno-canto"])
+    assert selected["macaulay"] == {"111"}
+    assert selected["xeno-canto"] == {"222"}
 
 
 def test_find_file_helpers_respect_allowed_libraries(tmp_path):

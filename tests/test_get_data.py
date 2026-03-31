@@ -6,9 +6,6 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from crowtools.datasets import STARTER_SELECTED_FILES
-
-
 SCRIPT_PATH = ROOT / "get-data.py"
 
 
@@ -38,6 +35,10 @@ def test_dry_run_skips_pipeline(monkeypatch, tmp_path):
 def test_starter_pipeline_uses_deterministic_selected_files(monkeypatch, tmp_path):
     get_data = load_get_data_module()
     recorded = []
+    selected_files = {
+        "macaulay": {"m1", "m2"},
+        "xeno-canto": {"x1", "x2"},
+    }
 
     def record(name):
         def inner(*args, **kwargs):
@@ -56,6 +57,7 @@ def test_starter_pipeline_uses_deterministic_selected_files(monkeypatch, tmp_pat
             "start_embeddings": record("start_embeddings"),
         },
     )
+    monkeypatch.setattr(get_data, "get_selected_files", lambda dataset_name, cache_dir: selected_files)
 
     rc = get_data.main(["--dataset", "starter", "--cache-dir", str(tmp_path), "--include-backgrounds"])
 
@@ -67,9 +69,9 @@ def test_starter_pipeline_uses_deterministic_selected_files(monkeypatch, tmp_pat
     detect_call = next(item for item in recorded if item[0] == "start_detections")
     embed_calls = [item for item in recorded if item[0] == "start_embeddings"]
 
-    assert macaulay_call[2]["selected_ids"] == set(STARTER_SELECTED_FILES["macaulay"])
-    assert xeno_call[2]["selected_ids"] == set(STARTER_SELECTED_FILES["xeno-canto"])
+    assert macaulay_call[2]["selected_ids"] == selected_files["macaulay"]
+    assert xeno_call[2]["selected_ids"] == selected_files["xeno-canto"]
     assert denoise_call[2]["libraries"] == ["macaulay", "xeno-canto"]
-    assert denoise_call[2]["selected_ids_by_library"]["macaulay"] == set(STARTER_SELECTED_FILES["macaulay"])
+    assert denoise_call[2]["selected_ids_by_library"]["macaulay"] == selected_files["macaulay"]
     assert detect_call[2]["libraries"] == ["macaulay", "xeno-canto"]
     assert [call[2]["denoised"] for call in embed_calls] == [False, True]
