@@ -1,0 +1,15 @@
+.cache/datasets/*/labels.json
+.cache/datasets/*/notation_labels.json
+.cache/datasets/*/excluded_segments.json
+.cache/libraries/*/audio/
+.cache/libraries/*/audio-denoised/
+.cache/libraries/*/embeddings/
+.cache/libraries/*/embeddings-denoised/
+.cache/libraries/*/embeddings-volumes/
+.cache/libraries/*/embeddings-denoised-volumes/
+.cache/libraries/*/labels/
+.cache/mixes/
+__pycache__/
+*/__pycache__/
+.pytest_cache/
+

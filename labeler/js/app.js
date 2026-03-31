@@ -223,13 +223,8 @@ const app = Vue.createApp({
             });
         },
         loadSegments() {
-            // Attempt to load dataset-specific segments.json. If it doesn't exist
-            // fall back to loading all segments from the configured libraries.
-            fetch(`/cache/datasets/${this.dataset}/segments.json`)
-                .then(r => {
-                    if (!r.ok) throw new Error('no dataset segments');
-                    return r.json();
-                })
+            fetch(`/segments?dataset=${this.dataset}`)
+                .then(r => r.json())
                 .then(data => {
                     const segArray = [];
                     for (const [id, segs] of Object.entries(data)) {
@@ -240,25 +235,6 @@ const app = Vue.createApp({
                         });
                     }
                     this.finishSegmentsLoad(segArray);
-                })
-                .catch(() => {
-                    // Load segments from included libraries
-                    const libs = this.datasetConfig.included_libraries || ['macaulay'];
-                    const promises = libs.map(l => fetch(`/cache/libraries/${l}/segments.json`).then(r => r.json()));
-                    Promise.all(promises).then(results => {
-                        const segArray = [];
-                        libs.forEach((lib, idx) => {
-                            const obj = results[idx] || {};
-                            for (const [id, segs] of Object.entries(obj)) {
-                                segs.forEach(seg => {
-                                    seg.id = id;
-                                    seg.library = lib;
-                                    segArray.push(seg);
-                                });
-                            }
-                        });
-                        this.finishSegmentsLoad(segArray);
-                    }).catch(err => console.error('Error loading library segments:', err));
                 });
         },
         finishSegmentsLoad(segArray) {

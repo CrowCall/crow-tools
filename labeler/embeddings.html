@@ -50,7 +50,7 @@
         methods: {
             async loadEmbeddings() {
                 try {
-                    const res = await fetch('/api/embeddings');
+                    const res = await fetch('/api/embeddings?dataset=' + encodeURIComponent(this.dataset));
                     const data = await res.json();
                     if (data.success) {
                         this.embeddings = data.embeddings;
@@ -73,7 +73,7 @@
                 const file = parts[0];
                 const start = parseFloat(parts[1]);
                 const end = parseFloat(parts[2]);
-                const audio = new Audio("/cache/library/" + file + ".mp3");
+                const audio = new Audio(`/audio/${this.dataset}/${file}`);
                 audio.addEventListener('loadedmetadata', () => {
                     audio.currentTime = start;
                     audio.play();

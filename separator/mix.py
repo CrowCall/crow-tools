@@ -4,6 +4,18 @@ import numpy as np
 import librosa
 import soundfile as sf
 import sounddevice as sd
+import argparse
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from crowtools.datasets import (
+    get_cache_base,
+    load_dataset_auto_labels,
+    resolve_dataset_audio_path,
+)
 
 random.seed(42)
 
@@ -30,6 +42,8 @@ BACKGROUND_VOLUME_RANGE = (0.0, 0.8)
 # Helper functions
 # ------------------------------
 def background_audio_generator(directory, min_length=3.0, sr=SAMPLE_RATE):
+    if not os.path.isdir(directory):
+        return
     files = os.listdir(directory)
     while True:
         random.shuffle(files)
@@ -40,10 +54,7 @@ def background_audio_generator(directory, min_length=3.0, sr=SAMPLE_RATE):
                 if len(audio) / sr >= min_length:
                     yield audio[:sr*4], file
 
-def get_valid_segments(labels_path):
-    with open(labels_path, "r", encoding="utf-8") as f:
-        labels = json.load(f)
-
+def get_valid_segments(labels):
     # Group valid segments (assumed 1-second each) by file_id.
     segments_by_file = {}
     for key, attr in labels.items():
@@ -250,16 +261,15 @@ def mix_audio(background, segments, sr=SAMPLE_RATE):
 # ------------------------------
 # Main processing
 # ------------------------------
-def main():
+def main(dataset_name="all-public", cache_base=None, num_mixes=NUM_MIXES):
     sr = SAMPLE_RATE
     total_seconds = 0.0
-    mix_dataset_path = "../.cache/mixes/mix-dataset.json"
-    backgrounds_dir = "../.cache/backgrounds"
-    labels_json = "../.cache/auto_labels.json"
-    library_dir = "../.cache/library"
-    denoised_dir = "../.cache/library-denoised"
-    merged_dir = "../.cache/mixes/merged"
-    separate_dir = "../.cache/mixes/separate"
+    cache_base = get_cache_base(cache_base)
+    mixes_root = os.path.join(cache_base, "mixes", dataset_name)
+    mix_dataset_path = os.path.join(mixes_root, "mix-dataset.json")
+    backgrounds_dir = os.path.join(cache_base, "libraries", "backgrounds", "audio")
+    merged_dir = os.path.join(mixes_root, "merged")
+    separate_dir = os.path.join(mixes_root, "separate")
     os.makedirs(merged_dir, exist_ok=True)
     os.makedirs(separate_dir, exist_ok=True)
 
@@ -269,22 +279,30 @@ def main():
 
     if ENABLE_BACKGROUND_SOUNDS:
         bg_generator = background_audio_generator(backgrounds_dir, sr=sr)
+        if bg_generator is None:
+            print(f"Background directory not found at {backgrounds_dir}; using silence.")
+            bg_generator = None
+    else:
+        bg_generator = None
 
-    valid_segments = get_valid_segments(labels_json)
+    valid_segments = get_valid_segments(load_dataset_auto_labels(dataset_name, cache_base=cache_base))
 
     mix_dataset = []
     mix_count = 0
 
     # Generate mixes (adjust the number as needed)
-    for _ in range(NUM_MIXES):
+    for _ in range(num_mixes):
         if ENABLE_BACKGROUND_SOUNDS:
             try:
+                if bg_generator is None:
+                    raise StopIteration
                 background, bg_file = next(bg_generator)
                 if RANDOMIZE_BACKGROUND_VOLUME:
                     bg_volume_factor = random.uniform(*BACKGROUND_VOLUME_RANGE)
                     background = background * bg_volume_factor
             except StopIteration:
-                break
+                background = np.zeros(sr * 8)
+                bg_file = "silence"
         else:
             background = np.zeros(sr * 8)  # 8 seconds of silence
             bg_file = "silence"
@@ -299,10 +317,12 @@ def main():
             break
 
         for seg in segments_info:
-            if ENABLE_DENOISED:
-                crow_path = os.path.join(denoised_dir, f"{seg['file_id']}.wav")
-            else:
-                crow_path = os.path.join(library_dir, f"{seg['file_id']}.mp3")
+            crow_path = resolve_dataset_audio_path(
+                dataset_name,
+                seg["file_id"],
+                denoised=ENABLE_DENOISED,
+                cache_base=cache_base,
+            )
             if not os.path.exists(crow_path):
                 print("Segment does not exist: {}".format(crow_path))
                 continue
@@ -411,4 +431,9 @@ def main():
     print(f"Saved {len(mix_dataset)} mix dataset, Total: {total_seconds/60.0} minutes")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Generate separator training mixes from a dataset.")
+    parser.add_argument("--dataset", default="all-public", help="Dataset to sample crow segments from.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
+    parser.add_argument("--num-mixes", type=int, default=NUM_MIXES, help="Number of mixes to generate.")
+    args = parser.parse_args()
+    main(dataset_name=args.dataset, cache_base=args.cache_dir, num_mixes=args.num_mixes)

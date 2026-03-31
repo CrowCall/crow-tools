@@ -6,6 +6,8 @@ from biodenoising import pretrained
 from biodenoising.denoiser.dsp import convert_audio
 from tqdm import tqdm
 
+from crowtools.datasets import get_library_dir, get_public_libraries
+
 # Set device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 PATH = os.path.dirname(__file__)
@@ -13,22 +15,26 @@ PATH = os.path.dirname(__file__)
 # Load the pre-trained model
 model = pretrained.biodenoising16k_dns48().to(device)
 
-def start_denoising():
+def start_denoising(libraries=None, selected_ids_by_library=None, cache_base=None):
     """Denoise all audio files in each library."""
-    # Define directories
-    base_dir = os.path.join(PATH, "..", ".cache", "libraries")
-    libraries = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d)) and d != "backgrounds"]
+    libraries = list(libraries) if libraries is not None else get_public_libraries(cache_base)
     for lib in libraries:
-        library_dir = os.path.join(base_dir, lib, "audio")
-        output_dir = os.path.join(base_dir, lib, "audio-denoised")
+        library_base = get_library_dir(lib, cache_base)
+        library_dir = os.path.join(library_base, "audio")
+        output_dir = os.path.join(library_base, "audio-denoised")
         os.makedirs(output_dir, exist_ok=True)
 
-        # Get sorted list of files from the library directory
+        if not os.path.isdir(library_dir):
+            continue
+
         files = sorted(os.listdir(library_dir))
+        selected_ids = None if selected_ids_by_library is None else selected_ids_by_library.get(lib)
 
         for filename in files:
             if filename.lower().endswith('.mp3'):
                 base_name = os.path.splitext(filename)[0]
+                if selected_ids is not None and base_name not in selected_ids:
+                    continue
                 output_file = os.path.join(output_dir, f"{base_name}.wav")
 
                 # Skip if the output file already exists

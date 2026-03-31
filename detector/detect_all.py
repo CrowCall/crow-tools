@@ -5,23 +5,7 @@ import csv
 import numpy as np
 from detector.detect import detect_file_segments
 from classifier.classify import predict_embedding
-
-# Define paths.
-PATH = os.path.dirname(__file__)
-BASE = os.path.join(PATH, "..", ".cache")
-LIBRARIES_BASE = os.path.join(BASE, "libraries")
-
-# discover all libraries except "backgrounds"
-libraries = [
-    d for d in os.listdir(LIBRARIES_BASE)
-    if os.path.isdir(os.path.join(LIBRARIES_BASE, d)) and d != "backgrounds"
-]
-
-# build CSV paths per-library
-csv_paths = [
-    os.path.join(LIBRARIES_BASE, lib, "library.csv")
-    for lib in libraries
-]
+from crowtools.datasets import get_library_dir, get_public_libraries, read_library_catalog_rows, select_catalog_rows
 
 def compute_contiguous_stats(segments, auto_labels, target_crowCount, tolerance=0.01):
     """
@@ -63,10 +47,11 @@ def compute_contiguous_stats(segments, auto_labels, target_crowCount, tolerance=
 
     return contiguous_group_hist
 
-def start_detections():
-    # Iterate through each library's CSV
-    for csv_path in csv_paths:
-        lib_base         = os.path.dirname(csv_path)
+def start_detections(libraries=None, selected_ids_by_library=None, cache_base=None):
+    libraries = list(libraries) if libraries is not None else get_public_libraries(cache_base)
+
+    for library_name in libraries:
+        lib_base = get_library_dir(library_name, cache_base)
         segments_path    = os.path.join(lib_base, "segments.json")
         labels_dir       = os.path.join(lib_base, "labels")
         auto_labels_path = os.path.join(labels_dir, "auto.json")
@@ -91,53 +76,53 @@ def start_detections():
         # Determine which files have been processed
         processed_file_ids = {key.split("-")[0] for key in auto_labels.keys()}
 
-        # Read this library's catalog
         lib_name = os.path.basename(lib_base)
-        with open(csv_path, "r", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                file_id = row["ML Catalog Number"]
-                if file_id in processed_file_ids:
-                    print(f"[{lib_name}] skip {file_id} (already processed)")
+        selected_ids = None if selected_ids_by_library is None else selected_ids_by_library.get(lib_name)
+        rows = read_library_catalog_rows(lib_name, cache_base)
+        reader = select_catalog_rows(rows, selected_ids=selected_ids)
+        for row in reader:
+            file_id = row["ML Catalog Number"]
+            if file_id in processed_file_ids:
+                print(f"[{lib_name}] skip {file_id} (already processed)")
+                continue
+
+            print(f"[{lib_name}] detecting {file_id}")
+            detections, audio, sr = detect_file_segments(
+                file_id,
+                public_path=lib_base
+            )
+
+            if not detections:
+                print(f"[{lib_name}] <<<<<< No detections in file {file_id}")
+                continue
+
+            segments[file_id] = []
+            embedding_file = os.path.join(embedding_dir, f"{file_id}.npy")
+            if not os.path.exists(embedding_file):
+                print(f"[{lib_name}] ⚠ Missing embedding for {file_id}, skipping")
+                continue
+            embeddings_array = np.load(embedding_file)
+
+            for det in detections:
+                st = det.get("start_time")
+                et = det.get("end_time")
+                segment_key = f"{file_id}-{int(st)}-{int(et)}"
+                segments[file_id].append({
+                    "start_time": st,
+                    "end_time": et,
+                    "confidence": 0.0,
+                    "cluster": 0
+                })
+
+                idx = int(st)
+                if idx < 0 or idx >= embeddings_array.shape[0]:
+                    print(f"[{lib_name}] ⚠ Index {idx} out of range for {segment_key}")
                     continue
+                emb = embeddings_array[idx]
+                predicted_label = predict_embedding(emb)
+                auto_labels[segment_key] = predicted_label
 
-                print(f"[{lib_name}] detecting {file_id}")
-                detections, audio, sr = detect_file_segments(
-                    file_id,
-                    public_path=lib_base
-                )
-
-                if not detections:
-                    print(f"[{lib_name}] <<<<<< No detections in file {file_id}")
-                    continue
-
-                segments[file_id] = []
-                embedding_file = os.path.join(embedding_dir, f"{file_id}.npy")
-                if not os.path.exists(embedding_file):
-                    print(f"[{lib_name}] ⚠ Missing embedding for {file_id}, skipping")
-                    continue
-                embeddings_array = np.load(embedding_file)
-
-                for det in detections:
-                    st = det.get("start_time")
-                    et = det.get("end_time")
-                    segment_key = f"{file_id}-{int(st)}-{int(et)}"
-                    segments[file_id].append({
-                        "start_time": st,
-                        "end_time": et,
-                        "confidence": 0.0,
-                        "cluster": 0
-                    })
-
-                    idx = int(st)
-                    if idx < 0 or idx >= embeddings_array.shape[0]:
-                        print(f"[{lib_name}] ⚠ Index {idx} out of range for {segment_key}")
-                        continue
-                    emb = embeddings_array[idx]
-                    predicted_label = predict_embedding(emb)
-                    auto_labels[segment_key] = predicted_label
-
-                print(f"[{lib_name}] >>>>> Found {len(detections)} detections in file {file_id}")
+            print(f"[{lib_name}] >>>>> Found {len(detections)} detections in file {file_id}")
 
         # Save updated segments.json
         with open(segments_path, "w", encoding="utf-8") as f:

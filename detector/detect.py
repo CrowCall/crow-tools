@@ -19,9 +19,15 @@ from tqdm import tqdm
 # Import tkinter components for UI dialogs.
 import tkinter as tk
 from tkinter import messagebox, simpledialog
+import argparse
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 
 from classifier.classify import predict_embedding
 from embedder.embed import generate_embeddings
+from crowtools.datasets import get_library_dir, resolve_dataset_file_library
 
 def is_headless():
     return not os.environ.get("DISPLAY") and os.name != "nt"
@@ -53,8 +59,8 @@ def get_data(arg, public_path=None, include_audio=False):
       - {public_path}/embeddings-denoised-volumes/{file_id}.npy
       - {public_path}/audio/{file_id}.mp3
     """
-    if public_path is None:
-        public_path = os.path.join(os.path.dirname(__file__), "..", ".cache", "libraries", "macaulay")
+    if public_path is None and not os.path.isfile(arg):
+        raise ValueError("public_path is required when resolving a cached file ID")
 
     if os.path.isfile(arg):
         # Uncached mode: arg is a file path.
@@ -575,18 +581,25 @@ class TimelinePlayer:
 ###############################################################################
 # Main entry point.
 ###############################################################################
-def main():
-    if len(sys.argv) < 2:
-        arg = input("Enter file ID or file path: ").strip()
-    else:
-        arg = sys.argv[1]
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Detect crow calls in a cached dataset file or raw audio file.")
+    parser.add_argument("arg", nargs="?", help="File ID from a dataset, or a raw audio file path.")
+    parser.add_argument("--dataset", default="all-public", help="Dataset to resolve cached file IDs from.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
+    parser.add_argument("--no-gui", action="store_true", help="Print detections and exit without opening the timeline UI.")
+    args = parser.parse_args(argv)
 
-    # Use the .cache directory relative to this script.
-    public_path = os.path.join(os.path.dirname(__file__), "..", ".cache", "libraries", "macaulay")
+    arg = args.arg or input("Enter file ID or file path: ").strip()
+
     # Determine if arg is an uncached file path.
     if os.path.isfile(arg):
+        public_path = None
         raw_file = arg
     else:
+        library_name = resolve_dataset_file_library(args.dataset, arg, cache_base=args.cache_dir)
+        if library_name is None:
+            raise FileNotFoundError(f"File ID {arg} was not found in dataset {args.dataset}")
+        public_path = get_library_dir(library_name, args.cache_dir)
         raw_file = None
     detections, audio, sr = detect_file_segments(arg, public_path=public_path, include_audio=True)
     print(f"Found {len(detections)} detection segments.")
@@ -596,6 +609,9 @@ def main():
     print(f"Description:\n{description}\n")
     duration = len(audio) / sr
     print(f"Audio duration: {duration:.2f} seconds, Sample Rate: {sr} Hz")
+
+    if args.no_gui:
+        return
 
     label = os.path.basename(arg)
     player = TimelinePlayer(label, detections, audio, sr, public_path=public_path, raw_file=raw_file)

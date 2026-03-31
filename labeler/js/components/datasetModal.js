@@ -73,8 +73,10 @@ window.DatasetModal = {
     saveDataset(){
       const libs = Object.keys(this.form.libs).filter(l => this.form.libs[l]);
       if(!this.form.name) return;
-      fetch('/datasets', {
-        method: 'POST',
+      const method = this.datasets.includes(this.form.name) ? 'PUT' : 'POST';
+      const url = method === 'POST' ? '/datasets' : `/datasets/${encodeURIComponent(this.form.name)}`;
+      fetch(url, {
+        method,
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({name:this.form.name, included_libraries: libs, importFrom: this.form.importFrom})
       }).then(() => {

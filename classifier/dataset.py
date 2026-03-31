@@ -3,16 +3,22 @@ import json
 import torch
 from torch.utils.data import Dataset
 import numpy as np
+import sys
 
 PATH = os.path.dirname(__file__)
-CACHE_BASE = os.path.join(PATH, "..", ".cache")
-LIBRARIES_BASE = os.path.join(CACHE_BASE, "libraries")
+ROOT = os.path.dirname(PATH)
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 
-def locate_embedding(file_id, denoised=True):
-    """Return path to the embedding for ``file_id`` in any library."""
+from crowtools.datasets import get_cache_base, get_dataset_libraries, get_libraries_base
+
+
+def locate_embedding(file_id, libraries, denoised=True, cache_base=None):
+    """Return path to the embedding for ``file_id`` in an allowed library."""
     suffix = "embeddings-denoised" if denoised else "embeddings"
-    for lib in os.listdir(LIBRARIES_BASE):
-        emb_dir = os.path.join(LIBRARIES_BASE, lib, suffix)
+    libraries_base = get_libraries_base(cache_base)
+    for lib in libraries:
+        emb_dir = os.path.join(libraries_base, lib, suffix)
         path = os.path.join(emb_dir, f"{file_id}.npy")
         if os.path.exists(path):
             return path
@@ -20,14 +26,15 @@ def locate_embedding(file_id, denoised=True):
 
 class CrowDataset(Dataset):
     def __init__(self, dataset_name="all-public"):
-        dataset_dir = os.path.join(CACHE_BASE, "datasets", dataset_name)
+        self.cache_base = get_cache_base()
+        dataset_dir = os.path.join(self.cache_base, "datasets", dataset_name)
         labels_file = os.path.join(dataset_dir, "labels.json")
         config_file = os.path.join(dataset_dir, "config.json")
         if not os.path.exists(labels_file):
             raise FileNotFoundError(f"Labels not found for dataset {dataset_name}")
 
-        self.included_libraries = []
-        if os.path.exists(config_file):
+        self.included_libraries = get_dataset_libraries(dataset_name, self.cache_base)
+        if os.path.exists(config_file) and not self.included_libraries:
             with open(config_file, 'r') as cf:
                 cfg = json.load(cf)
                 self.included_libraries = cfg.get("included_libraries", [])
@@ -99,7 +106,11 @@ class CrowDataset(Dataset):
         file_id, start, end = key.split("-")
 
         # Load the per-file embedding (searching all libraries)
-        emb_path = locate_embedding(file_id)
+        emb_path = locate_embedding(
+            file_id,
+            libraries=self.included_libraries,
+            cache_base=self.cache_base,
+        )
         if emb_path is None:
             raise FileNotFoundError(f"Embedding for {file_id} not found")
         embedding = np.load(emb_path)

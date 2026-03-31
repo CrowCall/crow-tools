@@ -1,0 +1,86 @@
+import csv
+import os
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from crowtools.datasets import (
+    DEFAULT_PUBLIC_LIBRARIES,
+    STARTER_SELECTED_FILES,
+    ensure_default_datasets,
+    find_file_library,
+    find_file_path,
+    get_dataset_libraries,
+    get_selected_files,
+)
+
+
+def write_csv(path, rows):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["ML Catalog Number", "Recordist", "Media notes"],
+        )
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def build_fake_cache(tmp_path):
+    cache_dir = tmp_path / ".cache"
+    rows = [
+        {"ML Catalog Number": "111", "Recordist": "A", "Media notes": "m1"},
+        {"ML Catalog Number": "222", "Recordist": "B", "Media notes": "m2"},
+    ]
+    for library_name in ["macaulay", "xeno-canto", "local", "backgrounds"]:
+        library_dir = cache_dir / "libraries" / library_name
+        (library_dir / "audio").mkdir(parents=True, exist_ok=True)
+        if library_name != "backgrounds":
+            write_csv(str(library_dir / "library.csv"), rows)
+    (cache_dir / "libraries" / "macaulay" / "audio" / "111.mp3").write_bytes(b"m")
+    (cache_dir / "libraries" / "local" / "audio" / "222.mp3").write_bytes(b"l")
+    return cache_dir
+
+
+def test_default_datasets_are_created_in_temp_cache(tmp_path):
+    cache_dir = build_fake_cache(tmp_path)
+
+    ensure_default_datasets(str(cache_dir))
+
+    assert (cache_dir / "datasets" / "starter" / "config.json").exists()
+    assert (cache_dir / "datasets" / "all-public" / "config.json").exists()
+    assert (cache_dir / "datasets" / "Local" / "config.json").exists()
+
+
+def test_all_public_excludes_local_and_background_libraries(tmp_path):
+    cache_dir = build_fake_cache(tmp_path)
+
+    ensure_default_datasets(str(cache_dir))
+    libraries = get_dataset_libraries("all-public", str(cache_dir))
+
+    assert libraries == DEFAULT_PUBLIC_LIBRARIES
+    assert "local" not in libraries
+    assert "backgrounds" not in libraries
+
+
+def test_starter_selected_files_are_exposed(tmp_path):
+    cache_dir = build_fake_cache(tmp_path)
+
+    ensure_default_datasets(str(cache_dir))
+    selected = get_selected_files("starter", str(cache_dir))
+
+    assert selected["macaulay"] == set(STARTER_SELECTED_FILES["macaulay"])
+    assert selected["xeno-canto"] == set(STARTER_SELECTED_FILES["xeno-canto"])
+
+
+def test_find_file_helpers_respect_allowed_libraries(tmp_path):
+    cache_dir = build_fake_cache(tmp_path)
+
+    audio_path = find_file_path("111", libraries=["macaulay"], cache_base=str(cache_dir))
+    assert str(audio_path).endswith("macaulay/audio/111.mp3")
+
+    local_library = find_file_library("222", libraries=["local"], cache_base=str(cache_dir))
+    assert local_library == "local"

@@ -3,6 +3,18 @@ import os
 import json
 import librosa
 import sounddevice as sd
+import argparse
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from crowtools.datasets import (
+    get_dataset_artifact_path,
+    load_dataset_auto_labels,
+    resolve_dataset_audio_path,
+)
 
 
 def play_audio_preview(audio_file, start_time, duration):
@@ -77,16 +89,11 @@ def append_missing_segments(cluster_labels_file, cluster_segments_file):
         json.dump(cluster_segments, f, indent=4)
     print(f"Updated cluster_segments saved to {cluster_segments_file}.")
 
-def main(attribute, cluster, offset):
-    base_dir = os.path.join(os.path.dirname(__file__), "..", ".cache")
-    auto_labels_file = os.path.join(base_dir, "auto_labels.json")
-    cluster_labels_file = os.path.join(base_dir, "cluster_labels.json")
-    cluster_segments_file = os.path.join(base_dir, "cluster_segments.json")
-    library_dir = os.path.join(base_dir, "library")
+def main(attribute, cluster, offset, dataset_name="all-public", cache_base=None):
+    cluster_labels_file = get_dataset_artifact_path(dataset_name, "cluster_labels.json", cache_base=cache_base)
+    cluster_segments_file = get_dataset_artifact_path(dataset_name, "cluster_segments.json", cache_base=cache_base)
 
-    # Load auto_labels.json.
-    with open(auto_labels_file, "r") as f:
-        auto_labels = json.load(f)
+    auto_labels = load_dataset_auto_labels(dataset_name, cache_base=cache_base)
 
     # Load or initialize cluster_labels.json.
     if os.path.exists(cluster_labels_file):
@@ -134,7 +141,7 @@ def main(attribute, cluster, offset):
             continue
 
         detection = auto_labels[key]
-        audio_file = os.path.join(library_dir, f"{file_id}.mp3")
+        audio_file = resolve_dataset_audio_path(dataset_name, file_id, cache_base=cache_base)
         if not os.path.exists(audio_file):
             print(f"Audio file not found: {audio_file}")
             continue
@@ -191,11 +198,14 @@ def main(attribute, cluster, offset):
     append_missing_segments(cluster_labels_file, cluster_segments_file)
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Preview and promote auto-labeled segments into cluster labels.")
+    parser.add_argument("--dataset", default="all-public", help="Dataset to read from and write to.")
+    parser.add_argument("--cache-dir", default=None, help="Override cache directory.")
+    args = parser.parse_args()
+
     attr = input("Enter detection attribute to filter (e.g., rattle, softSong, begging, mob, alert, quality:1, crowCount:2, crowAge:1): ").strip()
 
-    # Calculate default cluster value based on the largest existing cluster value + 1.
-    base_dir = os.path.join(os.path.dirname(__file__), "..", ".cache")
-    cluster_labels_file = os.path.join(base_dir, "cluster_labels.json")
+    cluster_labels_file = get_dataset_artifact_path(args.dataset, "cluster_labels.json", cache_base=args.cache_dir)
     default_cluster = 1
     if os.path.exists(cluster_labels_file):
         with open(cluster_labels_file, "r") as f:
@@ -214,4 +224,4 @@ if __name__ == "__main__":
     offset_input = input("Enter starting offset [default: 0]: ").strip()
     offset = int(offset_input) if offset_input else 0
 
-    main(attr, clus, offset)
+    main(attr, clus, offset, dataset_name=args.dataset, cache_base=args.cache_dir)

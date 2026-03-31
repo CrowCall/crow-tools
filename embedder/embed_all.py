@@ -3,36 +3,36 @@ import librosa
 import numpy as np
 from embedder.embed import generate_embeddings
 from embedder.ispa import utils
+from crowtools.datasets import get_library_dir, get_public_libraries
 
 PATH = os.path.dirname(__file__)
 
-def start_embeddings(denoised=False):
+def start_embeddings(denoised=False, libraries=None, selected_ids_by_library=None, cache_base=None):
     DENOISED_MODE = ""
     EXT = ".mp3"
     if denoised:
         DENOISED_MODE = "-denoised"
         EXT = ".wav"
 
-    # Directory with the audio files (original or denoised)
-
-    base_dir = os.path.join(PATH, "..", ".cache", "libraries")
-    libraries = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d)) and d != "backgrounds"]
+    libraries = list(libraries) if libraries is not None else get_public_libraries(cache_base)
 
     sample_rate = 8000
     chunk_size = 25  # Number of frames to average into one vector
 
     for lib in libraries:
-        library_path = os.path.join(base_dir, lib, f"audio{DENOISED_MODE}")
+        library_base = get_library_dir(lib, cache_base)
+        library_path = os.path.join(library_base, f"audio{DENOISED_MODE}")
         if not os.path.exists(library_path):
             continue
         file_paths = sorted(os.listdir(library_path))
+        selected_ids = None if selected_ids_by_library is None else selected_ids_by_library.get(lib)
 
         # Where to save the averaged embeddings
-        embeddings_path = os.path.join(base_dir, lib, f"embeddings{DENOISED_MODE}")
+        embeddings_path = os.path.join(library_base, f"embeddings{DENOISED_MODE}")
         os.makedirs(embeddings_path, exist_ok=True)
 
         # Where to save per-second volume data
-        volumes_path = os.path.join(base_dir, lib, f"embeddings{DENOISED_MODE}-volumes")
+        volumes_path = os.path.join(library_base, f"embeddings{DENOISED_MODE}-volumes")
         os.makedirs(volumes_path, exist_ok=True)
 
         for file_name in file_paths:
@@ -40,6 +40,8 @@ def start_embeddings(denoised=False):
                 continue
 
             file_id = os.path.splitext(file_name)[0]
+            if selected_ids is not None and file_id not in selected_ids:
+                continue
             audio_path = os.path.join(library_path, file_name)
 
             if not os.path.exists(audio_path):

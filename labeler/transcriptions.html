@@ -446,7 +446,7 @@
             if (this.isLooping) { this.wavesurfer.play(0); }
           });
           this.wavesurfer.on("audioprocess", () => { this.updatePlayhead(); });
-          const audioUrl = `/cache/library/${this.fileId}.mp3`;
+          const audioUrl = `/audio/${this.dataset}/${this.fileId}`;
           fetch(audioUrl)
             .then(response => response.arrayBuffer())
             .then(arrayBuffer => {

@@ -848,5 +848,205 @@
         "softSong": false,
         "rattle": false,
         "mob": false
+    },
+    "524249-0-1": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": true,
+        "mob": false
+    },
+    "524249-1-2": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": true,
+        "mob": false
+    },
+    "524249-6-7": {
+        "crowCount": 1,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": true,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-7-8": {
+        "crowCount": 4,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": true,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-10-11": {
+        "crowCount": 1,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": true,
+        "softSong": false,
+        "rattle": true,
+        "mob": false
+    },
+    "524249-14-15": {
+        "crowCount": 1,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": true,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-15-16": {
+        "crowCount": 2,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": true,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-16-17": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-19-20": {
+        "crowCount": 1,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-20-21": {
+        "crowCount": 1,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-21-22": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "524249-22-23": {
+        "crowCount": 1,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": true,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-28-29": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-29-30": {
+        "crowCount": 1,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": true,
+        "mob": false
+    },
+    "524249-32-33": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": true,
+        "mob": false
+    },
+    "524249-33-34": {
+        "crowCount": 4,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "524249-34-35": {
+        "crowCount": 4,
+        "crowAge": 2,
+        "quality": 2,
+        "alert": false,
+        "begging": true,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
+    },
+    "524249-36-37": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": true,
+        "mob": false
+    },
+    "524249-42-43": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": false,
+        "softSong": false,
+        "rattle": false,
+        "mob": false
+    },
+    "524249-43-44": {
+        "crowCount": 1,
+        "crowAge": 1,
+        "quality": 2,
+        "alert": false,
+        "begging": true,
+        "softSong": false,
+        "rattle": false,
+        "mob": true
     }
 }

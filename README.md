@@ -28,11 +28,22 @@ pip install -r requirements.txt
 
 ## Download and Prepare Data
 
-Run this script to download, denoise, embed, and auto-label all crow audio files. 
-NOTE: This will download more than **30 GB** of data into a local `.cache` directory.
+For a new user, start with the small `starter` dataset:
 
 ```
-python get-data.py
+python get-data.py --dataset starter
+```
+
+To build the full public dataset:
+
+```
+python get-data.py --dataset all-public
+```
+
+To preview the pipeline without downloading anything:
+
+```
+python get-data.py --dataset starter --dry-run
 ```
 
 ## Introduction
@@ -160,4 +171,3 @@ Together, we're building a **state-of-the-art toolkit for decoding and exploring
 ## Citations
 
 Give our crows a shout-out — cite `crow-tools` in your work! GitHub provides a citation file — just click the **Cite this repository** button in the sidebar at the top of this page.
-

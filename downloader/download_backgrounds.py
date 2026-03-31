@@ -3,10 +3,12 @@ import os
 import requests
 import random
 
+from crowtools.datasets import get_library_dir
+
 random.seed(42)
 PATH = os.path.dirname(__file__)
 
-def start_downloads(percent=100):
+def start_downloads(percent=100, cache_base=None):
     # Fetch all recordings
     # Background file names
     background_filenames = [
@@ -26,8 +28,9 @@ def start_downloads(percent=100):
 
     for background_filename in background_filenames:
         print(f"Downloading {background_filename} - {max_downloads} downloads")
-        csv_path = os.path.join(PATH, "..", ".cache", "libraries", "backgrounds", background_filename)
-        library_dir = os.path.join(PATH, "..", ".cache", "libraries", "backgrounds", "audio")
+        library_base = get_library_dir("backgrounds", cache_base)
+        csv_path = os.path.join(library_base, background_filename)
+        library_dir = os.path.join(library_base, "audio")
         os.makedirs(library_dir, exist_ok=True)
         background_count = 0
         age_sexes = {}
