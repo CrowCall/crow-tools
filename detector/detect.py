@@ -5,7 +5,6 @@ import sys
 import time
 import uuid
 import shutil
-from datetime import datetime
 import tempfile
 
 import librosa
@@ -31,7 +30,7 @@ from crowtools.datasets import (
     ensure_dataset,
     get_dataset_artifact_path,
     get_dataset_import_path,
-    get_dataset_libraries,
+    get_library_dir,
     resolve_dataset_file_library,
 )
 
@@ -43,8 +42,26 @@ else:
     matplotlib.use("TkAgg")
 
 ###############################################################################
-# Helper function to retrieve embeddings, volumes, audio and sample rate.
+# Helper functions for waveform-aware detection cleanup.
 ###############################################################################
+def _resolve_audio_path(arg, public_path=None):
+    if os.path.isfile(arg):
+        return arg
+    if public_path is None:
+        raise ValueError("public_path is required when resolving a cached file ID")
+
+    file_id = arg
+    candidates = [
+        os.path.join(public_path, "audio-denoised", f"{file_id}.wav"),
+        os.path.join(public_path, "audio", f"{file_id}.mp3"),
+        os.path.join(public_path, "audio", f"{file_id}.wav"),
+    ]
+    for candidate in candidates:
+        if os.path.exists(candidate):
+            return candidate
+    raise FileNotFoundError(f"Audio file not found for file ID {file_id}")
+
+
 def get_data(arg, public_path=None, include_audio=False):
     """
     Given a file identifier or full file path, returns:
@@ -115,17 +132,12 @@ def get_data(arg, public_path=None, include_audio=False):
         file_id = arg
         embeddings_path = os.path.join(public_path, "embeddings", f"{file_id}.npy")
         volumes_path = os.path.join(public_path, "embeddings-denoised-volumes", f"{file_id}.npy")
-        library_dir = os.path.join(public_path, "audio")
-        audio_path = os.path.join(library_dir, f"{file_id}.mp3")
 
         if not os.path.exists(embeddings_path):
             print(f"Embedding file not found for file ID {file_id}")
             sys.exit(1)
         if not os.path.exists(volumes_path):
             print(f"Volume file not found for file ID {file_id}")
-            sys.exit(1)
-        if not os.path.exists(audio_path):
-            print(f"Audio file not found for file ID {file_id}")
             sys.exit(1)
 
         embeddings = np.load(embeddings_path)
@@ -134,6 +146,7 @@ def get_data(arg, public_path=None, include_audio=False):
             volumes = volumes.squeeze(-1)
         try:
             if include_audio:
+                audio_path = _resolve_audio_path(arg, public_path=public_path)
                 audio, sr = librosa.load(audio_path, sr=8000, mono=True)
             else:
                 audio = None
@@ -142,6 +155,73 @@ def get_data(arg, public_path=None, include_audio=False):
             print(f"Error loading audio: {e}")
             sys.exit(1)
         return embeddings, volumes, audio, sr
+
+
+def _window_energy(audio, sr, start_time, end_time):
+    start_sample = max(0, int(round(start_time * sr)))
+    end_sample = min(len(audio), int(round(end_time * sr)))
+    if end_sample <= start_sample:
+        return 0.0
+    segment = audio[start_sample:end_sample]
+    return float(np.mean(np.abs(segment))) if len(segment) > 0 else 0.0
+
+
+def _refine_detection_bounds(audio, sr, start_time, end_time, *, energy_floor, max_padding=0.5, step=0.01):
+    if audio is None:
+        return start_time, end_time
+
+    clip_duration = len(audio) / sr
+    refined_start = max(0.0, start_time)
+    refined_end = min(clip_duration, end_time)
+
+    while refined_start > 0.0 and start_time - refined_start < max_padding:
+        candidate = max(0.0, refined_start - step)
+        if _window_energy(audio, sr, candidate, refined_start) <= energy_floor:
+            break
+        refined_start = candidate
+
+    while refined_end < clip_duration and refined_end - end_time < max_padding:
+        candidate = min(clip_duration, refined_end + step)
+        if _window_energy(audio, sr, refined_end, candidate) <= energy_floor:
+            break
+        refined_end = candidate
+
+    while refined_start + step < refined_end:
+        candidate = min(refined_end, refined_start + step)
+        if _window_energy(audio, sr, refined_start, candidate) > energy_floor:
+            break
+        refined_start = candidate
+
+    while refined_end - step > refined_start:
+        candidate = max(refined_start, refined_end - step)
+        if _window_energy(audio, sr, candidate, refined_end) > energy_floor:
+            break
+        refined_end = candidate
+
+    return round(refined_start, 3), round(refined_end, 3)
+
+
+def _smooth_predictions(raw_windows, *, binary_keys):
+    if not raw_windows:
+        return raw_windows
+
+    smoothed = [dict(window) for window in raw_windows]
+    for index, current in enumerate(smoothed):
+        prev_window = smoothed[index - 1] if index > 0 else None
+        next_window = smoothed[index + 1] if index + 1 < len(smoothed) else None
+
+        if prev_window and next_window:
+            if prev_window["pred"]["quality"] > 1 and next_window["pred"]["quality"] > 1:
+                for key in binary_keys:
+                    if not current["pred"][key] and prev_window["pred"][key] and next_window["pred"][key]:
+                        current["pred"][key] = True
+                if current["pred"]["quality"] <= 1 and prev_window["pred"]["crowCount"] == next_window["pred"]["crowCount"]:
+                    current["pred"]["crowCount"] = prev_window["pred"]["crowCount"]
+                    current["pred"]["crowAge"] = prev_window["pred"]["crowAge"]
+                    current["pred"]["quality"] = min(prev_window["pred"]["quality"], next_window["pred"]["quality"])
+
+    return smoothed
+
 
 ###############################################################################
 # Detection function (common for both cached and uncached data)
@@ -155,32 +235,59 @@ def detect_file_segments(arg, volume_threshold=0.0002, device=None, public_path=
       - audio: the audio waveform
       - sr: sample rate
     """
-    embeddings, volumes, audio, sr = get_data(arg, public_path, include_audio)
-    detections = []
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
-    # Process seconds based on the lesser of embeddings length and volume length.
+    print("Using cached 1-second embeddings.")
+
+    embeddings, volumes, audio, sr = get_data(
+        arg,
+        public_path,
+        include_audio=include_audio,
+    )
+
+    raw_windows = []
+    binary_keys = ["alert", "begging", "softSong", "rattle", "mob"]
+    clip_duration = (len(audio) / sr) if audio is not None else min(embeddings.shape[0], len(volumes))
+
     num_seconds = min(embeddings.shape[0], len(volumes))
     for i in tqdm(range(num_seconds)):
         if volumes[i] <= volume_threshold:
             continue
-        emb = embeddings[i]
-        pred = predict_embedding(emb, device=device)
-        # Only consider valid detections (quality > 1 and crowCount > 0).
-        if pred["quality"] > 1 and pred["crowCount"] > 0:
-            detection = {
-                "start_time": float(i),
-                "end_time": float(i + 1),
-                "crowCount": pred["crowCount"],
-                "crowAge": pred["crowAge"],
-                "alert": pred["alert"],
-                "begging": pred["begging"],
-                "softSong": pred["softSong"],
-                "rattle": pred["rattle"],
-                "mob": pred["mob"],
-                "quality": pred["quality"],
-            }
-            detections.append(detection)
+        pred = predict_embedding(embeddings[i], device=device)
+        raw_windows.append({"start_time": float(i), "end_time": float(i + 1), "pred": pred})
+
+    raw_windows = _smooth_predictions(raw_windows, binary_keys=binary_keys)
+
+    detections = []
+    energy_floor = volume_threshold * 0.5
+    for window in raw_windows:
+        pred = window["pred"]
+        if pred["quality"] <= 1 or pred["crowCount"] <= 0:
+            continue
+        start_time = window["start_time"]
+        end_time = min(window["end_time"], clip_duration)
+        start_time, end_time = _refine_detection_bounds(
+            audio,
+            sr,
+            start_time,
+            end_time,
+            energy_floor=energy_floor,
+        )
+        if end_time <= start_time:
+            end_time = min(clip_duration, round(start_time + 1.0, 3))
+        detection = {
+            "start_time": round(max(0.0, start_time), 3),
+            "end_time": round(min(clip_duration, end_time), 3),
+            "crowCount": pred["crowCount"],
+            "crowAge": pred["crowAge"],
+            "alert": pred["alert"],
+            "begging": pred["begging"],
+            "softSong": pred["softSong"],
+            "rattle": pred["rattle"],
+            "mob": pred["mob"],
+            "quality": pred["quality"],
+        }
+        detections.append(detection)
     return detections, audio, sr
 
 ###############################################################################
@@ -371,33 +478,33 @@ class TimelinePlayer:
         If no standard feature (alert, mob, begging, softSong, rattle) is true,
         the second is grouped under "other".
         """
-        feat_seconds = {feat: [] for feat in self.features}
+        feat_intervals = {feat: [] for feat in self.features}
         standard_feats = {"alert", "mob", "begging", "softSong", "rattle"}
 
         for det in self.detections:
-            t = det["start_time"]
+            interval = (det["start_time"], det["end_time"])
             has_feature = any(det.get(feat, False) for feat in standard_feats)
             if has_feature:
                 for feat in standard_feats:
                     if det.get(feat, False):
-                        feat_seconds[feat].append(t)
+                        feat_intervals[feat].append(interval)
             else:
-                feat_seconds["other"].append(t)
+                feat_intervals["other"].append(interval)
 
         intervals = {}
-        for feat, times in feat_seconds.items():
-            times = sorted(times)
-            if not times:
+        for feat, raw_intervals in feat_intervals.items():
+            raw_intervals = sorted(raw_intervals)
+            if not raw_intervals:
                 continue
             intervals[feat] = []
-            start = times[0]
-            prev = times[0]
-            for current in times[1:]:
-                if current - prev > 1.5:
-                    intervals[feat].append((start, prev + 1))
-                    start = current
-                prev = current
-            intervals[feat].append((start, prev + 1))
+            start, end = raw_intervals[0]
+            for current_start, current_end in raw_intervals[1:]:
+                if current_start - end > 1.5:
+                    intervals[feat].append((start, end))
+                    start, end = current_start, current_end
+                else:
+                    end = max(end, current_end)
+            intervals[feat].append((start, end))
         return intervals
 
     def on_draw(self, event):
