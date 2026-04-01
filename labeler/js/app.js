@@ -34,7 +34,7 @@ const app = Vue.createApp({
                 quality: 'all'
             },
             activeFilters: null,
-            dataset: new URLSearchParams(window.location.search).get('dataset') || 'all-public'
+            dataset: window.DatasetPreference ? window.DatasetPreference.resolveDataset() : 'all-public'
         };
     },
     computed: {
@@ -328,7 +328,10 @@ const app = Vue.createApp({
         },
         changeDataset(ds) {
             if (ds && ds !== this.dataset) {
-                window.location.search = '?dataset=' + ds;
+                if (window.DatasetPreference) {
+                    window.DatasetPreference.persistDataset(ds);
+                }
+                window.location.search = '?dataset=' + encodeURIComponent(ds);
             }
         },
         // Delete segment handling remains the same.

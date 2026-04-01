@@ -21,17 +21,17 @@ window.MenuComponent = {
         <div class="collapse navbar-collapse" id="mainNav">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" :class="{ active: isActive('index.html') }" href="index.html">
+              <a class="nav-link" :class="{ active: isActive('index.html') }" :href="datasetHref('index.html')">
                 Labeler
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" :class="{ active: isActive('transcriptions.html') }" href="transcriptions.html">
+              <a class="nav-link" :class="{ active: isActive('transcriptions.html') }" :href="datasetHref('transcriptions.html')">
                 Transcriber
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" :class="{ active: isActive('embeddings.html') }" href="embeddings.html">
+              <a class="nav-link" :class="{ active: isActive('embeddings.html') }" :href="datasetHref('embeddings.html')">
                 Embeddings
               </a>
             </li>
@@ -44,6 +44,10 @@ window.MenuComponent = {
     isActive(page) {
       const current = window.location.pathname.split('/').pop();
       return current === page;
+    },
+    datasetHref(page) {
+      const dataset = window.DatasetPreference ? window.DatasetPreference.resolveDataset() : null;
+      return window.DatasetPreference ? window.DatasetPreference.withDataset(page, dataset) : page;
     },
     refreshPage() {
       window.location.reload();
