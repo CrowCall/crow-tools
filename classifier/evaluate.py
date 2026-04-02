@@ -1,11 +1,12 @@
-import torch
-from torch.utils.data import DataLoader, random_split
-from dataset import CrowDataset
-from model import CrowClassifier
+import argparse
 import os
 
+import torch
+from torch.utils.data import DataLoader
+from dataset import DATASET_SPLIT_SEED, CrowDataset, split_train_val_dataset
+from model import CrowClassifier
+
 PATH = os.path.dirname(__file__)
-checkpoint_path = os.path.join(PATH, "logs", "checkpoints", "best_model.ckpt")
 
 def print_overall_metrics(metrics):
     print("\n=== Overall Accuracy ===")
@@ -17,8 +18,12 @@ def print_overall_metrics(metrics):
 def print_breakdown(title, breakdown, label_prefix="Class"):
     print(f"\n=== {title} Breakdown ===")
     for cls, (correct, total) in breakdown.items():
-        acc = correct / total if total > 0 else 0.0
-        print(f"  {label_prefix} {cls}: {acc * 100:6.2f}% ({correct}/{total})")
+        if total > 0:
+            acc = correct / total
+            display = f"{acc * 100:6.2f}%"
+        else:
+            display = "   N/A"
+        print(f"  {label_prefix} {cls}: {display} ({correct}/{total})")
 
 
 def evaluate_model(model, dataloader, device):
@@ -113,25 +118,40 @@ def evaluate_model(model, dataloader, device):
     return metrics, breakdown, breakdown_binary
 
 
-if __name__ == "__main__":
+def build_arg_parser():
+    parser = argparse.ArgumentParser(description="Evaluate a classifier checkpoint on a dataset.")
+    parser.add_argument("--dataset", default="all-public", help="Dataset to evaluate on.")
+    parser.add_argument("--checkpoint", required=True, help="Checkpoint to load.")
+    parser.add_argument("--batch-size", type=int, default=1, help="Validation batch size.")
+    return parser
+
+
+def main(argv=None):
+    args = build_arg_parser().parse_args(argv)
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    checkpoint_path = os.path.abspath(args.checkpoint)
     model = CrowClassifier.load_from_checkpoint(checkpoint_path)
     model.to(device)
 
-    # Create the dataset.
-    dataset = CrowDataset()
+    dataset = CrowDataset(dataset_name=args.dataset)
+    _, val_dataset = split_train_val_dataset(dataset)
+    val_loader = DataLoader(val_dataset, batch_size=args.batch_size, num_workers=3, shuffle=False)
 
-    train_size = int(0.88 * len(dataset))
-    _, val_dataset = random_split(dataset, [train_size, len(dataset) - train_size])
-    val_loader = DataLoader(val_dataset, batch_size=1, num_workers=3, shuffle=False)
-
+    print(f"Checkpoint: {checkpoint_path}")
+    print(f"Dataset: {args.dataset}")
+    print(f"Validation split seed: {DATASET_SPLIT_SEED}")
     print(f"\nEvaluating on {len(val_loader)} VALIDATE samples")
     metrics, breakdown, breakdown_binary = evaluate_model(model, val_loader, device)
 
-    # Instead of duplicating the composite score code, use the model's compute_composite_score
     composite, task_scores = model.compute_composite_score(breakdown, breakdown_binary)
     print("\n=== Composite Score ===")
     print(f"Overall composite score: {composite * 100:.2f}%")
     print("Individual task scores:")
     for task, score in task_scores.items():
         print(f"  {task:10s}: {score * 100:.2f}%")
+    return composite, task_scores
+
+
+if __name__ == "__main__":
+    main()

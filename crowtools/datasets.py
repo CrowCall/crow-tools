@@ -10,7 +10,6 @@ PROJECT_ROOT = os.path.dirname(PACKAGE_DIR)
 DEFAULT_CACHE_DIR = os.path.join(PROJECT_ROOT, ".cache")
 CACHE_ENV_VAR = "CROW_TOOLS_CACHE_DIR"
 
-LOCAL_LIBRARY = "local"
 BACKGROUND_LIBRARY = "backgrounds"
 DEFAULT_PUBLIC_LIBRARIES = ["macaulay", "xeno-canto"]
 
@@ -46,6 +45,10 @@ def get_dataset_dir(dataset_name: str, cache_base: Optional[str] = None) -> str:
 
 def get_dataset_artifact_path(dataset_name: str, *parts: str, cache_base: Optional[str] = None) -> str:
     return os.path.join(get_dataset_dir(dataset_name, cache_base), *parts)
+
+
+def get_dataset_import_path(dataset_name: str, *parts: str, cache_base: Optional[str] = None) -> str:
+    return get_dataset_artifact_path(dataset_name, "imports", *parts, cache_base=cache_base)
 
 
 def get_library_dir(library_name: str, cache_base: Optional[str] = None) -> str:
@@ -131,7 +134,7 @@ def get_public_libraries(cache_base: Optional[str] = None) -> List[str]:
     discovered = [
         name
         for name in list_library_names(cache_base)
-        if name not in {LOCAL_LIBRARY, BACKGROUND_LIBRARY}
+        if name != BACKGROUND_LIBRARY
     ]
     return discovered or list(DEFAULT_PUBLIC_LIBRARIES)
 
@@ -225,6 +228,16 @@ def _build_dataset_file_index_cached(
 ) -> Dict[str, dict]:
     index = {}
     allowed_extensions = set(extensions)
+
+    dataset_import_dir = get_dataset_import_path(dataset_name, relative_dir, cache_base=cache_base)
+    if os.path.isdir(dataset_import_dir):
+        for filename in sorted(os.listdir(dataset_import_dir)):
+            stem, ext = os.path.splitext(filename)
+            if ext not in allowed_extensions:
+                continue
+            record = index.setdefault(stem, {"library": None, "paths": {}})
+            record["paths"][ext] = os.path.join(dataset_import_dir, filename)
+
     for library_name in get_dataset_libraries(dataset_name, cache_base):
         selected = get_selected_files_for_library(dataset_name, library_name, cache_base)
         base_dir = os.path.join(get_library_dir(library_name, cache_base), relative_dir)
@@ -235,6 +248,8 @@ def _build_dataset_file_index_cached(
             if ext not in allowed_extensions:
                 continue
             if selected is not None and stem not in selected:
+                continue
+            if stem in index:
                 continue
             record = index.setdefault(stem, {"library": library_name, "paths": {}})
             record["paths"][ext] = os.path.join(base_dir, filename)

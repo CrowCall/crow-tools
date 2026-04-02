@@ -290,6 +290,7 @@
   <!-- Load Wavesurfer.js v6.6.4 and its spectrogram plugin -->
   <script src="https://unpkg.com/wavesurfer.js@6.6.4"></script>
   <script src="https://unpkg.com/wavesurfer.js@6.6.4/dist/plugin/wavesurfer.spectrogram.min.js"></script>
+  <script src="js/datasetPreference.js"></script>
   <script src="js/components/datasetModal.js"></script>
   <script src="js/components/menu.js"></script>
   <script>
@@ -297,7 +298,7 @@
       data() {
         return {
           fileId: "13130",
-          dataset: new URLSearchParams(window.location.search).get('dataset') || 'all-public',
+          dataset: window.DatasetPreference ? window.DatasetPreference.resolveDataset() : 'all-public',
           audioLoaded: false,
           audioLoading: false,
           wavesurfer: null,
@@ -743,7 +744,10 @@
         },
         changeDataset(ds) {
           if (ds && ds !== this.dataset) {
-            window.location.search = '?dataset=' + ds;
+            if (window.DatasetPreference) {
+              window.DatasetPreference.persistDataset(ds);
+            }
+            window.location.search = '?dataset=' + encodeURIComponent(ds);
           }
         }
       },

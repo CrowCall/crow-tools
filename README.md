@@ -92,6 +92,9 @@ python detector/detect_all.py --dataset starter
 
 # Review those detections and promote accepted ones into the starter dataset.
 python classifier/review_detections.py --dataset starter --attribute quality:2
+
+# Train the classifier on a specific dataset and evaluate it
+python classifier/train.py --dataset starter
 ```
 
 ```python
@@ -192,7 +195,7 @@ crow-tools/
 ├── labeler/     # human labeling web app (for training classifier, vieweing embeddings, and transcribing crow language)
 ├── separator/   # separate overlapping crow calls into seaparate audio files (train and inference)
 └── .cache/
-    ├── libraries/  # read-only audio sources (macaulay, xeno-canto, local, backgrounds)
+    ├── libraries/  # read-only audio sources (macaulay, xeno-canto, backgrounds)
     └── datasets/   # curated combinations of libraries
 ```
 

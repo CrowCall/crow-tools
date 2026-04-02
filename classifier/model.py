@@ -218,8 +218,9 @@ class CrowClassifier(pl.LightningModule):
             acc_vals = []
             for val in [0, 1]:
                 correct, total = breakdown_binary[task][val]
-                acc_vals.append((correct / total) if total > 0 else 0.0)
-            task_scores[task] = sum(acc_vals) / 2.0
+                if total > 0:
+                    acc_vals.append(correct / total)
+            task_scores[task] = sum(acc_vals) / len(acc_vals) if acc_vals else 0.0
 
         # Compute weighted average.
         total_weighted = 0.0

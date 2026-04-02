@@ -40,7 +40,7 @@ function loadDatasetConfig(datasetName) {
   const config = readJsonIfExists(configPath, { name: datasetName });
   if (!config.included_libraries || config.included_libraries.length === 0) {
     if (datasetName === 'all-public') {
-      const publicLibraries = listLibraries().filter(name => !['backgrounds', 'local'].includes(name));
+      const publicLibraries = listLibraries().filter(name => name !== 'backgrounds');
       config.included_libraries = publicLibraries.length ? publicLibraries : DEFAULT_PUBLIC_LIBRARIES;
     } else {
       config.included_libraries = [];
@@ -70,7 +70,24 @@ function getDatasetFilePath(datasetName, filename) {
   return path.join(DATASETS_DIR, datasetName, filename);
 }
 
+function getDatasetImportPath(datasetName, ...parts) {
+  return path.join(DATASETS_DIR, datasetName, 'imports', ...parts);
+}
+
 function findAudioInfo(datasetName, fileId) {
+  const datasetAudioDir = getDatasetImportPath(datasetName, 'audio');
+  for (const ext of ['.mp3', '.wav']) {
+    const candidate = path.join(datasetAudioDir, `${fileId}${ext}`);
+    if (fs.existsSync(candidate)) {
+      return {
+        library: null,
+        path: candidate,
+        ext,
+        relativeUrl: `/cache/datasets/${datasetName}/imports/audio/${fileId}${ext}`
+      };
+    }
+  }
+
   const config = loadDatasetConfig(datasetName);
   for (const libraryName of config.included_libraries || []) {
     if (!isFileAllowed(config, libraryName, fileId)) continue;

@@ -47,7 +47,6 @@ def compute_contiguous_stats(segments, auto_labels, target_crowCount, tolerance=
         for i in range(1, len(sorted_segs)):
             prev = sorted_segs[i - 1]
             curr = sorted_segs[i]
-            # Using integer conversion as in the segment key.
             if int(curr["start_time"]) == int(prev["end_time"]):
                 current_group_size += 1
             else:

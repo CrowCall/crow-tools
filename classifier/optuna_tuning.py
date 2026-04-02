@@ -1,12 +1,17 @@
+import os
+
 import optuna
 import torch
 from pytorch_lightning.callbacks import ModelCheckpoint
-from torch.utils.data import DataLoader, random_split, Subset
+from torch.utils.data import DataLoader, Subset
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
 
-from dataset import CrowDataset
+from dataset import CrowDataset, split_train_val_dataset
 from model import CrowClassifier
+
+CLASSIFIER_DIR = os.path.dirname(__file__)
+LOGS_DIR = os.path.join(CLASSIFIER_DIR, "logs")
 
 
 def objective(trial: optuna.Trial):
@@ -27,9 +32,7 @@ def objective(trial: optuna.Trial):
 
     # Create the dataset and split into train/validation.
     dataset = CrowDataset()
-    train_size = int(0.88 * len(dataset))
-    val_size = len(dataset) - train_size
-    train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+    train_dataset, val_dataset = split_train_val_dataset(dataset)
 
     # Oversampling: Duplicate training indices for underrepresented labels.
     oversample_factors = {"rattle": rattle_oversample, "softSong": softsong_oversample, "begging": begging_oversample, "alert": alert_oversample, "mob": mob_oversample}
@@ -49,14 +52,14 @@ def objective(trial: optuna.Trial):
 
     # Set up checkpoint callback to monitor the composite score.
     checkpoint_callback = ModelCheckpoint(
-        dirpath=f"logs/trial_{trial.number}/checkpoints",
+        dirpath=os.path.join(LOGS_DIR, f"trial_{trial.number}", "checkpoints"),
         filename="best_model",
         monitor="val_composite_score",
         mode="max",  # We want to maximize composite score.
         save_top_k=1,
     )
 
-    tb_logger = TensorBoardLogger("logs", name=f"crow-classify_trial_{trial.number}")
+    tb_logger = TensorBoardLogger(LOGS_DIR, name=f"crow-classify_trial_{trial.number}")
 
     trainer = pl.Trainer(
         max_epochs=16,
