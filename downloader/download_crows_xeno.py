@@ -1,47 +1,83 @@
-import requests
 import csv
 import os
 from datetime import datetime
+
+import requests
 
 from crowtools.datasets import get_library_dir
 
 PATH = os.path.dirname(__file__)
 
 # -- CONFIG: Adjust as needed --
-SPECIES_QUERY = "American+Crow"
-BASE_API_URL = "https://www.xeno-canto.org/api/2/recordings"
+# Xeno-canto retired the keyless v2 API; v3 is the current endpoint and needs a
+# free API key (https://xeno-canto.org/account). v3 also expects tag-based
+# queries, so the species is given as gen:/sp: rather than a free-text name.
+SPECIES_QUERY = "gen:Corvus sp:brachyrhynchos"
+BASE_API_URL = "https://xeno-canto.org/api/3/recordings"
+API_KEY_ENV_VAR = "XENO_CANTO_API_KEY"
 
-def fetch_all_recordings(query):
+
+def resolve_api_key(api_key=None):
+    return api_key or os.environ.get(API_KEY_ENV_VAR)
+
+
+def fetch_all_recordings(query, api_key):
     """
-    Fetch all pages from Xeno-Canto API for the given query (species).
+    Fetch all pages from the Xeno-Canto v3 API for the given query.
     Returns a list of recording dictionaries.
     """
     all_recs = []
     page_number = 1
 
     while True:
-        url = f"{BASE_API_URL}?query={query}&page={page_number}"
-        resp = requests.get(url).json()
-        recs = resp.get("recordings", [])
+        resp = requests.get(
+            BASE_API_URL,
+            params={"query": query, "key": api_key, "page": page_number},
+            timeout=30,
+        )
+        if resp.status_code != 200:
+            detail = resp.text[:200].replace("\n", " ")
+            print(f"Xeno-Canto API returned HTTP {resp.status_code}: {detail}")
+            break
+
+        data = resp.json()
+        recs = data.get("recordings", [])
         if not recs:
             break
 
         all_recs.extend(recs)
 
         # Stop if we reached the last page
-        if page_number >= int(resp["numPages"]):
+        if page_number >= int(data.get("numPages", 1)):
             break
 
         page_number += 1
 
     return all_recs
 
+
+def recording_file_url(rec):
+    """Pull the downloadable audio URL out of a v3 recording, fixing the scheme.
+
+    v3 usually returns `file` as a URL string, but has been seen to nest it as
+    {"url": ...}; handle both so a format tweak upstream doesn't break ingest.
+    """
+    file_url = rec.get("file")
+    if isinstance(file_url, dict):
+        file_url = file_url.get("url")
+    if not file_url:
+        return ""
+    if file_url.startswith("//"):
+        file_url = "https:" + file_url
+    return file_url
+
+
 def download_mp3(xc_id, mp3_url, output_dir):
     """
     Download MP3 file to local OUTPUT_DIR/{xc_id}.mp3
     """
-    if mp3_url.startswith("//"):
-        mp3_url = "https:" + mp3_url  # Fix if it starts with //
+    if not mp3_url:
+        return
 
     filename = f"{xc_id}.mp3"
     filepath = os.path.join(output_dir, filename)
@@ -55,14 +91,24 @@ def download_mp3(xc_id, mp3_url, output_dir):
         except Exception as e:
             print(f"Error downloading {mp3_url}: {e}")
 
-def start_downloads(percent=100, selected_ids=None, cache_base=None):
+
+def start_downloads(percent=100, selected_ids=None, cache_base=None, api_key=None):
+    api_key = resolve_api_key(api_key)
+    if not api_key:
+        print(
+            "No Xeno-Canto API key found. The v3 API requires a free key: create "
+            "one at https://xeno-canto.org/account and set the "
+            f"{API_KEY_ENV_VAR} environment variable. Skipping Xeno-Canto."
+        )
+        return
+
     library_base = get_library_dir("xeno-canto", cache_base)
     output_csv = os.path.join(library_base, "library.csv")
     output_dir = os.path.join(library_base, "audio")
     os.makedirs(output_dir, exist_ok=True)
 
     # Fetch all recordings
-    recordings = fetch_all_recordings(SPECIES_QUERY)
+    recordings = fetch_all_recordings(SPECIES_QUERY, api_key)
     print(f"Found {len(recordings)} recordings for '{SPECIES_QUERY}'.")
     if selected_ids is not None:
         selected_lookup = {str(value) for value in selected_ids}
@@ -122,9 +168,7 @@ def start_downloads(percent=100, selected_ids=None, cache_base=None):
             rating = "0.0"
 
             # Download the MP3
-            mp3_url = rec.get("file", "")
-            if mp3_url:
-                download_mp3(xc_id, mp3_url, output_dir)
+            download_mp3(xc_id, recording_file_url(rec), output_dir)
 
             # Write CSV row
             row = {

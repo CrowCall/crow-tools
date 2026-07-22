@@ -28,6 +28,22 @@ pip install -r requirements.txt
 
 ## Download and Prepare Data
 
+### Xeno-Canto API key
+
+Xeno-Canto's old keyless v2 API no longer works (requests to `api/2/...` now
+return HTTP 404). The current [v3 API](https://xeno-canto.org/explore/api)
+requires a free key — a keyless request returns `HTTP 401` with
+`"Missing or invalid 'key' parameter"`. Create a key at
+[xeno-canto.org/account](https://xeno-canto.org/account) and export it before
+downloading:
+
+```
+export XENO_CANTO_API_KEY=your_key_here
+```
+
+Without a key, the Macaulay downloads still run and Xeno-Canto is skipped with a
+notice.
+
 For a new user, start with the small `starter` dataset:
 
 ```
